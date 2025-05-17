@@ -1,0 +1,21 @@
+# Binaries
+/app
+*.exe
+*.out
+
+# Env
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+
+docs/swagger.json
+docs/swagger.yaml
