@@ -13,5 +13,4 @@ func SetupRoutes(app *fiber.App, db *gorm.DB) {
 
     auth.RegisterRoutes(api, db)
     user.RegisterRoutes(api, db)
-    
 }
