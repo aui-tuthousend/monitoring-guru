@@ -15,7 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/auth/login": {
+        "/api/auth/login-guru": {
             "post": {
                 "description": "Log In",
                 "consumes": [
@@ -34,7 +34,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/login.AuthRequest"
+                            "$ref": "#/definitions/login.AuthGuruRequest"
                         }
                     }
                 ],
@@ -43,6 +43,395 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/login.AuthResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/login-ketua-kelas": {
+            "post": {
+                "description": "Log In",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "parameters": [
+                    {
+                        "description": "Create user request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/login.AuthKetuaKelasRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/login.AuthResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/guru": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get all guru",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "guru"
+                ],
+                "summary": "Get all guru",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/getall.GetAllGuruResponse"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/guru/register": {
+            "post": {
+                "description": "Create Guru request body",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "guru"
+                ],
+                "summary": "Mendaftarkan guru baru",
+                "parameters": [
+                    {
+                        "description": "Create guru request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/create.CreateGuruRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/create.CreateGuruResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/guru/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update a guru by ID, only fields provided will be updated",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "guru"
+                ],
+                "summary": "Update guru data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Guru ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Guru update data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/update.UpdateGuruRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/update.UpdateGuruResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete a guru by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "guru"
+                ],
+                "summary": "Delete a guru",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Guru ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/ketua-kelas": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get all ketua kelas",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ketua kelas"
+                ],
+                "summary": "Get all ketua kelas",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/getall.GetAllKetuaKelasResponse"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/ketua-kelas/register": {
+            "post": {
+                "description": "Create Ketua Kelas baru request body",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ketua kelas"
+                ],
+                "summary": "Create Ketua Kelas request body",
+                "parameters": [
+                    {
+                        "description": "Create ketua request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/create.CreateKetuaRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/create.CreateKetuaResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/ketua-kelas/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete Ketua Kelas by ID",
+                "tags": [
+                    "ketua kelas"
+                ],
+                "summary": "Delete Ketua Kelas",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Ketua Kelas ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "400": {
@@ -152,6 +541,99 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "create.CreateGuruRequest": {
+            "description": "Create guru request body",
+            "type": "object",
+            "properties": {
+                "jabatan": {
+                    "description": "@Description Jabatan of the guru\n@Required true\n@Enum \"guru\" \"kepala_sekolah\"\n@Example \"guru\"",
+                    "type": "string"
+                },
+                "nama": {
+                    "description": "@Description Name of the guru\n@Required true\n@Example \"John Doe\"",
+                    "type": "string"
+                },
+                "nip": {
+                    "description": "@Description NIP of the guru\n@Required true\n@Example \"123456789\"",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "@Description Password of the guru\n@Required true\n@Example \"password123\"\n@MinLength 6",
+                    "type": "string"
+                }
+            }
+        },
+        "create.CreateGuruResponse": {
+            "type": "object",
+            "properties": {
+                "jabatan": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                },
+                "nip": {
+                    "type": "string"
+                }
+            }
+        },
+        "create.CreateGuruResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/create.CreateGuruResponse"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "create.CreateKetuaRequest": {
+            "description": "Create ketua request body NISN of the ketua",
+            "type": "object",
+            "properties": {
+                "nama": {
+                    "description": "@Description Name of the ketua\n@Required true\n@Example \"John Doe\"",
+                    "type": "string"
+                },
+                "nisn": {
+                    "description": "@Description NISN of the ketua\n@Required true\n@Example \"123456789\"",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "@Description Password of the ketua\n@Required true\n@Example \"password123\"\n@MinLength 6",
+                    "type": "string"
+                }
+            }
+        },
+        "create.CreateKetuaResponse": {
+            "type": "object",
+            "properties": {
+                "nama": {
+                    "type": "string"
+                },
+                "nisn": {
+                    "type": "string"
+                }
+            }
+        },
+        "create.CreateKetuaResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/create.CreateKetuaResponse"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
         "create.CreateUserRequest": {
             "description": "Create user request body",
             "type": "object",
@@ -195,6 +677,41 @@ const docTemplate = `{
                 }
             }
         },
+        "getall.GetAllGuruResponse": {
+            "description": "Get all guru response",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "ID of the guru\n@example 1",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of the guru\n@example John Doe",
+                    "type": "string"
+                },
+                "nip": {
+                    "description": "NIP of the guru\n@example 1234567890",
+                    "type": "string"
+                }
+            }
+        },
+        "getall.GetAllKetuaKelasResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "@Description ID of the ketua\n@Required true\n@Example \"123e4567-e89b-12d3-a456-426614174000\"",
+                    "type": "string"
+                },
+                "nama": {
+                    "description": "@Description Name of the ketua\n@Required true\n@Example \"John Doe\"",
+                    "type": "string"
+                },
+                "nisn": {
+                    "description": "@Description NISN of the ketua\n@Required true\n@Example \"123456789\"",
+                    "type": "string"
+                }
+            }
+        },
         "getprofile.GetUserResponse": {
             "type": "object",
             "properties": {
@@ -206,12 +723,25 @@ const docTemplate = `{
                 }
             }
         },
-        "login.AuthRequest": {
-            "description": "Login user request body",
+        "login.AuthGuruRequest": {
             "type": "object",
             "properties": {
-                "email": {
-                    "description": "Your Email",
+                "nip": {
+                    "description": "Your NIP",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "Your Password",
+                    "type": "string"
+                }
+            }
+        },
+        "login.AuthKetuaKelasRequest": {
+            "description": "Login ketua kelas request body",
+            "type": "object",
+            "properties": {
+                "nisn": {
+                    "description": "Your NISN",
                     "type": "string"
                 },
                 "password": {
@@ -226,6 +756,46 @@ const docTemplate = `{
                 "token": {
                     "type": "string",
                     "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                }
+            }
+        },
+        "update.UpdateGuruRequest": {
+            "type": "object",
+            "properties": {
+                "jabatan": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nip": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "update.UpdateGuruResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "jabatan": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "nip": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
                 }
             }
         }
@@ -245,8 +815,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "127.0.0.1:8080",
 	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "your own API application",
-	Description:      "Restful API using go fiber",
+	Title:            "Monitoring Guru",
+	Description:      "endpoints for monitoring guru XD",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
