@@ -47,12 +47,12 @@ func SetupWebSocket(app *fiber.App, db *gorm.DB) {
 			if payload.IsActive {
 				log.Printf("activating")
 				// db.Model(&Class{}).Where("id = ?", payload.uuid).Update("is_active", true)
-				BroadcastToAll(`{"UUID":"` + payload.UUID + `", "IsActive":true}`)
+				BroadcastToAll(`{"UUID":"` + payload.UUID + `", "IsActive":true}`, make(chan<- string))
 			}
 	
 			if !payload.IsActive {
 				// db.Model(&Class{}).Where("id = ?", payload.uuid).Update("is_active", false)
-				BroadcastToAll(`{"UUID":"` + payload.UUID + `", "IsActive":false}`)
+				BroadcastToAll(`{"UUID":"` + payload.UUID + `", "IsActive":false}`, make(chan<- string))
 			}
 		}
 	}))
