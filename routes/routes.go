@@ -7,6 +7,8 @@ import (
 	auth "monitoring-guru/features/auth/common"
 	guru "monitoring-guru/features/guru/common"
 	ketua "monitoring-guru/features/ketuaKelas/common"
+	mapel "monitoring-guru/features/mapel/common"
+	ruangan "monitoring-guru/features/ruangan/common"
 	user "monitoring-guru/features/user/common"
 )
 
@@ -17,4 +19,6 @@ func SetupRoutes(app *fiber.App, db *gorm.DB) {
 	user.RegisterRoutes(api, db)
 	guru.RegisterRoutes(api, db)
 	ketua.RegisterRoutes(api, db)
+	ruangan.RegisterRoutes(api, db)
+	mapel.RegisterRoutes(api, db)
 }

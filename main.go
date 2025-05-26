@@ -44,7 +44,7 @@ func main() {
 	db := database.DB
 	// db.AutoMigrate(&e.User{}) //migrate later
 	// db.AutoMigrate(&e.User{}, &e.otherEntities{})
-	
+
 	routes.SetupRoutes(app, db)
 	websocket.SetupWebSocket(app, db)
 	app.Get("/swagger/*", swagger.HandlerDefault)
