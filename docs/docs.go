@@ -314,6 +314,264 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/jurusan": {
+            "get": {
+                "description": "Get list of all jurusan",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "jurusan"
+                ],
+                "summary": "Get all jurusan",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/getall.GetAllJurusanResponseWrapper"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new jurusan",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "jurusan"
+                ],
+                "summary": "Create jurusan",
+                "parameters": [
+                    {
+                        "description": "Jurusan body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/create.CreateJurusanRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/create.CreateJurusanResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/jurusan/{id}": {
+            "get": {
+                "description": "Get jurusan details by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "jurusan"
+                ],
+                "summary": "Get jurusan by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Jurusan ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/getbyid.GetJurusanResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update jurusan data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "jurusan"
+                ],
+                "summary": "Update jurusan",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Jurusan ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Jurusan data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/update.UpdateJurusanRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/update.UpdateJurusanResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete jurusan by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "jurusan"
+                ],
+                "summary": "Delete jurusan",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Jurusan ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/ketua-kelas": {
             "get": {
                 "security": [
@@ -436,6 +694,522 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/mapel": {
+            "get": {
+                "description": "Get all mata pelajaran",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mapel"
+                ],
+                "summary": "Get all mapel",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/getall.GetAllMapelResponseWrapper"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new mata pelajaran",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mapel"
+                ],
+                "summary": "Create mapel",
+                "parameters": [
+                    {
+                        "description": "Mapel body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/create.CreateMapelRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/create.CreateMapelResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/mapel/{id}": {
+            "get": {
+                "description": "Get a mata pelajaran by its ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mapel"
+                ],
+                "summary": "Get mapel by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Mapel ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/getbyid.GetMapelByIDResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update a mata pelajaran by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mapel"
+                ],
+                "summary": "Update mapel",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Mapel ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Mapel body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/update.UpdateMapelRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/update.UpdateMapelResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a mapel by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mapel"
+                ],
+                "summary": "Delete mapel",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Mapel ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/ruangan": {
+            "get": {
+                "description": "Get all ruangan records",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ruangan"
+                ],
+                "summary": "Get all ruangan",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/getall.GetAllRuanganResponseWrapper"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new ruangan",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ruangan"
+                ],
+                "summary": "Create ruangan",
+                "parameters": [
+                    {
+                        "description": "Ruangan body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/create.CreateRuanganRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/create.CreateRuanganResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/ruangan/{id}": {
+            "get": {
+                "description": "Get a ruangan by its ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ruangan"
+                ],
+                "summary": "Get ruangan by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Ruangan ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/getbyid.GetRuanganByIDResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update a ruangan by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ruangan"
+                ],
+                "summary": "Update ruangan",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Ruangan ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Ruangan body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/update.UpdateRuanganRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/update.UpdateRuanganResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a ruangan by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ruangan"
+                ],
+                "summary": "Delete ruangan",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Ruangan ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -591,6 +1365,42 @@ const docTemplate = `{
                 }
             }
         },
+        "create.CreateJurusanRequest": {
+            "type": "object",
+            "required": [
+                "nama"
+            ],
+            "properties": {
+                "nama": {
+                    "type": "string"
+                }
+            }
+        },
+        "create.CreateJurusanResponse": {
+            "type": "object",
+            "properties": {
+                "jurusan_id": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                }
+            }
+        },
+        "create.CreateJurusanResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/create.CreateJurusanResponse"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
         "create.CreateKetuaRequest": {
             "description": "Create ketua request body NISN of the ketua",
             "type": "object",
@@ -628,6 +1438,85 @@ const docTemplate = `{
                 },
                 "data": {
                     "$ref": "#/definitions/create.CreateKetuaResponse"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "create.CreateMapelRequest": {
+            "type": "object",
+            "required": [
+                "jurusan_id",
+                "nama"
+            ],
+            "properties": {
+                "jurusan_id": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                }
+            }
+        },
+        "create.CreateMapelResponse": {
+            "type": "object",
+            "properties": {
+                "jurusan_id": {
+                    "type": "string"
+                },
+                "mapel_id": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                }
+            }
+        },
+        "create.CreateMapelResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/create.CreateMapelResponse"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "create.CreateRuanganRequest": {
+            "type": "object",
+            "required": [
+                "nama"
+            ],
+            "properties": {
+                "nama": {
+                    "type": "string"
+                }
+            }
+        },
+        "create.CreateRuanganResponse": {
+            "type": "object",
+            "properties": {
+                "nama": {
+                    "type": "string"
+                },
+                "ruangan_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "create.CreateRuanganResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/create.CreateRuanganResponse"
                 },
                 "message": {
                     "type": "string"
@@ -695,6 +1584,23 @@ const docTemplate = `{
                 }
             }
         },
+        "getall.GetAllJurusanResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/getall.JurusanResponse"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
         "getall.GetAllKetuaKelasResponse": {
             "type": "object",
             "properties": {
@@ -708,6 +1614,172 @@ const docTemplate = `{
                 },
                 "nisn": {
                     "description": "@Description NISN of the ketua\n@Required true\n@Example \"123456789\"",
+                    "type": "string"
+                }
+            }
+        },
+        "getall.GetAllMapelResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/getall.MapelResponse"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "getall.GetAllRuanganResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/getall.RuanganResponse"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "getall.JurusanResponse": {
+            "type": "object",
+            "properties": {
+                "jurusan_id": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                }
+            }
+        },
+        "getall.MapelResponse": {
+            "type": "object",
+            "properties": {
+                "jurusan_id": {
+                    "type": "string"
+                },
+                "mapel_id": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                }
+            }
+        },
+        "getall.RuanganResponse": {
+            "type": "object",
+            "properties": {
+                "nama": {
+                    "type": "string"
+                },
+                "ruangan_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "getbyid.GetJurusanResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/getbyid.JurusanResponse"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "getbyid.GetMapelByIDResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/getbyid.MapelResponse"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "getbyid.GetRuanganByIDResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/getbyid.RuanganResponse"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "getbyid.JurusanResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "jurusan_id": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "getbyid.MapelResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "jurusan_id": {
+                    "type": "string"
+                },
+                "mapel_id": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "getbyid.RuanganResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                },
+                "ruangan_id": {
+                    "type": "string"
+                },
+                "updated_at": {
                     "type": "string"
                 }
             }
@@ -795,6 +1867,130 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "update.UpdateJurusanRequest": {
+            "type": "object",
+            "required": [
+                "nama"
+            ],
+            "properties": {
+                "nama": {
+                    "type": "string"
+                }
+            }
+        },
+        "update.UpdateJurusanResponse": {
+            "type": "object",
+            "properties": {
+                "jurusan_id": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "update.UpdateJurusanResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/update.UpdateJurusanResponse"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "update.UpdateMapelRequest": {
+            "type": "object",
+            "required": [
+                "jurusan_id",
+                "nama"
+            ],
+            "properties": {
+                "jurusan_id": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                }
+            }
+        },
+        "update.UpdateMapelResponse": {
+            "type": "object",
+            "properties": {
+                "jurusan_id": {
+                    "type": "string"
+                },
+                "mapel_id": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "update.UpdateMapelResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/update.UpdateMapelResponse"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "update.UpdateRuanganRequest": {
+            "type": "object",
+            "required": [
+                "nama"
+            ],
+            "properties": {
+                "nama": {
+                    "type": "string"
+                }
+            }
+        },
+        "update.UpdateRuanganResponse": {
+            "type": "object",
+            "properties": {
+                "nama": {
+                    "type": "string"
+                },
+                "ruangan_id": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "update.UpdateRuanganResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/update.UpdateRuanganResponse"
+                },
+                "message": {
                     "type": "string"
                 }
             }
