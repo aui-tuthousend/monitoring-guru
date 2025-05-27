@@ -5,14 +5,13 @@ import (
 	"monitoring-guru/docs"
 	"monitoring-guru/routes"
 	"monitoring-guru/websocket"
-
 	// e "monitoring-guru/entities"
 
 	"log"
-	"os"
-	"os/signal"
-	"syscall"
-
+    "os"
+    "os/signal"
+    "syscall"
+	
 	_ "monitoring-guru/docs" // for Swagger docs
 
 	"github.com/gofiber/fiber/v2"
@@ -44,7 +43,6 @@ func main() {
 	db := database.DB
 	// db.AutoMigrate(&e.User{}) //migrate later
 	// db.AutoMigrate(&e.User{}, &e.otherEntities{})
-	
 	routes.SetupRoutes(app, db)
 	websocket.SetupWebSocket(app, db)
 	app.Get("/swagger/*", swagger.HandlerDefault)
@@ -53,16 +51,16 @@ func main() {
 	})
 
 	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+    signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 
-	go func() {
-		<-c
-		log.Println("Gracefully shutting down...")
-		websocket.CleanupWebSocketClients()
-		if err := app.Shutdown(); err != nil {
-			log.Fatalf("Error shutting down server: %v", err)
-		}
-	}()
+    go func() {
+        <-c
+        log.Println("Gracefully shutting down...")
+        websocket.CleanupWebSocketClients()
+        if err := app.Shutdown(); err != nil {
+            log.Fatalf("Error shutting down server: %v", err)
+        }
+    }()
 
 	app.Listen(":8080")
 }

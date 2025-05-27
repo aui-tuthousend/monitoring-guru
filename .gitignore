@@ -1,5 +1,6 @@
 # Binaries
 /app
+/tmp
 *.exe
 *.out
 

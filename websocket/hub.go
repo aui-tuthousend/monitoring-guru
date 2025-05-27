@@ -49,8 +49,7 @@ func CleanupWebSocketClients() {
 }
 
 
-func BroadcastToAll(message string, ch chan<-string) {
-	var wg sync.WaitGroup
+func BroadcastToAll(message string, ch chan<-string, wg *sync.WaitGroup) {
 	wsMutex.Lock()
 	defer wsMutex.Unlock()
 
