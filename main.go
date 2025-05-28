@@ -8,11 +8,11 @@ import (
 	// e "monitoring-guru/entities"
 
 	"log"
-    "os"
-    "os/signal"
-    "syscall"
-	
-	_ "monitoring-guru/docs" // for Swagger docs
+	"os"
+	"os/signal"
+	"syscall"
+
+	_ "monitoring-guru/docs"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -42,7 +42,6 @@ func main() {
 	database.Connect()
 	db := database.DB
 	// db.AutoMigrate(&e.User{}) //migrate later
-	// db.AutoMigrate(&e.User{}, &e.otherEntities{})
 	routes.SetupRoutes(app, db)
 	websocket.SetupWebSocket(app, db)
 	app.Get("/swagger/*", swagger.HandlerDefault)
