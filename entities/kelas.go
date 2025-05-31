@@ -17,8 +17,7 @@ type Kelas struct {
 	Jurusan   Jurusan        `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;foreignKey:JurusanID;references:ID"`
 	Nama      string         `json:"nama" gorm:"not null"`
 	IsActive  bool           `json:"is_active" gorm:"default:false"`
-	JadwalAjar	     []JadwalAjar   `gorm:"foreignKey:KelasID"`
-	CreatedAt time.Time      `json:"created_at"`
-	UpdatedAt time.Time      `json:"updated_at"`
-	DeletedAt gorm.DeletedAt `json:"deleted_at" gorm:"index"`
+	CreatedAt time.Time      `json:"-"`
+	UpdatedAt time.Time      `json:"-"`
+	DeletedAt gorm.DeletedAt `json:"deleted_at" gorm:"index" swaggerignore:"true"`
 }

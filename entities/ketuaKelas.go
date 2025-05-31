@@ -12,7 +12,7 @@ type KetuaKelas struct {
 	Name      string         `json:"nama" gorm:"not null"`
 	Nisn      string         `json:"nis" gorm:"not null"`
 	Password  string         `json:"password" gorm:"not null"`
-	CreatedAt time.Time      `json:"created_at"`
-	UpdatedAt time.Time      `json:"updated_at"`
-	DeletedAt gorm.DeletedAt `json:"deleted_at" gorm:"index"`
+	CreatedAt time.Time      `json:"-"`
+	UpdatedAt time.Time      `json:"-"`
+	DeletedAt gorm.DeletedAt `json:"deleted_at" gorm:"index" swaggerignore:"true"`
 }

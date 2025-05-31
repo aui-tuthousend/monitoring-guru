@@ -34,7 +34,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/login.AuthGuruRequest"
+                            "$ref": "#/definitions/auth.AuthGuruRequest"
                         }
                     }
                 ],
@@ -42,7 +42,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/login.AuthResponse"
+                            "$ref": "#/definitions/auth.AuthResponse"
                         }
                     },
                     "400": {
@@ -85,7 +85,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/login.AuthKetuaKelasRequest"
+                            "$ref": "#/definitions/auth.AuthKetuaKelasRequest"
                         }
                     }
                 ],
@@ -93,7 +93,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/login.AuthResponse"
+                            "$ref": "#/definitions/auth.AuthResponse"
                         }
                     },
                     "400": {
@@ -129,7 +129,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "guru"
+                    "Guru"
                 ],
                 "summary": "Get all guru",
                 "responses": {
@@ -138,75 +138,18 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/getall.GetAllGuruResponse"
+                                "$ref": "#/definitions/guru.GuruResponse"
                             }
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/guru.GuruResponseWrapper"
                         }
                     }
                 }
-            }
-        },
-        "/api/guru/register": {
-            "post": {
-                "description": "Create Guru request body",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "guru"
-                ],
-                "summary": "Mendaftarkan guru baru",
-                "parameters": [
-                    {
-                        "description": "Create guru request body",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/create.CreateGuruRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/create.CreateGuruResponseWrapper"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/guru/{id}": {
+            },
             "put": {
                 "security": [
                     {
@@ -221,24 +164,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "guru"
+                    "Guru"
                 ],
                 "summary": "Update guru data",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "Guru ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
                         "description": "Guru update data",
-                        "name": "data",
+                        "name": "request",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/update.UpdateGuruRequest"
+                            "$ref": "#/definitions/guru.UpdateGuruRequest"
                         }
                     }
                 ],
@@ -246,29 +182,99 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/update.UpdateGuruResponse"
+                            "$ref": "#/definitions/guru.GuruResponseWrapper"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/guru.GuruResponseWrapper"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/guru.GuruResponseWrapper"
                         }
                     }
                 }
             },
+            "post": {
+                "description": "Create Guru request body",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Guru"
+                ],
+                "summary": "Mendaftarkan guru baru",
+                "parameters": [
+                    {
+                        "description": "Create guru request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/guru.CreateGuruRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/guru.GuruResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/guru.GuruResponseWrapper"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/guru.GuruResponseWrapper"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/guru/profile": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get Logged user profile",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Guru"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/guru.GuruResponseWrapper"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/guru.GuruResponseWrapper"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/guru/{id}": {
             "delete": {
                 "security": [
                     {
@@ -280,7 +286,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "guru"
+                    "Guru"
                 ],
                 "summary": "Delete a guru",
                 "parameters": [
@@ -309,6 +315,259 @@ const docTemplate = `{
                             "additionalProperties": {
                                 "type": "string"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/jadwalajar": {
+            "get": {
+                "description": "Get All Jadwalajar request body",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jadwalajar"
+                ],
+                "summary": "Get All Jadwalajar request body",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/getall.GetAllJadwalAjarResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/getall.GetAllJadwalAjarResponseWrapper"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update Jadwalajar baru request body",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jadwalajar"
+                ],
+                "summary": "Update Jadwalajar request body",
+                "parameters": [
+                    {
+                        "description": "Update jadwalajar request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/update.UpdateJadwalAjarRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/update.UpdateJadwalAjarResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/update.UpdateJadwalAjarResponseWrapper"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/update.UpdateJadwalAjarResponseWrapper"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create Jadwalajar baru request body",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jadwalajar"
+                ],
+                "summary": "Create Jadwalajar request body",
+                "parameters": [
+                    {
+                        "description": "Create jadwalajar request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/create.CreateJadwalAjarRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/create.CreateJadwalAjarResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/create.CreateJadwalAjarResponseWrapper"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/create.CreateJadwalAjarResponseWrapper"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/jadwalajar/guru": {
+            "get": {
+                "description": "Get Jadwalajar by ID Guru request body",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jadwalajar"
+                ],
+                "summary": "Get Jadwalajar by ID Guru request body",
+                "parameters": [
+                    {
+                        "description": "Get jadwalajar guru request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/getbyidguru.GetJadwalAjarGuruRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/getbyidguru.GetByIDGuruResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/getbyidguru.GetByIDGuruResponseWrapper"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/getbyidguru.GetByIDGuruResponseWrapper"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/jadwalajar/kelas": {
+            "get": {
+                "description": "Get Jadwalajar by ID Kelas request body",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jadwalajar"
+                ],
+                "summary": "Get Jadwalajar by ID Kelas request body",
+                "parameters": [
+                    {
+                        "description": "Get jadwalajar kelas request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/getbyidkelas.GetJadwalAjarKelasRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/getbyidkelas.GetByIDKelasResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/getbyidkelas.GetByIDKelasResponseWrapper"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/getbyidkelas.GetByIDKelasResponseWrapper"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/jadwalajar/{id}": {
+            "get": {
+                "description": "Get a jadwalajar by its ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Jadwalajar"
+                ],
+                "summary": "Get jadwalajar by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Jadwalajar ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/getbyid.GetJadwalajarByIDResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/getbyid.GetJadwalajarByIDResponseWrapper"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/getbyid.GetJadwalajarByIDResponseWrapper"
                         }
                     }
                 }
@@ -1315,50 +1574,113 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "create.CreateGuruRequest": {
-            "description": "Create guru request body",
+        "auth.AuthGuruRequest": {
             "type": "object",
             "properties": {
-                "jabatan": {
-                    "description": "@Description Jabatan of the guru\n@Required true\n@Enum \"guru\" \"kepala_sekolah\"\n@Example \"guru\"",
-                    "type": "string"
-                },
-                "nama": {
-                    "description": "@Description Name of the guru\n@Required true\n@Example \"John Doe\"",
-                    "type": "string"
-                },
                 "nip": {
-                    "description": "@Description NIP of the guru\n@Required true\n@Example \"123456789\"",
+                    "description": "Your NIP",
                     "type": "string"
                 },
                 "password": {
-                    "description": "@Description Password of the guru\n@Required true\n@Example \"password123\"\n@MinLength 6",
+                    "description": "Your Password",
                     "type": "string"
                 }
             }
         },
-        "create.CreateGuruResponse": {
+        "auth.AuthKetuaKelasRequest": {
+            "description": "Login ketua kelas request body",
             "type": "object",
             "properties": {
-                "jabatan": {
+                "nisn": {
+                    "description": "Your NISN",
                     "type": "string"
                 },
-                "nama": {
-                    "type": "string"
-                },
-                "nip": {
+                "password": {
+                    "description": "Your Password",
                     "type": "string"
                 }
             }
         },
-        "create.CreateGuruResponseWrapper": {
+        "auth.AuthResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                }
+            }
+        },
+        "create.CreateJadwalAjarRequest": {
+            "description": "Create jadwalajar request body",
+            "type": "object",
+            "properties": {
+                "guru_id": {
+                    "description": "@Description Guru ID of the jadwalajar\n@Required true\n@Example \"123456789\"",
+                    "type": "string"
+                },
+                "hari": {
+                    "description": "@Description Hari of the jadwalajar\n@Required true\n@Example \"Senin\"",
+                    "type": "string"
+                },
+                "jam_mulai": {
+                    "description": "@Description Jam Mulai of the jadwalajar\n@Required true\n@Example \"08:00\"",
+                    "type": "string"
+                },
+                "jam_selesai": {
+                    "description": "@Description Jam Selesai of the jadwalajar\n@Required true\n@Example \"10:00\"",
+                    "type": "string"
+                },
+                "kelas_id": {
+                    "description": "@Description Kelas ID of the jadwalajar\n@Required true\n@Example \"adasd323\"",
+                    "type": "string"
+                },
+                "last_editor": {
+                    "description": "@Description Last Editor of the jadwalajar\n@Example \"John Doe\"",
+                    "type": "string"
+                },
+                "mapel_id": {
+                    "description": "@Description Mapel ID of the jadwalajar\n@Required true\n@Example \"John Doe\"",
+                    "type": "string"
+                }
+            }
+        },
+        "create.CreateJadwalAjarResponse": {
+            "type": "object",
+            "properties": {
+                "guru_id": {
+                    "type": "string"
+                },
+                "hari": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "jam_mulai": {
+                    "type": "string"
+                },
+                "jam_selesai": {
+                    "type": "string"
+                },
+                "kelas_id": {
+                    "type": "string"
+                },
+                "last_editor": {
+                    "type": "string"
+                },
+                "mapel_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "create.CreateJadwalAjarResponseWrapper": {
             "type": "object",
             "properties": {
                 "code": {
                     "type": "integer"
                 },
                 "data": {
-                    "$ref": "#/definitions/create.CreateGuruResponse"
+                    "$ref": "#/definitions/create.CreateJadwalAjarResponse"
                 },
                 "message": {
                     "type": "string"
@@ -1566,20 +1888,142 @@ const docTemplate = `{
                 }
             }
         },
-        "getall.GetAllGuruResponse": {
-            "description": "Get all guru response",
+        "entities.Guru": {
             "type": "object",
             "properties": {
                 "id": {
-                    "description": "ID of the guru\n@example 1",
                     "type": "string"
                 },
-                "name": {
-                    "description": "Name of the guru\n@example John Doe",
+                "jabatan": {
+                    "type": "string"
+                },
+                "nama": {
                     "type": "string"
                 },
                 "nip": {
-                    "description": "NIP of the guru\n@example 1234567890",
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.Jurusan": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.Kelas": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "is_active": {
+                    "type": "boolean"
+                },
+                "jurusan": {
+                    "$ref": "#/definitions/entities.Jurusan"
+                },
+                "jurusan_id": {
+                    "type": "string"
+                },
+                "ketua": {
+                    "$ref": "#/definitions/entities.KetuaKelas"
+                },
+                "ketua_id": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                },
+                "wakil": {
+                    "$ref": "#/definitions/entities.KetuaKelas"
+                },
+                "wakil_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.KetuaKelas": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                },
+                "nis": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "entities.Mapel": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "jurusan_id": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                }
+            }
+        },
+        "getall.GetAllJadwalAjarResponse": {
+            "type": "object",
+            "properties": {
+                "guru": {
+                    "$ref": "#/definitions/entities.Guru"
+                },
+                "hari": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "jam_mulai": {
+                    "type": "string"
+                },
+                "jam_selesai": {
+                    "type": "string"
+                },
+                "kelas": {
+                    "$ref": "#/definitions/entities.Kelas"
+                },
+                "last_editor": {
+                    "type": "string"
+                },
+                "mapel": {
+                    "$ref": "#/definitions/entities.Mapel"
+                }
+            }
+        },
+        "getall.GetAllJadwalAjarResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/getall.GetAllJadwalAjarResponse"
+                    }
+                },
+                "message": {
                     "type": "string"
                 }
             }
@@ -1688,6 +2132,20 @@ const docTemplate = `{
                 }
             }
         },
+        "getbyid.GetJadwalajarByIDResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/getbyid.JadwalajarResponse"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
         "getbyid.GetJurusanResponseWrapper": {
             "type": "object",
             "properties": {
@@ -1727,6 +2185,32 @@ const docTemplate = `{
                 },
                 "message": {
                     "type": "string"
+                }
+            }
+        },
+        "getbyid.JadwalajarResponse": {
+            "type": "object",
+            "properties": {
+                "guru": {
+                    "$ref": "#/definitions/entities.Guru"
+                },
+                "hari": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "jam_mulai": {
+                    "type": "string"
+                },
+                "jam_selesai": {
+                    "type": "string"
+                },
+                "kelas": {
+                    "$ref": "#/definitions/entities.Kelas"
+                },
+                "mapel": {
+                    "$ref": "#/definitions/entities.Mapel"
                 }
             }
         },
@@ -1784,6 +2268,120 @@ const docTemplate = `{
                 }
             }
         },
+        "getbyidguru.GetByIDGuruResponse": {
+            "type": "object",
+            "properties": {
+                "hari": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "jam_mulai": {
+                    "type": "string"
+                },
+                "jam_selesai": {
+                    "type": "string"
+                },
+                "kelas": {
+                    "$ref": "#/definitions/entities.Kelas"
+                },
+                "last_editor": {
+                    "type": "string"
+                },
+                "mapel": {
+                    "$ref": "#/definitions/entities.Mapel"
+                }
+            }
+        },
+        "getbyidguru.GetByIDGuruResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/getbyidguru.GetByIDGuruResponse"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "getbyidguru.GetJadwalAjarGuruRequest": {
+            "description": "Get jadwalajar by ID Guru request body",
+            "type": "object",
+            "properties": {
+                "guru_id": {
+                    "description": "@Description Guru ID of the jadwalajar\n@Required true\n@Example \"123456789\"",
+                    "type": "string"
+                },
+                "hari": {
+                    "description": "@Description Hari of the jadwalajar\n@Required true\n@Example \"Senin\"",
+                    "type": "string"
+                }
+            }
+        },
+        "getbyidkelas.GetByIDKelasResponse": {
+            "type": "object",
+            "properties": {
+                "guru": {
+                    "$ref": "#/definitions/entities.Guru"
+                },
+                "hari": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "jam_mulai": {
+                    "type": "string"
+                },
+                "jam_selesai": {
+                    "type": "string"
+                },
+                "last_editor": {
+                    "type": "string"
+                },
+                "mapel": {
+                    "$ref": "#/definitions/entities.Mapel"
+                }
+            }
+        },
+        "getbyidkelas.GetByIDKelasResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/getbyidkelas.GetByIDKelasResponse"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "getbyidkelas.GetJadwalAjarKelasRequest": {
+            "description": "Get jadwalajar by ID Kelas request body",
+            "type": "object",
+            "properties": {
+                "hari": {
+                    "description": "@Description Hari of the jadwalajar\n@Required true\n@Example \"Senin\"",
+                    "type": "string"
+                },
+                "kelas_id": {
+                    "description": "@Description Kelas ID of the jadwalajar\n@Required true\n@Example \"123456789\"",
+                    "type": "string"
+                }
+            }
+        },
         "getprofile.GetUserResponse": {
             "type": "object",
             "properties": {
@@ -1795,65 +2393,62 @@ const docTemplate = `{
                 }
             }
         },
-        "login.AuthGuruRequest": {
-            "type": "object",
-            "properties": {
-                "nip": {
-                    "description": "Your NIP",
-                    "type": "string"
-                },
-                "password": {
-                    "description": "Your Password",
-                    "type": "string"
-                }
-            }
-        },
-        "login.AuthKetuaKelasRequest": {
-            "description": "Login ketua kelas request body",
-            "type": "object",
-            "properties": {
-                "nisn": {
-                    "description": "Your NISN",
-                    "type": "string"
-                },
-                "password": {
-                    "description": "Your Password",
-                    "type": "string"
-                }
-            }
-        },
-        "login.AuthResponse": {
-            "type": "object",
-            "properties": {
-                "token": {
-                    "type": "string",
-                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                }
-            }
-        },
-        "update.UpdateGuruRequest": {
+        "guru.CreateGuruRequest": {
+            "description": "Create guru request body",
             "type": "object",
             "properties": {
                 "jabatan": {
+                    "description": "@Description Jabatan of the guru\n@Required true\n@Enum \"guru\" \"kepala_sekolah\"\n@Example \"guru\"",
                     "type": "string"
                 },
-                "name": {
+                "nama": {
+                    "description": "@Description Name of the guru\n@Required true\n@Example \"John Doe\"",
                     "type": "string"
                 },
                 "nip": {
+                    "description": "@Description NIP of the guru\n@Required true\n@Example \"123456789\"",
                     "type": "string"
                 },
                 "password": {
+                    "description": "@Description Password of the guru\n@Required true\n@Example \"password123\"\n@MinLength 6",
                     "type": "string"
                 }
             }
         },
-        "update.UpdateGuruResponse": {
+        "guru.GuruResponse": {
             "type": "object",
             "properties": {
-                "created_at": {
+                "id": {
                     "type": "string"
                 },
+                "jabatan": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                },
+                "nip": {
+                    "type": "string"
+                }
+            }
+        },
+        "guru.GuruResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/guru.GuruResponse"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "guru.UpdateGuruRequest": {
+            "type": "object",
+            "properties": {
                 "id": {
                     "type": "string"
                 },
@@ -1865,8 +2460,83 @@ const docTemplate = `{
                 },
                 "nip": {
                     "type": "string"
+                }
+            }
+        },
+        "update.UpdateJadwalAjarRequest": {
+            "description": "Update jadwalajar request body",
+            "type": "object",
+            "properties": {
+                "guru_id": {
+                    "description": "@Description Guru ID of the jadwalajar\n@Required true\n@Example \"123456789\"",
+                    "type": "string"
                 },
-                "updated_at": {
+                "hari": {
+                    "description": "@Description Hari of the jadwalajar\n@Required true\n@Example \"Senin\"",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "@Description ID of the jadwalajar\n@Required true\n@Example \"123456789\"",
+                    "type": "string"
+                },
+                "jam_mulai": {
+                    "description": "@Description Jam Mulai of the jadwalajar\n@Required true\n@Example \"08:00\"",
+                    "type": "string"
+                },
+                "jam_selesai": {
+                    "description": "@Description Jam Selesai of the jadwalajar\n@Required true\n@Example \"10:00\"",
+                    "type": "string"
+                },
+                "kelas_id": {
+                    "description": "@Description Kelas ID of the jadwalajar\n@Required true\n@Example \"adasd323\"",
+                    "type": "string"
+                },
+                "last_editor": {
+                    "description": "@Description Last Editor of the jadwalajar\n@Example \"John Doe\"",
+                    "type": "string"
+                },
+                "mapel_id": {
+                    "description": "@Description Mapel ID of the jadwalajar\n@Required true\n@Example \"John Doe\"",
+                    "type": "string"
+                }
+            }
+        },
+        "update.UpdateJadwalAjarResponse": {
+            "type": "object",
+            "properties": {
+                "guru_id": {
+                    "type": "string"
+                },
+                "hari": {
+                    "type": "string"
+                },
+                "jam_mulai": {
+                    "type": "string"
+                },
+                "jam_selesai": {
+                    "type": "string"
+                },
+                "kelas_id": {
+                    "type": "string"
+                },
+                "last_editor": {
+                    "type": "string"
+                },
+                "mapel_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "update.UpdateJadwalAjarResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/update.UpdateJadwalAjarResponse"
+                },
+                "message": {
                     "type": "string"
                 }
             }

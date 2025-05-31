@@ -19,6 +19,6 @@ func ErrorResponse[T any](code int, message string, data *T) APIResponse[T] {
 	return APIResponse[T]{
 		Code:    code,
 		Message: message,
-		Data:    data,
+		Data:    nil,
 	}
 }

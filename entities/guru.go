@@ -13,7 +13,7 @@ type Guru struct {
 	Nip       string         `json:"nip" gorm:"not null"`
 	Jabatan   string         `json:"jabatan" gorm:"not null"`
 	Password  string         `json:"password" gorm:"not null"`
-	CreatedAt time.Time      `json:"created_at"`
-	UpdatedAt time.Time      `json:"updated_at"`
-	DeletedAt gorm.DeletedAt `json:"deleted_at" gorm:"index"`
+	CreatedAt time.Time      `json:"-"`
+	UpdatedAt time.Time      `json:"-"`
+	DeletedAt gorm.DeletedAt `json:"deleted_at" gorm:"index" swaggerignore:"true"`
 }

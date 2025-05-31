@@ -12,7 +12,7 @@ type AbsenKeluar struct {
 	AbsenMasukID    	uuid.UUID      `json:"absen_masuk_id" gorm:"not null"`
 	JamKeluar   	time.Time         `json:"jam_keluar" gorm:"not null"`
 	Status   	string         `json:"status"`
-	CreatedAt 	time.Time      `json:"created_at"`
-	UpdatedAt 	time.Time      `json:"updated_at"`
+	CreatedAt 	time.Time      `json:"-"`
+	UpdatedAt 	time.Time      `json:"-"`
 	DeletedAt 	gorm.DeletedAt `json:"deleted_at" gorm:"index"`
 }

@@ -4,13 +4,14 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 
-	auth "monitoring-guru/features/auth/common"
-	guru "monitoring-guru/features/guru/common"
-	jurusan "monitoring-guru/features/jurusan/common"
-	ketua "monitoring-guru/features/ketuaKelas/common"
-	mapel "monitoring-guru/features/mapel/common"
-	ruangan "monitoring-guru/features/ruangan/common"
-	user "monitoring-guru/features/user/common"
+	"monitoring-guru/internal/features/auth"
+	"monitoring-guru/internal/features/guru"
+	jurusan "monitoring-guru/internal/features/jurusan/common"
+	ketua "monitoring-guru/internal/features/ketuaKelas/common"
+	mapel "monitoring-guru/internal/features/mapel/common"
+	ruangan "monitoring-guru/internal/features/ruangan/common"
+	user "monitoring-guru/internal/features/user/common"
+	jadwalajar "monitoring-guru/internal/features/jadwalajar/common"
 )
 
 func SetupRoutes(app *fiber.App, db *gorm.DB) {
@@ -23,4 +24,5 @@ func SetupRoutes(app *fiber.App, db *gorm.DB) {
 	ruangan.RegisterRoutes(api, db)
 	mapel.RegisterRoutes(api, db)
 	jurusan.RegisterRoutes(api, db)
+	jadwalajar.RegisterRoutes(api, db)
 }

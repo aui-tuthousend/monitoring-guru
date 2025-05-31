@@ -14,7 +14,7 @@ type AbsenMasuk struct {
 	RuanganID   	uuid.UUID      `json:"ruangan_id" gorm:"null"`
 	Tanggal      	string         `json:"tanggal" gorm:"not null"`
 	JamMasuk  	time.Time         `json:"jam_masuk" gorm:"not null"`
-	CreatedAt 	time.Time      `json:"created_at"`
-	UpdatedAt 	time.Time      `json:"updated_at"`
+	CreatedAt 	time.Time      `json:"-"`
+	UpdatedAt 	time.Time      `json:"-"`
 	DeletedAt 	gorm.DeletedAt `json:"deleted_at" gorm:"index"`
 }

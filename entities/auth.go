@@ -13,7 +13,7 @@ type User struct {
 	Email    string    `json:"email" gorm:"unique;not null"`
 	Password string    `json:"password" gorm:"not null"`
 	Status 	 bool 	   `json:"status" gorm:"not null"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt `gorm:"index"`
+	CreatedAt time.Time `json:"-"`
+	UpdatedAt time.Time `json:"-"`
+	DeletedAt gorm.DeletedAt `gorm:"index" swaggerignore:"true"`
 }
