@@ -1,17 +1,34 @@
-package create
+package ketuakelas
 
 import (
 	"strings"
 	"time"
 
 	e "monitoring-guru/entities"
-	r "monitoring-guru/infrastructure/repositories/ketua"
 	"monitoring-guru/infrastructure/repositories/user"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
-	"gorm.io/gorm"
 )
+
+// CreateKetuaRequestBody
+// @Description Create ketua request body
+// @Description NISN of the ketua
+type CreateKetuaRequest struct {
+	// @Description NISN of the ketua
+	// @Required true
+	// @Example "123456789"
+	NISN string `json:"nisn"`
+	// @Description Name of the ketua
+	// @Required true
+	// @Example "John Doe"
+	Nama string `json:"nama"`
+	// @Description Password of the ketua
+	// @Required true
+	// @Example "password123"
+	// @MinLength 6
+	Password string `json:"password"`
+}
 
 // CreateKetuaRequest godoc
 // @summary Create Ketua Kelas request body
@@ -20,11 +37,11 @@ import (
 // @Accept			json
 // @Produce		json
 // @Param			request	body		CreateKetuaRequest	true	"Create ketua request body"
-// @Success		200		{object}	CreateKetuaResponseWrapper
+// @Success		200		{object}	KetuaKelasResponseWrapper
 // @Failure		400		{object}	map[string]string
 // @Failure		500		{object}	map[string]string
 // @Router			/api/ketua-kelas/register [post]
-func RegisterKetua(db *gorm.DB) fiber.Handler {
+func (h *KetuaKelasHandler) RegisterKetua() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var req CreateKetuaRequest
 		if err := c.BodyParser(&req); err != nil {
@@ -46,14 +63,14 @@ func RegisterKetua(db *gorm.DB) fiber.Handler {
 			UpdatedAt: time.Now(),
 		}
 
-		if err := r.CreateKetuaKelas(db, &ketua); err != nil {
+		if err := h.Service.CreateKetuaKelas(&ketua); err != nil {
 			return c.Status(500).JSON(fiber.Map{"error": "Ketua dengan NISN tersebut sudah ada"})
 		}
 
-		return c.JSON(CreateKetuaResponseWrapper{
-			Code:    200,
-			Message: "Berhasil mendaftarkan ketua kelas",
-			Data:    CreateKetuaResponse{NISN: ketua.Nisn, Nama: ketua.Name},
-		})
+		return c.JSON(e.SuccessResponse(&KetuaKelasResponse{
+			ID:   ketua.ID,
+			NISN: ketua.Nisn,
+			Name: ketua.Name,
+		}))
 	}
 }

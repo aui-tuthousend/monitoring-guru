@@ -6,8 +6,8 @@ import (
 
 	"monitoring-guru/internal/features/auth"
 	"monitoring-guru/internal/features/guru"
-	jurusan "monitoring-guru/internal/features/jurusan/common"
-	ketua "monitoring-guru/internal/features/ketuaKelas/common"
+	"monitoring-guru/internal/features/jurusan"
+	ketua "monitoring-guru/internal/features/ketuakelas"
 	mapel "monitoring-guru/internal/features/mapel/common"
 	ruangan "monitoring-guru/internal/features/ruangan/common"
 	user "monitoring-guru/internal/features/user/common"

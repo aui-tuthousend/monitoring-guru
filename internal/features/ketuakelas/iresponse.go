@@ -1,8 +1,10 @@
-package getall
+package ketuakelas
 
-import "github.com/google/uuid"
+import (
+	"github.com/google/uuid"
+)
 
-type GetAllKetuaKelasResponse struct {
+type KetuaKelasResponse struct {
 	// @Description ID of the ketua
 	// @Required true
 	// @Example "123e4567-e89b-12d3-a456-426614174000"
@@ -15,4 +17,10 @@ type GetAllKetuaKelasResponse struct {
 	// @Required true
 	// @Example "John Doe"
 	Name string `json:"nama"`
+}
+
+type KetuaKelasResponseWrapper struct {
+	Code    int          `json:"code"`
+	Message string       `json:"message"`
+	Data    KetuaKelasResponse `json:"data"`
 }

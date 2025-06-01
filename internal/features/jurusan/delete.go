@@ -1,11 +1,10 @@
-package delete
+package jurusan
 
 import (
-	"monitoring-guru/entities"
+	e "monitoring-guru/entities"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
-	"gorm.io/gorm"
 )
 
 // DeleteJurusan godoc
@@ -17,30 +16,18 @@ import (
 // @Param id path string true "Jurusan ID"
 // @Success 200 {object} map[string]string
 // @Failure 400 {object} map[string]string
-// @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
 // @Router /api/jurusan/{id} [delete]
-func DeleteJurusan(db *gorm.DB) fiber.Handler {
+func (h *JurusanHandler) DeleteJurusan() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		id := c.Params("id")
 		jurusanID, err := uuid.Parse(id)
 		if err != nil {
-			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"error": "Invalid ID format",
-			})
+			return c.Status(fiber.StatusBadRequest).JSON(e.ErrorResponse[any](400, "Invalid ID format", nil))
 		}
 
-		var jurusan entities.Jurusan
-		if err := db.First(&jurusan, "id = ?", jurusanID).Error; err != nil {
-			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-				"error": "Jurusan not found",
-			})
-		}
-
-		if err := db.Delete(&jurusan).Error; err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"error": "Failed to delete jurusan",
-			})
+		if err := h.Service.DeleteJurusan(jurusanID.String()); err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(e.ErrorResponse[any](500, "Failed to delete jurusan", nil))
 		}
 
 		return c.JSON(fiber.Map{

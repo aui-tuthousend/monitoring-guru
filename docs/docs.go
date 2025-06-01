@@ -343,8 +343,8 @@ const docTemplate = `{
                             }
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/jadwalajar.JadwalajarResponseWrapper"
                         }
@@ -599,16 +599,60 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/getall.GetAllJurusanResponseWrapper"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/jurusan.JurusanResponse"
+                            }
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/jurusan.JurusanResponseWrapper"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update jurusan data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "jurusan"
+                ],
+                "summary": "Update jurusan",
+                "parameters": [
+                    {
+                        "description": "Jurusan data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/jurusan.UpdateJurusanRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/jurusan.JurusanResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/jurusan.JurusanResponseWrapper"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/jurusan.JurusanResponseWrapper"
                         }
                     }
                 }
@@ -632,7 +676,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/create.CreateJurusanRequest"
+                            "$ref": "#/definitions/jurusan.CreateJurusanRequest"
                         }
                     }
                 ],
@@ -640,25 +684,19 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/create.CreateJurusanResponseWrapper"
+                            "$ref": "#/definitions/jurusan.JurusanResponseWrapper"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/jurusan.JurusanResponseWrapper"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/jurusan.JurusanResponseWrapper"
                         }
                     }
                 }
@@ -690,91 +728,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/getbyid.GetJurusanResponseWrapper"
+                            "$ref": "#/definitions/jurusan.JurusanResponseWrapper"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            },
-            "put": {
-                "description": "Update jurusan data",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "jurusan"
-                ],
-                "summary": "Update jurusan",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Jurusan ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Jurusan data",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/update.UpdateJurusanRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/update.UpdateJurusanResponseWrapper"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/jurusan.JurusanResponseWrapper"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/jurusan.JurusanResponseWrapper"
                         }
                     }
                 }
@@ -819,15 +785,6 @@ const docTemplate = `{
                             }
                         }
                     },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
@@ -861,17 +818,14 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/getall.GetAllKetuaKelasResponse"
+                                "$ref": "#/definitions/ketuakelas.KetuaKelasResponse"
                             }
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/ketuakelas.KetuaKelasResponseWrapper"
                         }
                     }
                 }
@@ -897,7 +851,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/create.CreateKetuaRequest"
+                            "$ref": "#/definitions/ketuakelas.CreateKetuaRequest"
                         }
                     }
                 ],
@@ -905,7 +859,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/create.CreateKetuaResponseWrapper"
+                            "$ref": "#/definitions/ketuakelas.KetuaKelasResponseWrapper"
                         }
                     },
                     "400": {
@@ -1619,85 +1573,6 @@ const docTemplate = `{
                 }
             }
         },
-        "create.CreateJurusanRequest": {
-            "type": "object",
-            "required": [
-                "nama"
-            ],
-            "properties": {
-                "nama": {
-                    "type": "string"
-                }
-            }
-        },
-        "create.CreateJurusanResponse": {
-            "type": "object",
-            "properties": {
-                "jurusan_id": {
-                    "type": "string"
-                },
-                "nama": {
-                    "type": "string"
-                }
-            }
-        },
-        "create.CreateJurusanResponseWrapper": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "$ref": "#/definitions/create.CreateJurusanResponse"
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "create.CreateKetuaRequest": {
-            "description": "Create ketua request body NISN of the ketua",
-            "type": "object",
-            "properties": {
-                "nama": {
-                    "description": "@Description Name of the ketua\n@Required true\n@Example \"John Doe\"",
-                    "type": "string"
-                },
-                "nisn": {
-                    "description": "@Description NISN of the ketua\n@Required true\n@Example \"123456789\"",
-                    "type": "string"
-                },
-                "password": {
-                    "description": "@Description Password of the ketua\n@Required true\n@Example \"password123\"\n@MinLength 6",
-                    "type": "string"
-                }
-            }
-        },
-        "create.CreateKetuaResponse": {
-            "type": "object",
-            "properties": {
-                "nama": {
-                    "type": "string"
-                },
-                "nisn": {
-                    "type": "string"
-                }
-            }
-        },
-        "create.CreateKetuaResponseWrapper": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "$ref": "#/definitions/create.CreateKetuaResponse"
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
         "create.CreateMapelRequest": {
             "type": "object",
             "required": [
@@ -1820,40 +1695,6 @@ const docTemplate = `{
                 }
             }
         },
-        "getall.GetAllJurusanResponseWrapper": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/getall.JurusanResponse"
-                    }
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "getall.GetAllKetuaKelasResponse": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "description": "@Description ID of the ketua\n@Required true\n@Example \"123e4567-e89b-12d3-a456-426614174000\"",
-                    "type": "string"
-                },
-                "nama": {
-                    "description": "@Description Name of the ketua\n@Required true\n@Example \"John Doe\"",
-                    "type": "string"
-                },
-                "nisn": {
-                    "description": "@Description NISN of the ketua\n@Required true\n@Example \"123456789\"",
-                    "type": "string"
-                }
-            }
-        },
         "getall.GetAllMapelResponseWrapper": {
             "type": "object",
             "properties": {
@@ -1888,17 +1729,6 @@ const docTemplate = `{
                 }
             }
         },
-        "getall.JurusanResponse": {
-            "type": "object",
-            "properties": {
-                "jurusan_id": {
-                    "type": "string"
-                },
-                "nama": {
-                    "type": "string"
-                }
-            }
-        },
         "getall.MapelResponse": {
             "type": "object",
             "properties": {
@@ -1920,20 +1750,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "ruangan_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "getbyid.GetJurusanResponseWrapper": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "$ref": "#/definitions/getbyid.JurusanResponse"
-                },
-                "message": {
                     "type": "string"
                 }
             }
@@ -1962,23 +1778,6 @@ const docTemplate = `{
                     "$ref": "#/definitions/getbyid.RuanganResponse"
                 },
                 "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "getbyid.JurusanResponse": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "jurusan_id": {
-                    "type": "string"
-                },
-                "nama": {
-                    "type": "string"
-                },
-                "updated_at": {
                     "type": "string"
                 }
             }
@@ -2242,6 +2041,17 @@ const docTemplate = `{
                 }
             }
         },
+        "jurusan.CreateJurusanRequest": {
+            "type": "object",
+            "required": [
+                "nama"
+            ],
+            "properties": {
+                "nama": {
+                    "type": "string"
+                }
+            }
+        },
         "jurusan.JurusanResponse": {
             "type": "object",
             "properties": {
@@ -2249,6 +2059,83 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "nama": {
+                    "type": "string"
+                }
+            }
+        },
+        "jurusan.JurusanResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/jurusan.JurusanResponse"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "jurusan.UpdateJurusanRequest": {
+            "type": "object",
+            "required": [
+                "nama"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                }
+            }
+        },
+        "ketuakelas.CreateKetuaRequest": {
+            "description": "Create ketua request body NISN of the ketua",
+            "type": "object",
+            "properties": {
+                "nama": {
+                    "description": "@Description Name of the ketua\n@Required true\n@Example \"John Doe\"",
+                    "type": "string"
+                },
+                "nisn": {
+                    "description": "@Description NISN of the ketua\n@Required true\n@Example \"123456789\"",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "@Description Password of the ketua\n@Required true\n@Example \"password123\"\n@MinLength 6",
+                    "type": "string"
+                }
+            }
+        },
+        "ketuakelas.KetuaKelasResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "@Description ID of the ketua\n@Required true\n@Example \"123e4567-e89b-12d3-a456-426614174000\"",
+                    "type": "string"
+                },
+                "nama": {
+                    "description": "@Description Name of the ketua\n@Required true\n@Example \"John Doe\"",
+                    "type": "string"
+                },
+                "nisn": {
+                    "description": "@Description NISN of the ketua\n@Required true\n@Example \"123456789\"",
+                    "type": "string"
+                }
+            }
+        },
+        "ketuakelas.KetuaKelasResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/ketuakelas.KetuaKelasResponse"
+                },
+                "message": {
                     "type": "string"
                 }
             }
@@ -2263,45 +2150,6 @@ const docTemplate = `{
                     "$ref": "#/definitions/jurusan.JurusanResponse"
                 },
                 "nama": {
-                    "type": "string"
-                }
-            }
-        },
-        "update.UpdateJurusanRequest": {
-            "type": "object",
-            "required": [
-                "nama"
-            ],
-            "properties": {
-                "nama": {
-                    "type": "string"
-                }
-            }
-        },
-        "update.UpdateJurusanResponse": {
-            "type": "object",
-            "properties": {
-                "jurusan_id": {
-                    "type": "string"
-                },
-                "nama": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "update.UpdateJurusanResponseWrapper": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "$ref": "#/definitions/update.UpdateJurusanResponse"
-                },
-                "message": {
                     "type": "string"
                 }
             }

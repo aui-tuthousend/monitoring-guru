@@ -1,10 +1,7 @@
-package delete
+package ketuakelas
 
 import (
-	"monitoring-guru/infrastructure/repositories/ketua"
-
 	"github.com/gofiber/fiber/v2"
-	"gorm.io/gorm"
 )
 
 // DeleteKetuaHandler godoc
@@ -18,14 +15,14 @@ import (
 // @Failure		400	{object}	map[string]string
 // @Failure		500	{object}	map[string]string
 // @Router			/api/ketua-kelas/{id} [delete]
-func DeleteKetuaHandler(db *gorm.DB) fiber.Handler {
+func (h *KetuaKelasHandler) DeleteKetuaHandler() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		id := c.Params("id")
 		if id == "" {
 			return c.Status(400).JSON(fiber.Map{"error": "ID tidak boleh kosong"})
 		}
 
-		if err := ketua.DeleteKetuaKelas(db, id); err != nil {
+		if err := h.Service.DeleteKetuaKelas(id); err != nil {
 			return c.Status(500).JSON(fiber.Map{"error": "Gagal menghapus ketua kelas"})
 		}
 

@@ -1,0 +1,44 @@
+package jurusan
+
+import (
+	e "monitoring-guru/entities"
+	"gorm.io/gorm"
+)
+
+
+type JurusanService struct {
+	DB *gorm.DB
+}
+
+func (s *JurusanService) CreateJurusan(jurusan *e.Jurusan) error {
+	return s.DB.Create(jurusan).Error
+}
+
+func (s *JurusanService) UpdateJurusan(jurusan *e.Jurusan) error {
+	return s.DB.Save(jurusan).Error
+}
+
+func (s *JurusanService) GetJurusanByID(id string) (*e.Jurusan, error) {
+	var jurusan e.Jurusan
+	if err := s.DB.Where("id = ?", id).First(&jurusan).Error; err != nil {
+		return nil, err
+	}
+	return &jurusan, nil
+}
+
+func (s *JurusanService) GetAllJurusan() ([]JurusanResponse, error) {
+	var jurusanList []JurusanResponse
+	if err := s.DB.
+		Find(&jurusanList).Error; err != nil {
+		return nil, err
+	}
+	return jurusanList, nil
+}
+
+func (s *JurusanService) DeleteJurusan(id string) error {
+	var jurusan e.Jurusan
+	if err := s.DB.Where("id = ?", id).First(&jurusan).Error; err != nil {
+		return err
+	}
+	return s.DB.Delete(&jurusan).Error
+}
