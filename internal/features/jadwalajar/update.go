@@ -1,14 +1,49 @@
-package update
+package jadwalajar
 
 import (
 	"fmt"
 	e "monitoring-guru/entities"
-	r "monitoring-guru/infrastructure/repositories/jadwalajar"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
-	"gorm.io/gorm"
 )
+
+// UpdateJadwalAjarRequestBody
+// @Description Update jadwalajar request body
+type UpdateJadwalAjarRequest struct {
+	// @Description ID of the jadwalajar
+	// @Required true
+	// @Example "123456789"
+	ID string `json:"id"`
+	// @Description Guru ID of the jadwalajar
+	// @Required true
+	// @Example "123456789"
+	GuruID string `json:"guru_id"`
+	// @Description Mapel ID of the jadwalajar
+	// @Required true
+	// @Example "John Doe"
+	MapelID string `json:"mapel_id"`
+	// @Description Kelas ID of the jadwalajar
+	// @Required true
+	// @Example "adasd323"
+	KelasID string `json:"kelas_id"`
+	// @Description Hari of the jadwalajar
+	// @Required true
+	// @Example "Senin"
+	Hari string `json:"hari"`
+	// @Description Jam Mulai of the jadwalajar
+	// @Required true
+	// @Example "08:00"
+	JamMulai string `json:"jam_mulai"`
+	// @Description Jam Selesai of the jadwalajar
+	// @Required true
+	// @Example "10:00"
+	JamSelesai string `json:"jam_selesai"`
+	// @Description Last Editor of the jadwalajar
+	// @Example "John Doe"
+	LastEditor string `json:"last_editor"`
+}
+
 
 // UpdateJadwalAjarRequest godoc
 // @summary Update Jadwalajar request body
@@ -17,11 +52,11 @@ import (
 // @Accept			json
 // @Produce		json
 // @Param			request	body		UpdateJadwalAjarRequest	true	"Update jadwalajar request body"
-// @Success		200		{object}	UpdateJadwalAjarResponseWrapper
-// @Failure		400		{object}	UpdateJadwalAjarResponseWrapper
-// @Failure		500		{object}	UpdateJadwalAjarResponseWrapper
+// @Success		200		{object}	JadwalajarResponseWrapper
+// @Failure		400		{object}	JadwalajarResponseWrapper
+// @Failure		500		{object}	JadwalajarResponseWrapper
 // @Router			/api/jadwalajar [put]
-func UpdateJadwalAjar(db *gorm.DB) fiber.Handler {
+func (h *JadwalajarHandler) UpdateJadwalajar() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var req UpdateJadwalAjarRequest
 		if err := c.BodyParser(&req); err != nil {
@@ -67,7 +102,7 @@ func UpdateJadwalAjar(db *gorm.DB) fiber.Handler {
 			LastEditor: req.LastEditor,
 		}
 
-		if err := r.UpdateJadwalajar(db, &jadwalajar); err != nil {
+		if err := h.Service.UpdateJadwalajar(&jadwalajar); err != nil {
 			return c.Status(500).JSON(e.ErrorResponse[any](500, err.Error(), nil))
 		}
 

@@ -11,7 +11,7 @@ import (
 	mapel "monitoring-guru/internal/features/mapel/common"
 	ruangan "monitoring-guru/internal/features/ruangan/common"
 	user "monitoring-guru/internal/features/user/common"
-	jadwalajar "monitoring-guru/internal/features/jadwalajar/common"
+	"monitoring-guru/internal/features/jadwalajar"
 )
 
 func SetupRoutes(app *fiber.App, db *gorm.DB) {

@@ -1,11 +1,9 @@
-package getall
+package jadwalajar
 
 import (
 	e "monitoring-guru/entities"
-	r "monitoring-guru/infrastructure/repositories/jadwalajar"
 
 	"github.com/gofiber/fiber/v2"
-	"gorm.io/gorm"
 )
 
 // GetAllJadwalAjar godoc
@@ -14,12 +12,12 @@ import (
 // @Tags			Jadwalajar
 // @Accept			json
 // @Produce		json
-// @Success		200		{object}	GetAllJadwalAjarResponseWrapper
-// @Failure		400		{object}	GetAllJadwalAjarResponseWrapper
+// @Success		200		{object}	[]JadwalajarResponse
+// @Failure		400		{object}	JadwalajarResponseWrapper
 // @Router			/api/jadwalajar [get]
-func GetAllJadwalAjar(db *gorm.DB) fiber.Handler {
+func (h *JadwalajarHandler) GetAllJadwalAjar() fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		jadwalajarList, err := r.GetAllJadwalajar(db)
+		jadwalajarList, err := h.Service.GetAllJadwalajar()
         if err != nil {
             return c.Status(400).JSON(e.ErrorResponse[any](400, "Jadwal Ajar Not Found", nil))
         }

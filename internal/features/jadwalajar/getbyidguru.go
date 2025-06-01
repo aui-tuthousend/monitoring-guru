@@ -1,13 +1,24 @@
-package getbyidguru
+package jadwalajar
 
 import (
 	e "monitoring-guru/entities"
-	r "monitoring-guru/infrastructure/repositories/jadwalajar"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
-	"gorm.io/gorm"
 )
+
+// GetJadwalAjarGuruRequestBody
+// @Description Get jadwalajar by ID Guru request body
+type GetJadwalAjarGuruRequest struct {
+	// @Description Guru ID of the jadwalajar
+	// @Required true
+	// @Example "123456789"
+	GuruID string `json:"guru_id"`
+	// @Description Hari of the jadwalajar
+	// @Required true
+	// @Example "Senin"
+	Hari string `json:"hari"`
+}
 
 // GetJadwalAjarGuruRequest godoc
 // @summary Get Jadwalajar by ID Guru request body
@@ -16,11 +27,11 @@ import (
 // @Accept			json
 // @Produce		json
 // @Param			request	body		GetJadwalAjarGuruRequest	true	"Get jadwalajar guru request body"
-// @Success		200		{object}	GetByIDGuruResponseWrapper
-// @Failure		400		{object}	GetByIDGuruResponseWrapper
-// @Failure		500		{object}	GetByIDGuruResponseWrapper
+// @Success		200		{object}	[]JadwalajarResponse
+// @Failure		400		{object}	JadwalajarResponseWrapper
+// @Failure		500		{object}	JadwalajarResponseWrapper
 // @Router			/api/jadwalajar/guru [get]
-func GetJadwalAjarByIDGuru(db *gorm.DB) fiber.Handler {
+func (h *JadwalajarHandler) GetJadwalAjarByIDGuru() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var req GetJadwalAjarGuruRequest
 		if err := c.BodyParser(&req); err != nil {
@@ -32,7 +43,7 @@ func GetJadwalAjarByIDGuru(db *gorm.DB) fiber.Handler {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
         }
 
-		jadwalajarList, err := r.GetJadwalajarByIDGuru(db, id.String(), req.Hari)
+		jadwalajarList, err := h.Service.GetJadwalajarByIDGuru(id.String(), req.Hari)
         if err != nil {
 			return c.Status(500).JSON(e.ErrorResponse[any](500, err.Error(), nil))
         }
