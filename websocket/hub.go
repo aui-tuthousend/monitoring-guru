@@ -9,6 +9,7 @@ import (
 
 var wsClients = make(map[string]*websocket.Conn)
 var wsMutex sync.Mutex
+var wg sync.WaitGroup
 
 func AddClient(id string, conn *websocket.Conn) {
 	wsMutex.Lock()
@@ -49,7 +50,7 @@ func CleanupWebSocketClients() {
 }
 
 
-func BroadcastToAll(message string, ch chan<-string, wg *sync.WaitGroup) {
+func BroadcastToAll(message string, ch chan<-string) {
 	wsMutex.Lock()
 	defer wsMutex.Unlock()
 

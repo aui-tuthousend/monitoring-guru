@@ -17,4 +17,8 @@ type AbsenMasuk struct {
 	CreatedAt 	time.Time      `json:"-"`
 	UpdatedAt 	time.Time      `json:"-"`
 	DeletedAt 	gorm.DeletedAt `json:"deleted_at" gorm:"index"`
+
+	Guru 		Guru `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;foreignKey:GuruID;references:ID"`
+	JadwalAjar 	JadwalAjar `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;foreignKey:JadwalAjarID;references:ID"`
+	Ruangan 	Ruangan `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;foreignKey:RuanganID;references:ID"`
 }

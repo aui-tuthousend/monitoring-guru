@@ -1,8 +1,7 @@
 package main
 
 import (
-	"monitoring-guru/database"
-	"monitoring-guru/docs"
+	"monitoring-guru/internal/database"
 	"monitoring-guru/routes"
 	"monitoring-guru/websocket"
 	// e "monitoring-guru/entities"
@@ -12,7 +11,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	_ "monitoring-guru/docs"
+	"monitoring-guru/docs"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
