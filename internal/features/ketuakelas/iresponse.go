@@ -12,7 +12,7 @@ type KetuaKelasResponse struct {
 	// @Description NISN of the ketua
 	// @Required true
 	// @Example "123456789"
-	NISN string `json:"nisn"`
+	Nisn string `json:"nisn"`
 	// @Description Name of the ketua
 	// @Required true
 	// @Example "John Doe"
@@ -20,7 +20,7 @@ type KetuaKelasResponse struct {
 }
 
 type KetuaKelasResponseWrapper struct {
-	Code    int          `json:"code"`
-	Message string       `json:"message"`
+	Code    int                `json:"code"`
+	Message string             `json:"message"`
 	Data    KetuaKelasResponse `json:"data"`
 }
