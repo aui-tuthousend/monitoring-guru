@@ -3,9 +3,9 @@ package mapel
 import "monitoring-guru/internal/features/jurusan"
 
 type MapelResponse struct {
-	ID      string  `json:"id"`
+	ID      string                  `json:"id"`
 	Jurusan jurusan.JurusanResponse `json:"jurusan"`
-	Name    string  `json:"nama"`
+	Name    string                  `json:"nama"`
 }
 
 type MapelResponseWrapper struct {
