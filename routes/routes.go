@@ -6,12 +6,13 @@ import (
 
 	"monitoring-guru/internal/features/auth"
 	"monitoring-guru/internal/features/guru"
+	"monitoring-guru/internal/features/jadwalajar"
 	"monitoring-guru/internal/features/jurusan"
+	"monitoring-guru/internal/features/kelas"
 	ketua "monitoring-guru/internal/features/ketuakelas"
 	mapel "monitoring-guru/internal/features/mapel/common"
 	ruangan "monitoring-guru/internal/features/ruangan/common"
 	user "monitoring-guru/internal/features/user/common"
-	"monitoring-guru/internal/features/jadwalajar"
 )
 
 func SetupRoutes(app *fiber.App, db *gorm.DB) {
@@ -21,6 +22,7 @@ func SetupRoutes(app *fiber.App, db *gorm.DB) {
 	user.RegisterRoutes(api, db)
 	guru.RegisterRoutes(api, db)
 	ketua.RegisterRoutes(api, db)
+	kelas.RegisterRoutes(api, db)
 	ruangan.RegisterRoutes(api, db)
 	mapel.RegisterRoutes(api, db)
 	jurusan.RegisterRoutes(api, db)

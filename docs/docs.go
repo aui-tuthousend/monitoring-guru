@@ -797,6 +797,296 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/kelas": {
+            "get": {
+                "description": "Get all kelas",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "kelas"
+                ],
+                "summary": "Get all kelas",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/kelas.KelasResponse"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/kelas.KelasResponseWrapper"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update a kelas by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "kelas"
+                ],
+                "summary": "Update kelas data",
+                "parameters": [
+                    {
+                        "description": "Update kelas request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/kelas.UpdateKelasRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/kelas.KelasResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/kelas.KelasResponseWrapper"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/kelas.KelasResponseWrapper"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create Kelas baru request body",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "kelas"
+                ],
+                "summary": "Create Kelas request body",
+                "parameters": [
+                    {
+                        "description": "Create kelas request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/kelas.CreateKelasRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/kelas.KelasResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/kelas/jurusan": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get kelas by jurusan",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "kelas"
+                ],
+                "summary": "Get kelas by jurusan",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Jurusan ID",
+                        "name": "jurusan_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/kelas.KelasResponse"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/kelas.KelasResponseWrapper"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/kelas/ketua": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get kelas by ketua or wakil",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "kelas"
+                ],
+                "summary": "Get kelas by ketua or wakil",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Ketua Kelas ID",
+                        "name": "ketua_kelas_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/kelas.KelasResponseWrapper"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/kelas.KelasResponseWrapper"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/kelas/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get kelas by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "kelas"
+                ],
+                "summary": "Get kelas by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Kelas ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/kelas.KelasResponseWrapper"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/kelas.KelasResponseWrapper"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete a kelas by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Kelas"
+                ],
+                "summary": "Delete a kelas",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Kelas ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/ketua-kelas": {
             "get": {
                 "security": [
@@ -2087,6 +2377,101 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "nama": {
+                    "type": "string"
+                }
+            }
+        },
+        "kelas.CreateKelasRequest": {
+            "description": "Create kelas request body",
+            "type": "object",
+            "properties": {
+                "is_active": {
+                    "description": "@Description Is Active of the kelas\n@Required true\n@Example true",
+                    "type": "boolean"
+                },
+                "jurusan_id": {
+                    "description": "@Description Jurusan ID of the kelas\n@Required true\n@Example \"123456789\"",
+                    "type": "string"
+                },
+                "ketua_kelas_id": {
+                    "description": "@Description Ketua Kelas ID of the kelas\n@Required true\n@Example \"123456789\"",
+                    "type": "string"
+                },
+                "nama": {
+                    "description": "@Description Name of the kelas\n@Required true\n@Example \"XII RPL 1\"",
+                    "type": "string"
+                },
+                "wali_kelas_id": {
+                    "description": "@Description Wali Kelas ID of the kelas\n@Required true\n@Example \"123456789\"",
+                    "type": "string"
+                }
+            }
+        },
+        "kelas.KelasResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "is_active": {
+                    "type": "boolean"
+                },
+                "ketua_kelas": {
+                    "description": "Jurusan    entities.Jurusan ` + "`" + `json:\"jurusan\"` + "`" + `",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/ketuakelas.KetuaKelasResponse"
+                        }
+                    ]
+                },
+                "nama": {
+                    "type": "string"
+                },
+                "wakil_kelas": {
+                    "$ref": "#/definitions/ketuakelas.KetuaKelasResponse"
+                }
+            }
+        },
+        "kelas.KelasResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/kelas.KelasResponse"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "kelas.UpdateKelasRequest": {
+            "description": "Update kelas request body",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "@Description ID of the kelas\n@Required true\n@Example \"123456789\"",
+                    "type": "string"
+                },
+                "is_active": {
+                    "description": "@Description Is active of the kelas\n@Required true\n@Example true",
+                    "type": "boolean"
+                },
+                "jurusan_id": {
+                    "description": "@Description Jurusan ID of the kelas\n@Required true\n@Example \"123456789\"",
+                    "type": "string"
+                },
+                "ketua_id": {
+                    "description": "@Description Ketua ID of the kelas\n@Required true\n@Example \"123456789\"",
+                    "type": "string"
+                },
+                "nama": {
+                    "description": "@Description Nama of the kelas\n@Required true\n@Example \"XII RPL 1\"",
+                    "type": "string"
+                },
+                "wakil_id": {
+                    "description": "@Description Wakil ID of the kelas\n@Required true\n@Example \"123456789\"",
                     "type": "string"
                 }
             }

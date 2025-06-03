@@ -69,7 +69,7 @@ func (h *KetuaKelasHandler) RegisterKetua() fiber.Handler {
 
 		return c.JSON(e.SuccessResponse(&KetuaKelasResponse{
 			ID:   ketua.ID,
-			NISN: ketua.Nisn,
+			Nisn: ketua.Nisn,
 			Name: ketua.Name,
 		}))
 	}
