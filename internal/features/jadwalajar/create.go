@@ -1,8 +1,8 @@
 package jadwalajar
 
 import (
-	"fmt"
 	e "monitoring-guru/entities"
+	"monitoring-guru/utils"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -58,25 +58,18 @@ func (h *JadwalajarHandler) CreateJadwalAjar() fiber.Handler {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
 		}
 
-		parseUUID := func(idStr, field string) (uuid.UUID, error) {
-			uid, err := uuid.Parse(idStr)
-			if err != nil {
-				return uuid.Nil, fmt.Errorf("%s tidak valid: %w", field, err)
-			}
-			return uid, nil
-		}
 
-		guruID, err := parseUUID(req.GuruID, "GuruID")
+		guruID, err := utils.ParseUUID(req.GuruID)
 		if err != nil {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
 		}
 
-		mapelID, err := parseUUID(req.MapelID, "MapelID")
+		mapelID, err := utils.ParseUUID(req.MapelID)
 		if err != nil {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
 		}
 
-		kelasID, err := parseUUID(req.KelasID, "KelasID")
+		kelasID, err := utils.ParseUUID(req.KelasID)
 		if err != nil {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
 		}

@@ -19,12 +19,33 @@ func (s *JadwalajarService) UpdateJadwalajar(jadwalajar *e.JadwalAjar) error {
 }
 
 func (s *JadwalajarService) GetJadwalajarByID(id string) (*JadwalajarResponse, error) {
-	var jadwalajar JadwalajarResponse
-	if err := s.DB.Where("id = ?", id).First(&jadwalajar).Error; err != nil {
+	var response JadwalajarResponse
+
+	query := `
+		SELECT 
+			j.id,
+			g.nama AS guru,
+			m.nama AS mapel,
+			k.nama AS kelas,
+			j.hari,
+			j.jam_mulai,
+			j.jam_selesai,
+			j.last_editor
+		FROM jadwal_ajar j
+		JOIN guru g ON g.id = j.guru_id
+		JOIN mapel m ON m.id = j.mapel_id
+		JOIN kelas k ON k.id = j.kelas_id
+		WHERE j.id = ?
+	`
+
+	if err := s.DB.Raw(query, id).Scan(&response).Error; err != nil {
 		return nil, err
 	}
-	return &jadwalajar, nil
+
+	return &response, nil
 }
+
+
 
 func (s *JadwalajarService) GetAllJadwalajar() ([]JadwalajarResponse, error) {
 	var jadwalajarList []JadwalajarResponse

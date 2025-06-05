@@ -7,8 +7,10 @@ import (
 )
 
 type CreateAbsenMasukResponse struct {
-	KelasID  string `json:"kelas_id"`
-	Ruangan  ruangan.RuanganResponse `json:"ruangan"`
+	ID string `json:"id"`
+	Guru string `json:"guru"`
+	Mapel string `json:"mapel"`
+	Ruangan string `json:"ruangan"`
 	IsActive bool   `json:"is_active"`
 }
 
