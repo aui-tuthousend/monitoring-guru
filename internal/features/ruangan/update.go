@@ -28,7 +28,7 @@ type UpdateRuanganRequest struct {
 // @Accept json
 // @Produce json
 // @Param request body UpdateRuanganRequest true "Update ruangan request body"
-// @Success 200 {object} UpdateRuanganResponseWrapper
+// @Success 200 {object} RuanganResponseWrapper
 // @Failure 400 {object} map[string]string
 // @Failure 500 {object} map[string]string
 // @Router /api/ruangan [put]

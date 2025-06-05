@@ -5,7 +5,7 @@ type RuanganResponse struct {
 	Name      string `json:"nama"`
 }
 
-type CreateRuanganResponseWrapper struct {
+type RuanganResponseWrapper struct {
 	Code    int             `json:"code"`
 	Message string          `json:"message"`
 	Data    RuanganResponse `json:"data"`

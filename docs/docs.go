@@ -1436,10 +1436,7 @@ const docTemplate = `{
         },
         "/api/ruangan": {
             "get": {
-                "description": "Get all ruangan records",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "Get semua data ruangan",
                 "produces": [
                     "application/json"
                 ],
@@ -1451,7 +1448,57 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/getall.GetAllRuanganResponseWrapper"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ruangan.RuanganResponse"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ruangan.RuanganResponseWrapper"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update a ruangan by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ruangan"
+                ],
+                "summary": "Update ruangan data",
+                "parameters": [
+                    {
+                        "description": "Update ruangan request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ruangan.UpdateRuanganRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ruangan.RuanganResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     },
                     "500": {
@@ -1466,7 +1513,7 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "Create a new ruangan",
+                "description": "Buat ruangan baru",
                 "consumes": [
                     "application/json"
                 ],
@@ -1476,15 +1523,15 @@ const docTemplate = `{
                 "tags": [
                     "ruangan"
                 ],
-                "summary": "Create ruangan",
+                "summary": "Create Ruangan request body",
                 "parameters": [
                     {
-                        "description": "Ruangan body",
+                        "description": "Create ruangan request body",
                         "name": "request",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/create.CreateRuanganRequest"
+                            "$ref": "#/definitions/ruangan.CreateRuanganRequest"
                         }
                     }
                 ],
@@ -1492,7 +1539,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/create.CreateRuanganResponseWrapper"
+                            "$ref": "#/definitions/ruangan.RuanganResponseWrapper"
                         }
                     },
                     "400": {
@@ -1518,10 +1565,7 @@ const docTemplate = `{
         },
         "/api/ruangan/{id}": {
             "get": {
-                "description": "Get a ruangan by its ID",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "Ambil data ruangan berdasarkan ID",
                 "produces": [
                     "application/json"
                 ],
@@ -1542,97 +1586,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/getbyid.GetRuanganByIDResponseWrapper"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/ruangan.RuanganResponseWrapper"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            },
-            "put": {
-                "description": "Update a ruangan by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "ruangan"
-                ],
-                "summary": "Update ruangan",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Ruangan ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Ruangan body",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/update.UpdateRuanganRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/update.UpdateRuanganResponseWrapper"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/ruangan.RuanganResponseWrapper"
                         }
                     }
                 }
             },
             "delete": {
-                "description": "Delete a ruangan by ID",
+                "description": "Hapus ruangan berdasarkan ID",
                 "consumes": [
                     "application/json"
                 ],
@@ -1664,15 +1630,6 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -1814,42 +1771,6 @@ const docTemplate = `{
                 }
             }
         },
-        "create.CreateRuanganRequest": {
-            "type": "object",
-            "required": [
-                "nama"
-            ],
-            "properties": {
-                "nama": {
-                    "type": "string"
-                }
-            }
-        },
-        "create.CreateRuanganResponse": {
-            "type": "object",
-            "properties": {
-                "nama": {
-                    "type": "string"
-                },
-                "ruangan_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "create.CreateRuanganResponseWrapper": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "$ref": "#/definitions/create.CreateRuanganResponse"
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
         "create.CreateUserRequest": {
             "description": "Create user request body",
             "type": "object",
@@ -1889,65 +1810,6 @@ const docTemplate = `{
                     "$ref": "#/definitions/create.CreateUserResponse"
                 },
                 "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "getall.GetAllRuanganResponseWrapper": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/getall.RuanganResponse"
-                    }
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "getall.RuanganResponse": {
-            "type": "object",
-            "properties": {
-                "nama": {
-                    "type": "string"
-                },
-                "ruangan_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "getbyid.GetRuanganByIDResponseWrapper": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "$ref": "#/definitions/getbyid.RuanganResponse"
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "getbyid.RuanganResponse": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "nama": {
-                    "type": "string"
-                },
-                "ruangan_id": {
-                    "type": "string"
-                },
-                "updated_at": {
                     "type": "string"
                 }
             }
@@ -2430,18 +2292,17 @@ const docTemplate = `{
                 }
             }
         },
-        "update.UpdateRuanganRequest": {
+        "ruangan.CreateRuanganRequest": {
+            "description": "Create ruangan request body",
             "type": "object",
-            "required": [
-                "nama"
-            ],
             "properties": {
-                "nama": {
+                "name": {
+                    "description": "@Description Nama ruangan\n@Required true\n@Example \"Ruang 101\"",
                     "type": "string"
                 }
             }
         },
-        "update.UpdateRuanganResponse": {
+        "ruangan.RuanganResponse": {
             "type": "object",
             "properties": {
                 "nama": {
@@ -2449,22 +2310,33 @@ const docTemplate = `{
                 },
                 "ruangan_id": {
                     "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
                 }
             }
         },
-        "update.UpdateRuanganResponseWrapper": {
+        "ruangan.RuanganResponseWrapper": {
             "type": "object",
             "properties": {
                 "code": {
                     "type": "integer"
                 },
                 "data": {
-                    "$ref": "#/definitions/update.UpdateRuanganResponse"
+                    "$ref": "#/definitions/ruangan.RuanganResponse"
                 },
                 "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "ruangan.UpdateRuanganRequest": {
+            "description": "Update ruangan request body",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "@Description ID ruangan\n@Required true\n@Example \"123e4567-e89b-12d3-a456-426614174000\"",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "@Description Nama ruangan\n@Required true\n@Example \"Ruang 102\"",
                     "type": "string"
                 }
             }

@@ -23,7 +23,7 @@ type CreateRuanganRequest struct {
 // @Accept      json
 // @Produce     json
 // @Param       request body CreateRuanganRequest true "Create ruangan request body"
-// @Success     200 {object} CreateRuanganResponseWrapper
+// @Success     200 {object} RuanganResponseWrapper
 // @Failure     400 {object} map[string]string
 // @Failure     500 {object} map[string]string
 // @Router      /api/ruangan [post]
