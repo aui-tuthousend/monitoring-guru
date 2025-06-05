@@ -1228,9 +1228,6 @@ const docTemplate = `{
         "/api/mapel": {
             "get": {
                 "description": "Get all mata pelajaran",
-                "consumes": [
-                    "application/json"
-                ],
                 "produces": [
                     "application/json"
                 ],
@@ -1242,22 +1239,22 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/getall.GetAllMapelResponseWrapper"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/mapel.MapelResponse"
+                            }
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/mapel.MapelResponseWrapper"
                         }
                     }
                 }
             },
-            "post": {
-                "description": "Create a new mata pelajaran",
+            "put": {
+                "description": "Update a mapel by ID",
                 "consumes": [
                     "application/json"
                 ],
@@ -1267,15 +1264,15 @@ const docTemplate = `{
                 "tags": [
                     "mapel"
                 ],
-                "summary": "Create mapel",
+                "summary": "Update mapel data",
                 "parameters": [
                     {
-                        "description": "Mapel body",
+                        "description": "Update mapel request body",
                         "name": "request",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/create.CreateMapelRequest"
+                            "$ref": "#/definitions/mapel.UpdateMapelRequest"
                         }
                     }
                 ],
@@ -1283,7 +1280,51 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/create.CreateMapelResponseWrapper"
+                            "$ref": "#/definitions/mapel.MapelResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/mapel.MapelResponseWrapper"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/mapel.MapelResponseWrapper"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Buat mapel baru",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mapel"
+                ],
+                "summary": "Create Mapel request body",
+                "parameters": [
+                    {
+                        "description": "Create mapel request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/mapel.CreateMapelRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/mapel.MapelResponseWrapper"
                         }
                     },
                     "400": {
@@ -1309,10 +1350,7 @@ const docTemplate = `{
         },
         "/api/mapel/{id}": {
             "get": {
-                "description": "Get a mata pelajaran by its ID",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "Get mapel by ID",
                 "produces": [
                     "application/json"
                 ],
@@ -1333,97 +1371,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/getbyid.GetMapelByIDResponseWrapper"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/mapel.MapelResponseWrapper"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            },
-            "put": {
-                "description": "Update a mata pelajaran by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "mapel"
-                ],
-                "summary": "Update mapel",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Mapel ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Mapel body",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/update.UpdateMapelRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/update.UpdateMapelResponseWrapper"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/mapel.MapelResponseWrapper"
                         }
                     }
                 }
             },
             "delete": {
-                "description": "Delete a mapel by ID",
+                "description": "Delete mapel by ID",
                 "consumes": [
                     "application/json"
                 ],
@@ -1455,15 +1415,6 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -1863,49 +1814,6 @@ const docTemplate = `{
                 }
             }
         },
-        "create.CreateMapelRequest": {
-            "type": "object",
-            "required": [
-                "jurusan_id",
-                "nama"
-            ],
-            "properties": {
-                "jurusan_id": {
-                    "type": "string"
-                },
-                "nama": {
-                    "type": "string"
-                }
-            }
-        },
-        "create.CreateMapelResponse": {
-            "type": "object",
-            "properties": {
-                "jurusan_id": {
-                    "type": "string"
-                },
-                "mapel_id": {
-                    "type": "string"
-                },
-                "nama": {
-                    "type": "string"
-                }
-            }
-        },
-        "create.CreateMapelResponseWrapper": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "$ref": "#/definitions/create.CreateMapelResponse"
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
         "create.CreateRuanganRequest": {
             "type": "object",
             "required": [
@@ -1985,23 +1893,6 @@ const docTemplate = `{
                 }
             }
         },
-        "getall.GetAllMapelResponseWrapper": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/getall.MapelResponse"
-                    }
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
         "getall.GetAllRuanganResponseWrapper": {
             "type": "object",
             "properties": {
@@ -2019,20 +1910,6 @@ const docTemplate = `{
                 }
             }
         },
-        "getall.MapelResponse": {
-            "type": "object",
-            "properties": {
-                "jurusan_id": {
-                    "type": "string"
-                },
-                "mapel_id": {
-                    "type": "string"
-                },
-                "nama": {
-                    "type": "string"
-                }
-            }
-        },
         "getall.RuanganResponse": {
             "type": "object",
             "properties": {
@@ -2040,20 +1917,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "ruangan_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "getbyid.GetMapelByIDResponseWrapper": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "$ref": "#/definitions/getbyid.MapelResponse"
-                },
-                "message": {
                     "type": "string"
                 }
             }
@@ -2068,26 +1931,6 @@ const docTemplate = `{
                     "$ref": "#/definitions/getbyid.RuanganResponse"
                 },
                 "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "getbyid.MapelResponse": {
-            "type": "object",
-            "properties": {
-                "created_at": {
-                    "type": "string"
-                },
-                "jurusan_id": {
-                    "type": "string"
-                },
-                "mapel_id": {
-                    "type": "string"
-                },
-                "nama": {
-                    "type": "string"
-                },
-                "updated_at": {
                     "type": "string"
                 }
             }
@@ -2256,10 +2099,9 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "guru": {
-                    "$ref": "#/definitions/guru.GuruResponse"
+                    "type": "string"
                 },
                 "hari": {
-                    "description": "Kelas      entities.Kelas ` + "`" + `json:\"kelas\"` + "`" + `",
                     "type": "string"
                 },
                 "id": {
@@ -2271,11 +2113,14 @@ const docTemplate = `{
                 "jam_selesai": {
                     "type": "string"
                 },
+                "kelas": {
+                    "type": "string"
+                },
                 "last_editor": {
                     "type": "string"
                 },
                 "mapel": {
-                    "$ref": "#/definitions/mapel.MapelResponse"
+                    "type": "string"
                 }
             }
         },
@@ -2525,6 +2370,20 @@ const docTemplate = `{
                 }
             }
         },
+        "mapel.CreateMapelRequest": {
+            "description": "Create mapel request body",
+            "type": "object",
+            "properties": {
+                "jurusan_id": {
+                    "description": "@Description Jurusan ID dari mapel\n@Required true\n@Example \"123e4567-e89b-12d3-a456-426614174000\"",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "@Description Nama mapel\n@Required true\n@Example \"Matematika\"",
+                    "type": "string"
+                }
+            }
+        },
         "mapel.MapelResponse": {
             "type": "object",
             "properties": {
@@ -2539,48 +2398,34 @@ const docTemplate = `{
                 }
             }
         },
-        "update.UpdateMapelRequest": {
-            "type": "object",
-            "required": [
-                "jurusan_id",
-                "nama"
-            ],
-            "properties": {
-                "jurusan_id": {
-                    "type": "string"
-                },
-                "nama": {
-                    "type": "string"
-                }
-            }
-        },
-        "update.UpdateMapelResponse": {
-            "type": "object",
-            "properties": {
-                "jurusan_id": {
-                    "type": "string"
-                },
-                "mapel_id": {
-                    "type": "string"
-                },
-                "nama": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                }
-            }
-        },
-        "update.UpdateMapelResponseWrapper": {
+        "mapel.MapelResponseWrapper": {
             "type": "object",
             "properties": {
                 "code": {
                     "type": "integer"
                 },
                 "data": {
-                    "$ref": "#/definitions/update.UpdateMapelResponse"
+                    "$ref": "#/definitions/mapel.MapelResponse"
                 },
                 "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "mapel.UpdateMapelRequest": {
+            "description": "Update mapel request body",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "@Description ID of the mapel\n@Required true\n@Example \"123e4567-e89b-12d3-a456-426614174000\"",
+                    "type": "string"
+                },
+                "jurusan_id": {
+                    "description": "@Description Jurusan ID of the mapel\n@Required true\n@Example \"123e4567-e89b-12d3-a456-426614174001\"",
+                    "type": "string"
+                },
+                "nama": {
+                    "description": "@Description Name of the mapel\n@Required true\n@Example \"Fisika\"",
                     "type": "string"
                 }
             }

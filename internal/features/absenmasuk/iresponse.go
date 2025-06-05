@@ -8,9 +8,9 @@ import (
 
 type CreateAbsenMasukResponse struct {
 	ID string `json:"id"`
-	Guru string `json:"guru"`
-	Mapel string `json:"mapel"`
-	Ruangan string `json:"ruangan"`
+	// Guru string `json:"guru"`
+	// Mapel string `json:"mapel"`
+	// Ruangan string `json:"ruangan"`
 	IsActive bool   `json:"is_active"`
 }
 
