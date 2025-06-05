@@ -40,12 +40,10 @@ func (h *MapelHandler) CreateMapel() fiber.Handler {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
 		}
 
-		// validasi input
 		if req.Name == "" {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, "Nama mapel tidak boleh kosong", nil))
 		}
 
-		// helper untuk parsing UUID
 		parseUUID := func(idStr string) (uuid.UUID, error) {
 			uid, err := uuid.Parse(idStr)
 			if err != nil {
@@ -59,19 +57,16 @@ func (h *MapelHandler) CreateMapel() fiber.Handler {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
 		}
 
-		// siapkan entitas Mapel
 		mapel := e.Mapel{
 			ID:        uuid.New(),
 			Name:      req.Name,
 			JurusanID: jurusanID,
 		}
 
-		// simpan ke DB
 		if err := h.Service.CreateMapel(&mapel); err != nil {
 			return c.Status(500).JSON(e.ErrorResponse[any](500, err.Error(), nil))
 		}
 
-		// reload dengan relasi Jurusan
 		var created e.Mapel
 		if err := h.Service.DB.
 			Preload("Jurusan").
