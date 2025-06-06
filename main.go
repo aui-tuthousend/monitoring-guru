@@ -4,7 +4,7 @@ import (
 	"monitoring-guru/internal/database"
 	"monitoring-guru/routes"
 	"monitoring-guru/websocket"
-	e "monitoring-guru/entities"
+	// e "monitoring-guru/entities"
 
 	"log"
 	"os"
