@@ -11,6 +11,7 @@ import (
 // @Summary Delete jurusan
 // @Description Delete jurusan by ID
 // @Tags jurusan
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Jurusan ID"

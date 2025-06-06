@@ -28,7 +28,8 @@ type UpdateMapelRequest struct {
 // UpdateMapelHandler godoc
 // @Summary Update mapel data
 // @Description Update a mapel by ID
-// @Tags mapel
+// @Tags Mapel
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param request body UpdateMapelRequest true "Update mapel request body"

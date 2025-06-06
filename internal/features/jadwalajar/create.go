@@ -58,20 +58,27 @@ func (h *JadwalajarHandler) CreateJadwalAjar() fiber.Handler {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
 		}
 
+		guruID, _ := utils.ParseUUID(req.GuruID)
+		mapelID, _ := utils.ParseUUID(req.MapelID)
+		kelasID, _ := utils.ParseUUID(req.KelasID)
 
-		guruID, err := utils.ParseUUID(req.GuruID)
-		if err != nil {
-			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
+		if guruID == uuid.Nil || mapelID == uuid.Nil || kelasID == uuid.Nil {
+			return c.Status(400).JSON(e.ErrorResponse[any](400, "Invalid ID format", nil))
 		}
 
-		mapelID, err := utils.ParseUUID(req.MapelID)
+		guru, err := h.GuruService.GetGuru(guruID.String())
 		if err != nil {
-			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
+			return c.Status(400).JSON(e.ErrorResponse[any](400, "Guru not found", nil))
 		}
 
-		kelasID, err := utils.ParseUUID(req.KelasID)
+		mapel, err := h.MapelService.GetMapelByID(mapelID.String())
 		if err != nil {
-			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
+			return c.Status(400).JSON(e.ErrorResponse[any](400, "Mapel not found", nil))
+		}
+
+		kelas, err := h.KelasService.GetKelasByID(kelasID.String())
+		if err != nil {
+			return c.Status(400).JSON(e.ErrorResponse[any](400, "Kelas not found", nil))
 		}
 
 		jadwalajar := e.JadwalAjar{
@@ -91,10 +98,9 @@ func (h *JadwalajarHandler) CreateJadwalAjar() fiber.Handler {
 
 		return c.JSON(e.SuccessResponse(&JadwalajarResponse{
 			ID:         jadwalajar.ID.String(),
-			// GuruID:     jadwalajar.GuruID.String(),
-			// MapelID:    jadwalajar.MapelID.String(),
-			// KelasID:    jadwalajar.KelasID.String(),
-			Hari:       jadwalajar.Hari,
+			Guru:       h.GuruService.ResponseGuruMapper(guru),
+			Mapel:      h.MapelService.ResponseMapelMapper(mapel),
+			Kelas:      h.KelasService.ResponseKelasMapper(kelas),
 			JamMulai:   jadwalajar.JamMulai,
 			JamSelesai: jadwalajar.JamSelesai,
 			LastEditor: jadwalajar.LastEditor,

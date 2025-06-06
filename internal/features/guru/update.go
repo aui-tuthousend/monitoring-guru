@@ -61,11 +61,6 @@ func (h *GuruHandler) UpdateGuruHandler() fiber.Handler {
 			return c.Status(500).JSON(e.ErrorResponse[any](500, err.Error(), nil))
 		}
 
-		return c.JSON(e.SuccessResponse(&GuruResponse{
-			ID:      existing.ID.String(),
-			NIP:     existing.Nip,
-			Nama:    existing.Name,
-			Jabatan: existing.Jabatan,
-		}))
+		return c.JSON(e.SuccessResponse(h.Service.ResponseGuruMapper(existing)))
 	}
 }

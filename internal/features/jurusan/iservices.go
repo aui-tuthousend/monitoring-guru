@@ -26,13 +26,20 @@ func (s *JurusanService) GetJurusanByID(id string) (*e.Jurusan, error) {
 	return &jurusan, nil
 }
 
-func (s *JurusanService) GetAllJurusan() ([]JurusanResponse, error) {
-	var jurusanList []JurusanResponse
+func (s *JurusanService) GetAllJurusan() ([]e.Jurusan, error) {
+	var jurusanList []e.Jurusan
 	if err := s.DB.
 		Find(&jurusanList).Error; err != nil {
 		return nil, err
 	}
 	return jurusanList, nil
+}
+
+func (s *JurusanService) ResponseJurusanMapper(jurusan *e.Jurusan) *JurusanResponse {
+	return &JurusanResponse{
+		ID: jurusan.ID.String(),
+		Name:      jurusan.Name,
+	}
 }
 
 func (s *JurusanService) DeleteJurusan(id string) error {

@@ -34,11 +34,6 @@ func (h *GuruHandler) GetProfileHandler() fiber.Handler {
 			return c.Status(404).JSON(e.ErrorResponse[any](404, "User not found", nil))
 		}
 
-		return c.JSON(e.SuccessResponse(&GuruResponse{
-			ID:      user.ID.String(),
-			NIP:     user.Nip,
-			Nama:    user.Name,
-			Jabatan: user.Jabatan,
-		}))
+		return c.JSON(e.SuccessResponse(h.Service.ResponseGuruMapper(user)))
 	}
 }

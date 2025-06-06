@@ -40,7 +40,7 @@ func main() {
 	app.Use(logger.New())
 	database.Connect()
 	db := database.DB
-	db.AutoMigrate(&e.Guru{}, &e.Jurusan{}, &e.KetuaKelas{}, &e.Ruangan{}) //migrate later
+	db.AutoMigrate(&e.Guru{}, &e.Jurusan{}, &e.KetuaKelas{}, &e.Ruangan{}, &e.Mapel{}) //migrate later
 	routes.SetupRoutes(app, db)
 	websocket.SetupWebSocket(app, db)
 	app.Get("/swagger/*", swagger.HandlerDefault)

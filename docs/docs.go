@@ -584,6 +584,11 @@ const docTemplate = `{
         },
         "/api/jurusan": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get list of all jurusan",
                 "consumes": [
                     "application/json"
@@ -614,6 +619,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update jurusan data",
                 "consumes": [
                     "application/json"
@@ -658,6 +668,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new jurusan",
                 "consumes": [
                     "application/json"
@@ -704,6 +719,11 @@ const docTemplate = `{
         },
         "/api/jurusan/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get jurusan details by ID",
                 "consumes": [
                     "application/json"
@@ -746,6 +766,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete jurusan by ID",
                 "consumes": [
                     "application/json"
@@ -1053,7 +1078,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Kelas"
+                    "kelas"
                 ],
                 "summary": "Delete a kelas",
                 "parameters": [
@@ -1227,12 +1252,17 @@ const docTemplate = `{
         },
         "/api/mapel": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get all mata pelajaran",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "mapel"
+                    "Mapel"
                 ],
                 "summary": "Get all mapel",
                 "responses": {
@@ -1254,6 +1284,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a mapel by ID",
                 "consumes": [
                     "application/json"
@@ -1262,7 +1297,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "mapel"
+                    "Mapel"
                 ],
                 "summary": "Update mapel data",
                 "parameters": [
@@ -1298,6 +1333,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Buat mapel baru",
                 "consumes": [
                     "application/json"
@@ -1306,7 +1346,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "mapel"
+                    "Mapel"
                 ],
                 "summary": "Create Mapel request body",
                 "parameters": [
@@ -1350,12 +1390,17 @@ const docTemplate = `{
         },
         "/api/mapel/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get mapel by ID",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "mapel"
+                    "Mapel"
                 ],
                 "summary": "Get mapel by ID",
                 "parameters": [
@@ -1383,6 +1428,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete mapel by ID",
                 "consumes": [
                     "application/json"
@@ -1391,7 +1441,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "mapel"
+                    "Mapel"
                 ],
                 "summary": "Delete mapel",
                 "parameters": [
@@ -1961,7 +2011,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "guru": {
-                    "type": "string"
+                    "$ref": "#/definitions/guru.GuruResponse"
                 },
                 "hari": {
                     "type": "string"
@@ -1976,13 +2026,13 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "kelas": {
-                    "type": "string"
+                    "$ref": "#/definitions/kelas.KelasResponse"
                 },
                 "last_editor": {
                     "type": "string"
                 },
                 "mapel": {
-                    "type": "string"
+                    "$ref": "#/definitions/mapel.MapelResponse"
                 }
             }
         },
@@ -2041,10 +2091,10 @@ const docTemplate = `{
         "jurusan.CreateJurusanRequest": {
             "type": "object",
             "required": [
-                "nama"
+                "name"
             ],
             "properties": {
-                "nama": {
+                "name": {
                     "type": "string"
                 }
             }
@@ -2052,7 +2102,7 @@ const docTemplate = `{
         "jurusan.JurusanResponse": {
             "type": "object",
             "properties": {
-                "jurusan_id": {
+                "id": {
                     "type": "string"
                 },
                 "nama": {

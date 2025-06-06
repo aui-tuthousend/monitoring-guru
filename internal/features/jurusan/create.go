@@ -9,13 +9,14 @@ import (
 )
 
 type CreateJurusanRequest struct {
-	Name string `json:"nama" validate:"required"`
+	Name string `json:"name" validate:"required"`
 }
 
 // CreateJurusan godoc
 // @Summary Create jurusan
 // @Description Create a new jurusan
 // @Tags jurusan
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param request body CreateJurusanRequest true "Jurusan body"
@@ -32,7 +33,7 @@ func (h *JurusanHandler) CreateJurusan() fiber.Handler {
 
 		if req.Name == "" {
 			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"error": "Nama jurusan is required",
+				"error": "Name is required",
 			})
 		}
 
@@ -47,9 +48,6 @@ func (h *JurusanHandler) CreateJurusan() fiber.Handler {
 			return c.Status(fiber.StatusInternalServerError).JSON(e.ErrorResponse[any](500, err.Error(), nil))
 		}
 
-		return c.JSON(e.SuccessResponse(&JurusanResponse{
-			JurusanID: jurusan.ID.String(),
-			Name:      jurusan.Name,
-		}))
+		return c.JSON(e.SuccessResponse(h.Service.ResponseJurusanMapper(&jurusan)))
 	}
 }

@@ -74,11 +74,6 @@ func (h *GuruHandler) RegisterGuru() fiber.Handler {
 			return c.Status(500).JSON(e.ErrorResponse[any](500, "Guru dengan NIP tersebut sudah ada", nil))
 		}
 
-		return c.JSON(e.SuccessResponse(&GuruResponse{
-			ID:      guru.ID.String(),
-			NIP:     guru.Nip,
-			Nama:    guru.Name,
-			Jabatan: guru.Jabatan,
-		}))
+		return c.JSON(e.SuccessResponse(h.Service.ResponseGuruMapper(&guru)))
 	}
 }

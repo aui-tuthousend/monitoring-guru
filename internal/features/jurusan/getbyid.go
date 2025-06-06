@@ -12,6 +12,7 @@ import (
 // @Summary Get jurusan by ID
 // @Description Get jurusan details by ID
 // @Tags jurusan
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Jurusan ID"
@@ -32,9 +33,6 @@ func (h *JurusanHandler) GetJurusanByID() fiber.Handler {
 			return c.Status(fiber.StatusInternalServerError).JSON(e.ErrorResponse[any](500, "Jurusan not found", nil))
 		}
 
-		return c.JSON(e.SuccessResponse(&JurusanResponse{
-			JurusanID: jurusan.ID.String(),
-			Name:      jurusan.Name,
-		}))
+		return c.JSON(e.SuccessResponse(h.Service.ResponseJurusanMapper(jurusan)))
 	}
 }

@@ -22,6 +22,15 @@ func (s *GuruService) GetGuru(id string) (*e.Guru, error) {
 	return &guru, nil
 }
 
+func (s *GuruService) ResponseGuruMapper(guru *e.Guru) *GuruResponse {
+	return &GuruResponse{
+		ID:      guru.ID.String(),
+		Nip:     guru.Nip,
+		Name:    guru.Name,
+		Jabatan: guru.Jabatan,
+	}
+}
+
 func (s *GuruService) GetGuruByNIP(nip string) (*e.Guru, error) {
 	var guru e.Guru
 	if err := s.DB.Where("nip = ?", nip).First(&guru).Error; err != nil {

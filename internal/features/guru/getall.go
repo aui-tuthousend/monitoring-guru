@@ -24,12 +24,7 @@ func (h *GuruHandler) GetAllGuruHandler() fiber.Handler {
 
 		var responses []GuruResponse
 		for _, guru := range gurus {
-			responses = append(responses, GuruResponse{
-				ID:      guru.ID.String(),
-				NIP:     guru.Nip,
-				Nama:    guru.Name,
-				Jabatan: guru.Jabatan,
-			})
+			responses = append(responses, *h.Service.ResponseGuruMapper(&guru))
 		}
 
 		return c.JSON(e.SuccessResponse(&responses))

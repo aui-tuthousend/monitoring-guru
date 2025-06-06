@@ -2,8 +2,8 @@ package guru
 
 type GuruResponse struct {
 	ID      string `json:"id"`
-	NIP     string `json:"nip"`
-	Nama    string `json:"nama"`
+	Nip     string `json:"nip"`
+	Name    string `json:"nama"`
 	Jabatan string `json:"jabatan"`
 }
 

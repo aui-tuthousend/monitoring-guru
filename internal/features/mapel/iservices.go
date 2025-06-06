@@ -18,16 +18,23 @@ func (s *MapelService) UpdateMapel(mapel *e.Mapel) error {
 	return s.DB.Save(mapel).Error
 }
 
-func (s *MapelService) GetAllMapel() ([]MapelResponse, error) {
-	var mapelList []MapelResponse
+func (s *MapelService) GetAllMapel() ([]e.Mapel, error) {
+	var mapelList []e.Mapel
 	if err := s.DB.Find(&mapelList).Error; err != nil {
 		return nil, err
 	}
 	return mapelList, nil
 }
 
-func (s *MapelService) GetMapelByID(id string) (*MapelResponse, error) {
-	var mapel MapelResponse
+func (s *MapelService) ResponseMapelMapper(mapel *e.Mapel) *MapelResponse {
+	return &MapelResponse{
+		ID:      mapel.ID.String(),
+		Name:    mapel.Name,
+	}
+}
+
+func (s *MapelService) GetMapelByID(id string) (*e.Mapel, error) {
+	var mapel e.Mapel
 	if err := s.DB.Where("id = ?", id).First(&mapel).Error; err != nil {
 		return nil, err
 	}

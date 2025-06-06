@@ -10,7 +10,8 @@ import (
 // GetMapelByIDHandler godoc
 // @Summary Get mapel by ID
 // @Description Get mapel by ID
-// @Tags mapel
+// @Tags Mapel
+// @Security BearerAuth
 // @Produce json
 // @Param id path string true "Mapel ID"
 // @Success 200 {object} MapelResponseWrapper

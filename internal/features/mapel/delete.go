@@ -10,7 +10,8 @@ import (
 // DeleteMapelHandler godoc
 // @Summary Delete mapel
 // @Description Delete mapel by ID
-// @Tags mapel
+// @Tags Mapel
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Mapel ID"

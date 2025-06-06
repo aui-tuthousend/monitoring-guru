@@ -9,7 +9,8 @@ import (
 // GetAllMapelHandler godoc
 // @Summary Get all mapel
 // @Description Get all mata pelajaran
-// @Tags mapel
+// @Tags Mapel
+// @Security BearerAuth
 // @Produce json
 // @Success 200 {object} []MapelResponse
 // @Failure 500 {object} MapelResponseWrapper
@@ -21,6 +22,11 @@ func (h *MapelHandler) GetAllMapel() fiber.Handler {
 			return c.Status(500).JSON(e.ErrorResponse[any](500, "Internal server error", nil))
 		}
 
-		return c.JSON(e.SuccessResponse(&mapelList))
+		var responses []MapelResponse
+		for _, mapel := range mapelList {
+			responses = append(responses, *h.Service.ResponseMapelMapper(&mapel))
+		}
+
+		return c.JSON(e.SuccessResponse(&responses))
 	}
 }

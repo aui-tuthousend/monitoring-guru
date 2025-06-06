@@ -10,6 +10,7 @@ import (
 // @Summary Get all jurusan
 // @Description Get list of all jurusan
 // @Tags jurusan
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Success 200 {object} []JurusanResponse
@@ -22,6 +23,11 @@ func (h *JurusanHandler) GetAllJurusan() fiber.Handler {
 			return c.Status(fiber.StatusInternalServerError).JSON(e.ErrorResponse[any](500, "Failed to fetch jurusan data", nil))
 		}
 
-		return c.JSON(e.SuccessResponse(&jurusanList))
+		var responses []JurusanResponse
+		for _, jurusan := range jurusanList {
+			responses = append(responses, *h.Service.ResponseJurusanMapper(&jurusan))
+		}
+
+		return c.JSON(e.SuccessResponse(&responses))
 	}
 }

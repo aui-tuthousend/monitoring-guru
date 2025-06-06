@@ -1,7 +1,7 @@
 package jurusan
 
 type JurusanResponse struct {
-	JurusanID string `json:"jurusan_id"`
+	ID string `json:"id"`
 	Name      string `json:"nama"`
 }
 

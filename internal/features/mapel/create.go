@@ -3,7 +3,6 @@ package mapel
 import (
 	"fmt"
 	e "monitoring-guru/entities"
-	"monitoring-guru/internal/features/jurusan"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -25,7 +24,8 @@ type CreateMapelRequest struct {
 // CreateMapel godoc
 // @summary     Create Mapel request body
 // @Description Buat mapel baru
-// @Tags        mapel
+// @Tags        Mapel
+// @Security    BearerAuth
 // @Accept      json
 // @Produce     json
 // @Param       request body CreateMapelRequest true "Create mapel request body"
@@ -57,6 +57,11 @@ func (h *MapelHandler) CreateMapel() fiber.Handler {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
 		}
 
+		jurusan, err := h.JurusanService.GetJurusanByID(jurusanID.String())
+		if err != nil {
+			return c.Status(400).JSON(e.ErrorResponse[any](400, "Jurusan not found", nil))
+		}
+
 		mapel := e.Mapel{
 			ID:        uuid.New(),
 			Name:      req.Name,
@@ -67,21 +72,10 @@ func (h *MapelHandler) CreateMapel() fiber.Handler {
 			return c.Status(500).JSON(e.ErrorResponse[any](500, err.Error(), nil))
 		}
 
-		var created e.Mapel
-		if err := h.Service.DB.
-			Preload("Jurusan").
-			First(&created, "id = ?", mapel.ID).
-			Error; err != nil {
-			return c.Status(500).JSON(e.ErrorResponse[any](500, "Gagal mengambil data mapel", nil))
-		}
-
 		res := MapelResponse{
-			ID:   created.ID.String(),
-			Name: created.Name,
-			Jurusan: jurusan.JurusanResponse{
-				JurusanID: created.Jurusan.ID.String(),
-				Name:      created.Jurusan.Name,
-			},
+			ID:   mapel.ID.String(),
+			Name: mapel.Name,
+			Jurusan: h.JurusanService.ResponseJurusanMapper(jurusan),
 		}
 
 		return c.JSON(e.SuccessResponse(&res))

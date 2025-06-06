@@ -18,24 +18,34 @@ func (s *KelasService) UpdateKelas(kelas *e.Kelas) error {
 	return s.DB.Save(kelas).Error
 }
 
-func (s *KelasService) GetAllKelas() ([]KelasResponse, error) {
-	var kelasList []KelasResponse
+func (s *KelasService) GetAllKelas() ([]e.Kelas, error) {
+	var kelasList []e.Kelas
 	if err := s.DB.Find(&kelasList).Error; err != nil {
 		return nil, err
 	}
 	return kelasList, nil
 }
 
-func (s *KelasService) GetKelasByID(id string) (*KelasResponse, error) {
-	var kelas KelasResponse
+func (s *KelasService) GetKelasByID(id string) (*e.Kelas, error) {
+	var kelas e.Kelas
 	if err := s.DB.Where("id = ?", id).First(&kelas).Error; err != nil {
 		return nil, err
 	}
 	return &kelas, nil
 }
 
-func (s *KelasService) GetKelasByJurusan(jurusanID string) ([]KelasResponse, error) {
-	var kelasList []KelasResponse
+func (s *KelasService) ResponseKelasMapper(kelas *e.Kelas) *KelasResponse {
+	return &KelasResponse{
+		ID:           kelas.ID.String(),
+		Nama:         kelas.Nama,
+		// JurusanID:    kelas.JurusanID.String(),
+		// KetuaKelasID: kelas.KetuaKelasID.String(),
+		// WakilKelasID: kelas.WakilKelasID.String(),
+	}
+}
+
+func (s *KelasService) GetKelasByJurusan(jurusanID string) ([]e.Kelas, error) {
+	var kelasList []e.Kelas
 	if err := s.DB.
 		Preload("KetuaKelas").
 		Preload("WakilKelas").
@@ -46,8 +56,8 @@ func (s *KelasService) GetKelasByJurusan(jurusanID string) ([]KelasResponse, err
 	return kelasList, nil
 }
 
-func (s *KelasService) GetKelasByKetuaOrWakil(ketuaKelasID string) (*KelasResponse, error) {
-	var kelas KelasResponse
+func (s *KelasService) GetKelasByKetuaOrWakil(ketuaKelasID string) (*e.Kelas, error) {
+	var kelas e.Kelas
 	if err := s.DB.
 		Preload("KetuaKelas").
 		Preload("WakilKelas").
