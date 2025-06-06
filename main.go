@@ -31,7 +31,7 @@ func main() {
 	if os.Getenv("ENV") != "production" {
 		docs.SwaggerInfo.Host = "127.0.0.1:8080"
 	} else {
-		docs.SwaggerInfo.Host = "monitoring-guru-aui-tuthousend6429-iwkswixv.leapcell.dev/" // change later
+		docs.SwaggerInfo.Host = "monitoring-guru-aui-tuthousend6429-iwkswixv.leapcell.dev" // change later
 	}
 
 	app := fiber.New(fiber.Config{
