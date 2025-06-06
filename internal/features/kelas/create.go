@@ -1,9 +1,9 @@
 package kelas
 
 import (
-	"fmt"
 	e "monitoring-guru/entities"
-	"monitoring-guru/internal/features/ketuakelas"
+	
+	"monitoring-guru/utils"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -37,7 +37,8 @@ type CreateKelasRequest struct {
 // CreateKelasRequest godoc
 // @summary Create Kelas request body
 // @Description	Create Kelas baru request body
-// @Tags			kelas
+// @Tags			Kelas
+// @Security    BearerAuth
 // @Accept			json
 // @Produce		json
 // @Param			request	body		CreateKelasRequest	true	"Create kelas request body"
@@ -52,25 +53,23 @@ func (h *KelasHandler) CreateKelas() fiber.Handler {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
 		}
 
-		parseUUID := func(idStr string) (uuid.UUID, error) {
-			uid, err := uuid.Parse(idStr)
-			if err != nil {
-				return uuid.Nil, fmt.Errorf("%s tidak valid: %w", idStr, err)
-			}
-			return uid, nil
+		ketuaID, err := utils.ParseUUID(req.KetuaKelasID)
+		if err != nil {
+			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
 		}
 
-		ketuaID, err := parseUUID(req.KetuaKelasID)
+		wakilID, err := utils.ParseUUID(req.WaliKelasID)
 		if err != nil {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
 		}
-		wakilID, err := parseUUID(req.WaliKelasID)
+		jurusanID, err := utils.ParseUUID(req.JurusanID)
 		if err != nil {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
 		}
-		jurusanID, err := parseUUID(req.JurusanID)
+
+		jurusan, err := h.JurusanService.GetJurusanByID(jurusanID.String())
 		if err != nil {
-			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
+			return c.Status(400).JSON(e.ErrorResponse[any](400, "Jurusan not found", nil))
 		}
 
 		kelas := e.Kelas{
@@ -86,16 +85,19 @@ func (h *KelasHandler) CreateKelas() fiber.Handler {
 			return c.Status(500).JSON(e.ErrorResponse[any](500, err.Error(), nil))
 		}
 
-		return c.JSON(e.SuccessResponse(&KelasResponse{
+		res := KelasResponse{
 			ID:   kelas.ID.String(),
 			Nama: kelas.Nama,
-			KetuaKelas: ketuakelas.KetuaKelasResponse{
-				Name: ketuaID.String(),
-			},
-			WakilKelas: ketuakelas.KetuaKelasResponse{
-				Name: wakilID.String(),
-			},
+			Jurusan: h.JurusanService.ResponseJurusanMapper(jurusan),
+			// KetuaKelas: ketuakelas.KetuaKelasResponse{
+			// 	Name: ketuaID.String(),
+			// },
+			// WakilKelas: ketuakelas.KetuaKelasResponse{
+			// 	Name: wakilID.String(),
+			// },
 			IsActive: kelas.IsActive,
-		}))
+		}
+
+		return c.JSON(e.SuccessResponse(&res))
 	}
 }

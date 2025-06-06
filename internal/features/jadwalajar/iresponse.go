@@ -8,9 +8,9 @@ import (
 
 type JadwalajarResponse struct {
 	ID         string   `json:"id"`
-	Guru*       guru.GuruResponse `json:"guru"`
-	Mapel*      mapel.MapelResponse   `json:"mapel"`
-	Kelas*      kelas.KelasResponse   `json:"kelas"`
+	Guru       *guru.GuruResponse `json:"guru"`
+	Mapel      *mapel.MapelResponse   `json:"mapel"`
+	Kelas      *kelas.KelasResponse   `json:"kelas"`
 	Hari       string   `json:"hari"`
 	JamMulai   string   `json:"jam_mulai"`
 	JamSelesai string   `json:"jam_selesai"`

@@ -71,7 +71,7 @@ func (h *JadwalajarHandler) CreateJadwalAjar() fiber.Handler {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, "Guru not found", nil))
 		}
 
-		mapel, err := h.MapelService.GetMapelByID(mapelID.String())
+		mapel, err := h.MapelService.GetMapelByID(mapelID)
 		if err != nil {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, "Mapel not found", nil))
 		}
@@ -99,7 +99,7 @@ func (h *JadwalajarHandler) CreateJadwalAjar() fiber.Handler {
 		return c.JSON(e.SuccessResponse(&JadwalajarResponse{
 			ID:         jadwalajar.ID.String(),
 			Guru:       h.GuruService.ResponseGuruMapper(guru),
-			Mapel:      h.MapelService.ResponseMapelMapper(mapel),
+			Mapel:      mapel,
 			Kelas:      h.KelasService.ResponseKelasMapper(kelas),
 			JamMulai:   jadwalajar.JamMulai,
 			JamSelesai: jadwalajar.JamSelesai,

@@ -22,11 +22,6 @@ func (h *MapelHandler) GetAllMapel() fiber.Handler {
 			return c.Status(500).JSON(e.ErrorResponse[any](500, "Internal server error", nil))
 		}
 
-		var responses []MapelResponse
-		for _, mapel := range mapelList {
-			responses = append(responses, *h.Service.ResponseMapelMapper(&mapel))
-		}
-
-		return c.JSON(e.SuccessResponse(&responses))
+		return c.JSON(e.SuccessResponse(&mapelList))
 	}
 }

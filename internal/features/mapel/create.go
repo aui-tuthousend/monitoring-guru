@@ -1,8 +1,8 @@
 package mapel
 
 import (
-	"fmt"
 	e "monitoring-guru/entities"
+	"monitoring-guru/utils"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -44,15 +44,7 @@ func (h *MapelHandler) CreateMapel() fiber.Handler {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, "Nama mapel tidak boleh kosong", nil))
 		}
 
-		parseUUID := func(idStr string) (uuid.UUID, error) {
-			uid, err := uuid.Parse(idStr)
-			if err != nil {
-				return uuid.Nil, fmt.Errorf("UUID %s tidak valid: %w", idStr, err)
-			}
-			return uid, nil
-		}
-
-		jurusanID, err := parseUUID(req.JurusanID)
+		jurusanID, err := utils.ParseUUID(req.JurusanID)
 		if err != nil {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
 		}

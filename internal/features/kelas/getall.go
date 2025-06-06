@@ -9,7 +9,8 @@ import (
 // GetKelasHandler godoc
 // @Summary Get all kelas
 // @Description Get all kelas
-// @Tags kelas
+// @Tags Kelas
+// @Security BearerAuth
 // @Produce json
 // @Success 200 {object} []KelasResponse
 // @Failure 500 {object} KelasResponseWrapper
@@ -21,6 +22,11 @@ func (h *KelasHandler) GetKelasHandler() fiber.Handler {
 			return c.Status(500).JSON(e.ErrorResponse[any](500, "Internal server error", nil))
 		}
 
-		return c.JSON(e.SuccessResponse(&kelasList))
+		var responses []KelasResponse
+		for _, kelas := range kelasList {
+			responses = append(responses, *h.Service.ResponseKelasMapper(&kelas))
+		}
+
+		return c.JSON(e.SuccessResponse(&responses))
 	}
 }

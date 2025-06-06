@@ -9,7 +9,7 @@ import (
 // DeleteKelasHandler godoc
 // @Summary Delete a kelas
 // @Description Delete a kelas by ID
-// @Tags kelas
+// @Tags Kelas
 // @Security BearerAuth
 // @Produce json
 // @Param id path string true "Kelas ID"

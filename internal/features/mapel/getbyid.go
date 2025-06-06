@@ -15,19 +15,21 @@ import (
 // @Produce json
 // @Param id path string true "Mapel ID"
 // @Success 200 {object} MapelResponseWrapper
-// @Failure 404 {object} MapelResponseWrapper
+// @Failure 400 {object} MapelResponseWrapper
+// @Failure 500 {object} MapelResponseWrapper
 // @Router /api/mapel/{id} [get]
 func (h *MapelHandler) GetMapelByID() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		id := c.Params("id")
 
-		if _, err := uuid.Parse(id); err != nil {
-			return c.Status(404).JSON(e.ErrorResponse[any](404, "Invalid UUID format", nil))
+		parsedID, err := uuid.Parse(id)
+		if err != nil {
+			return c.Status(400).JSON(e.ErrorResponse[any](400, "Invalid UUID format", nil))
 		}
 
-		mapel, err := h.Service.GetMapelByID(id)
+		mapel, err := h.Service.GetMapelByID(parsedID)
 		if err != nil {
-			return c.Status(404).JSON(e.ErrorResponse[any](404, "Mapel not found", nil))
+			return c.Status(500).JSON(e.ErrorResponse[any](500, "Mapel not found", nil))
 		}
 
 		return c.JSON(e.SuccessResponse(&mapel))
