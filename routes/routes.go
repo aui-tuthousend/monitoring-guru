@@ -11,7 +11,7 @@ import (
 	"monitoring-guru/internal/features/kelas"
 	ketua "monitoring-guru/internal/features/ketuakelas"
 	"monitoring-guru/internal/features/mapel"
-	ruangan "monitoring-guru/internal/features/ruangan/common"
+	"monitoring-guru/internal/features/ruangan"
 	user "monitoring-guru/internal/features/user/common"
 )
 
