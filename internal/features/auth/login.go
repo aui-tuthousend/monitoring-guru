@@ -39,7 +39,7 @@ type AuthKetuaKelasRequest struct {
 //	@Tags			auth
 //	@Accept			json
 //	@Produce		json
-//	@Param			request	body		AuthGuruRequest	true	"Create user request body"
+//	@Param			request	body		AuthGuruRequest	true	"Login Guru request body"
 //	@Success		200		{object}	AuthResponse
 //	@Failure		400		{object}	map[string]string
 //	@Failure		500		{object}	map[string]string

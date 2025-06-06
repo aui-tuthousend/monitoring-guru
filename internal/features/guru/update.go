@@ -2,6 +2,7 @@ package guru
 
 import (
 	e "monitoring-guru/entities"
+	"strings"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -34,6 +35,10 @@ func (h *GuruHandler) UpdateGuruHandler() fiber.Handler {
 			return c.Status(fiber.StatusBadRequest).JSON(e.ErrorResponse[any](400, "Invalid request body", nil))
 		}
 
+		if req.ID == "" {
+			return c.Status(fiber.StatusBadRequest).JSON(e.ErrorResponse[any](400, "ID is required", nil))
+		}
+
 		uid, err := uuid.Parse(req.ID)
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(e.ErrorResponse[any](400, "Invalid ID format", nil))
@@ -44,28 +49,23 @@ func (h *GuruHandler) UpdateGuruHandler() fiber.Handler {
 			return c.Status(fiber.StatusInternalServerError).JSON(e.ErrorResponse[any](500, "Guru not found", nil))
 		}
 
-		if req.Name != "" {
-			existing.Nama = req.Name
-		}
-		if req.Nip != "" {
-			existing.NIP = req.Nip
-		}
-		
-		if req.Jabatan != "" {
-			existing.Jabatan = req.Jabatan
+		if strings.TrimSpace(req.Nip) == "" || strings.TrimSpace(req.Name) == "" || (req.Jabatan != "guru" && req.Jabatan != "kepala_sekolah") {
+			return c.Status(400).JSON(e.ErrorResponse[any](400, "Invalid input data", nil))
 		}
 
-		guru := e.Guru{
-			ID: uid,
-			Name: req.Name,
-			Nip: req.Nip,
-			Jabatan: req.Jabatan,
-		}
+		existing.Name = req.Name
+		existing.Nip = req.Nip
+		existing.Jabatan = req.Jabatan
 
-		if err := h.Service.UpdateGuru(&guru); err != nil {
+		if err := h.Service.UpdateGuru(existing); err != nil {
 			return c.Status(500).JSON(e.ErrorResponse[any](500, err.Error(), nil))
 		}
 
-		return c.JSON(e.SuccessResponse(&guru))
+		return c.JSON(e.SuccessResponse(&GuruResponse{
+			ID:      existing.ID.String(),
+			NIP:     existing.Nip,
+			Nama:    existing.Name,
+			Jabatan: existing.Jabatan,
+		}))
 	}
 }

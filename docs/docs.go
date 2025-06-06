@@ -29,7 +29,7 @@ const docTemplate = `{
                 ],
                 "parameters": [
                     {
-                        "description": "Create user request body",
+                        "description": "Login Guru request body",
                         "name": "request",
                         "in": "body",
                         "required": true,

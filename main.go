@@ -4,7 +4,7 @@ import (
 	"monitoring-guru/internal/database"
 	"monitoring-guru/routes"
 	"monitoring-guru/websocket"
-	// e "monitoring-guru/entities"
+	e "monitoring-guru/entities"
 
 	"log"
 	"os"
@@ -40,7 +40,7 @@ func main() {
 	app.Use(logger.New())
 	database.Connect()
 	db := database.DB
-	// db.AutoMigrate(&e.User{}) //migrate later
+	db.AutoMigrate(&e.Guru{}, &e.Jurusan{}, &e.KetuaKelas{}, &e.Ruangan{}) //migrate later
 	routes.SetupRoutes(app, db)
 	websocket.SetupWebSocket(app, db)
 	app.Get("/swagger/*", swagger.HandlerDefault)

@@ -22,6 +22,16 @@ func (h *GuruHandler) GetAllGuruHandler() fiber.Handler {
 			return c.Status(500).JSON(e.ErrorResponse[any](500, "Internal server error", nil))
 		}
 
-		return c.JSON(e.SuccessResponse(&gurus))
+		var responses []GuruResponse
+		for _, guru := range gurus {
+			responses = append(responses, GuruResponse{
+				ID:      guru.ID.String(),
+				NIP:     guru.Nip,
+				Nama:    guru.Name,
+				Jabatan: guru.Jabatan,
+			})
+		}
+
+		return c.JSON(e.SuccessResponse(&responses))
 	}
 }

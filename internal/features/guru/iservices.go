@@ -14,8 +14,8 @@ func (s *GuruService) CreateGuru(guru *e.Guru) error {
 	return s.DB.Create(guru).Error
 }
 
-func (s *GuruService) GetGuru(id string) (*GuruResponse, error) {
-	var guru GuruResponse
+func (s *GuruService) GetGuru(id string) (*e.Guru, error) {
+	var guru e.Guru
 	if err := s.DB.Where("id = ?", id).First(&guru).Error; err != nil {
 		return nil, err
 	}
@@ -30,8 +30,8 @@ func (s *GuruService) GetGuruByNIP(nip string) (*e.Guru, error) {
 	return &guru, nil
 }
 
-func (s *GuruService) GetAllGuru() ([]GuruResponse, error) {
-	var gurus []GuruResponse
+func (s *GuruService) GetAllGuru() ([]e.Guru, error) {
+	var gurus []e.Guru
 	if err := s.DB.Find(&gurus).Error; err != nil {
 		return nil, err
 	}
