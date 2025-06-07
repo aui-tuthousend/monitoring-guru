@@ -9,7 +9,7 @@ import (
 
 type KetuaKelas struct {
 	ID        uuid.UUID      `gorm:"type:uuid;default:uuid_generate_v4();primaryKey" json:"id"`
-	Name      string         `json:"name" gorm:"not null"`
+	Name      string         `json:"nama" gorm:"not null"`
 	Nisn      string         `json:"nis" gorm:"not null;unique"`
 	Password  string         `json:"password" gorm:"not null"`
 	CreatedAt time.Time      `json:"-"`

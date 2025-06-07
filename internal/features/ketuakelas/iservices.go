@@ -2,6 +2,7 @@ package ketuakelas
 
 import (
 	e "monitoring-guru/entities"
+
 	"gorm.io/gorm"
 )
 

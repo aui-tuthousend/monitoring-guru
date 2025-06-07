@@ -4,7 +4,6 @@ import (
 	"monitoring-guru/internal/database"
 	"monitoring-guru/routes"
 	"monitoring-guru/websocket"
-	// e "monitoring-guru/entities"
 
 	"log"
 	"os"
@@ -14,6 +13,7 @@ import (
 	"monitoring-guru/docs"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/swagger"
 )
@@ -31,16 +31,20 @@ func main() {
 	if os.Getenv("ENV") != "production" {
 		docs.SwaggerInfo.Host = "127.0.0.1:8080"
 	} else {
-		docs.SwaggerInfo.Host = "monitoring-guru-aui-tuthousend6429-iwkswixv.leapcell.dev/" // change later
+		docs.SwaggerInfo.Host = "monitoring-guru-aui-tuthousend6429-iwkswixv.leapcell.dev" // change later
 	}
 
 	app := fiber.New(fiber.Config{
 		EnablePrintRoutes: true,
 	})
 	app.Use(logger.New())
-	database.Connect()
-	db := database.DB
-	// db.AutoMigrate(&e.Guru{}, &e.Jurusan{}, &e.KetuaKelas{}, &e.Ruangan{}, &e.Mapel{})
+	app.Use(cors.New())
+	// app.Use(cors.New(cors.Config{
+	// 	AllowOrigins: "https://gofiber.io, https://gofiber.net", // only FE domain allowed (soon)
+	// 	AllowHeaders: "Origin, Content-Type, Accept",            // allowed header
+	// }))
+	
+	db := database.Connect()
 	routes.SetupRoutes(app, db)
 	websocket.SetupWebSocket(app, db)
 	app.Get("/swagger/*", swagger.HandlerDefault)

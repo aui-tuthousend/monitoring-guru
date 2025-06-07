@@ -5,12 +5,11 @@ import (
 	"time"
 
 	e "monitoring-guru/entities"
-	"monitoring-guru/infrastructure/repositories/user"
+	"monitoring-guru/utils"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 )
-
 
 // CreateGuruRequestBody
 // @Description Create guru request body
@@ -57,8 +56,8 @@ func (h *GuruHandler) RegisterGuru() fiber.Handler {
 		if strings.TrimSpace(req.NIP) == "" || len(req.Password) < 6 || (req.Jabatan != "guru" && req.Jabatan != "kepala_sekolah") {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, "Invalid input data", nil))
 		}
-
-		hashedPassword, _ := user.HashPassword(req.Password)
+		
+		hashedPassword, _ := utils.HashPassword(req.Password)
 
 		guru := e.Guru{
 			ID:        uuid.New(),

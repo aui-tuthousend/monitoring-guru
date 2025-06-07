@@ -1,11 +1,10 @@
 package mapel
 
 import (
-	"fmt"
 	e "monitoring-guru/entities"
+	"monitoring-guru/utils"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/google/uuid"
 )
 
 // UpdateMapelRequest
@@ -18,7 +17,7 @@ type UpdateMapelRequest struct {
 	// @Description Name of the mapel
 	// @Required true
 	// @Example "Fisika"
-	Name string `json:"nama"`
+	Name string `json:"name"`
 	// @Description Jurusan ID of the mapel
 	// @Required true
 	// @Example "123e4567-e89b-12d3-a456-426614174001"
@@ -44,19 +43,11 @@ func (h *MapelHandler) UpdateMapel() fiber.Handler {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
 		}
 
-		parseUUID := func(idStr, field string) (uuid.UUID, error) {
-			uid, err := uuid.Parse(idStr)
-			if err != nil {
-				return uuid.Nil, fmt.Errorf("%s tidak valid: %w", field, err)
-			}
-			return uid, nil
-		}
-
-		mapelID, err := parseUUID(req.ID, "ID")
+		mapelID, err := utils.ParseUUID(req.ID)
 		if err != nil {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
 		}
-		jurusanID, err := parseUUID(req.JurusanID, "JurusanID")
+		jurusanID, err := utils.ParseUUID(req.JurusanID)
 		if err != nil {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
 		}
