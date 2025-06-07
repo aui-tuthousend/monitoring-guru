@@ -1,7 +1,7 @@
 package jurusan
 
 import (
-	"monitoring-guru/infrastructure/middleware"
+	"monitoring-guru/middleware"
 
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"

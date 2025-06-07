@@ -1,7 +1,7 @@
 package kelas
 
 import (
-	"monitoring-guru/infrastructure/middleware"
+	"monitoring-guru/middleware"
 	"monitoring-guru/internal/features/jurusan"
 	"monitoring-guru/internal/features/ketuakelas"
 
@@ -22,4 +22,7 @@ func RegisterRoutes(api fiber.Router, db *gorm.DB) {
 	group.Get("/:id", handler.GetKelasByIDHandler())
 	group.Get("/jurusan/:id", handler.GetKelasByJurusanHandler())
 	group.Delete("/:id", handler.DeleteKelasHandler())
+	group.Get("/ketua/:id", func(c *fiber.Ctx) error {
+		return fiber.NewError(fiber.StatusServiceUnavailable, "On vacation!")
+	})
 }

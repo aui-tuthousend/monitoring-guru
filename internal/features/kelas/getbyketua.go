@@ -9,7 +9,7 @@ import (
 // GetKelasByKetuaOrWakilHandler godoc
 // @Summary Get kelas by ketua or wakil
 // @Description Get kelas by ketua or wakil
-// @Tags kelas
+// @Tags Kelas
 // @Security BearerAuth
 // @Produce json
 // @Param ketua_kelas_id query string true "Ketua Kelas ID"

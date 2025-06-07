@@ -1,7 +1,7 @@
 package mapel
 
 import (
-	"monitoring-guru/infrastructure/middleware"
+	"monitoring-guru/middleware"
 	"monitoring-guru/internal/features/jurusan"
 
 	"github.com/gofiber/fiber/v2"

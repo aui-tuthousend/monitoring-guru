@@ -1,7 +1,7 @@
 package jadwalajar
 
 import (
-	"monitoring-guru/infrastructure/middleware"
+	"monitoring-guru/middleware"
 	"monitoring-guru/internal/features/guru"
 	"monitoring-guru/internal/features/kelas"
 	"monitoring-guru/internal/features/mapel"
