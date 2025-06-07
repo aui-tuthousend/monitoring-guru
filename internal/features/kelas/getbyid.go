@@ -10,7 +10,7 @@ import (
 // GetKelasByIDHandler godoc
 // @Summary Get kelas by ID
 // @Description Get kelas by ID
-// @Tags kelas
+// @Tags Kelas
 // @Security BearerAuth
 // @Produce json
 // @Param id path string true "Kelas ID"
@@ -21,11 +21,12 @@ func (h *KelasHandler) GetKelasByIDHandler() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		id := c.Params("id")
 
-		if _, err := uuid.Parse(id); err != nil {
+		parsedId, err := uuid.Parse(id)
+		if err != nil {
 			return c.Status(404).JSON(e.ErrorResponse[any](404, "Invalid Guid", nil))
 		}
 
-		kelas, err := h.Service.GetKelasByID(id)
+		kelas, err := h.Service.GetKelasByID(parsedId)
 		if err != nil {
 			return c.Status(404).JSON(e.ErrorResponse[any](404, "Kelas not found", nil))
 		}

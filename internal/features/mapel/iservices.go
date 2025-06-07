@@ -21,7 +21,7 @@ func (s *MapelService) UpdateMapel(mapel *e.Mapel) error {
 }
 
 func (s *MapelService) GetAllMapel() ([]MapelResponse, error) {
-	var jsonData string
+	var jsonData *string
 
 	query := `
 		SELECT json_agg(
@@ -35,28 +35,22 @@ func (s *MapelService) GetAllMapel() ([]MapelResponse, error) {
 			)
 		)
 		FROM mapels m
-		JOIN jurusans j ON m.jurusan_id = j.id::text
+		JOIN jurusans j ON m.jurusan_id = j.id::uuid
 	`
 
 	if err := s.DB.Raw(query).Scan(&jsonData).Error; err != nil {
 		return nil, err
 	}
-
-	var mapelList []MapelResponse
-	if err := json.Unmarshal([]byte(jsonData), &mapelList); err != nil {
+	mapelList := []MapelResponse{}
+	if jsonData == nil {
+		return mapelList, nil
+	}
+	if err := json.Unmarshal([]byte(*jsonData), &mapelList); err != nil {
 		return nil, err
 	}
-
 	return mapelList, nil
 }
 
-
-func (s *MapelService) ResponseMapelMapper(mapel *e.Mapel) *MapelResponse {
-	return &MapelResponse{
-		ID:      mapel.ID.String(),
-		Name:    mapel.Name,
-	}
-}
 
 func (s *MapelService) GetMapelByID(id uuid.UUID) (*MapelResponse, error) {
 	var jsonData string
@@ -70,7 +64,7 @@ func (s *MapelService) GetMapelByID(id uuid.UUID) (*MapelResponse, error) {
 			)
 		)
 		FROM mapels m
-		JOIN jurusans j ON m.jurusan_id = j.id::text
+		JOIN jurusans j ON m.jurusan_id = j.id::uuid
 		WHERE m.id = ?::uuid
 	`
 
@@ -86,7 +80,6 @@ func (s *MapelService) GetMapelByID(id uuid.UUID) (*MapelResponse, error) {
 	return &response, nil
 }
 
-
 func (s *MapelService) DeleteMapel(id string) error {
 	var mapel e.Mapel
 	if err := s.DB.Where("id = ?", id).First(&mapel).Error; err != nil {
@@ -94,3 +87,5 @@ func (s *MapelService) DeleteMapel(id string) error {
 	}
 	return s.DB.Delete(&mapel).Error
 }
+
+

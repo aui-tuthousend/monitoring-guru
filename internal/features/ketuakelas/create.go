@@ -5,7 +5,7 @@ import (
 	"time"
 
 	e "monitoring-guru/entities"
-	"monitoring-guru/infrastructure/repositories/user"
+	"monitoring-guru/utils"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -22,7 +22,7 @@ type CreateKetuaRequest struct {
 	// @Description Name of the ketua
 	// @Required true
 	// @Example "John Doe"
-	Nama string `json:"nama"`
+	Name string `json:"name"`
 	// @Description Password of the ketua
 	// @Required true
 	// @Example "password123"
@@ -52,12 +52,12 @@ func (h *KetuaKelasHandler) RegisterKetua() fiber.Handler {
 			return c.Status(400).JSON(fiber.Map{"error": "Invalid input"})
 		}
 
-		hashed, _ := user.HashPassword(req.Password)
+		hashed, _ := utils.HashPassword(req.Password)
 
 		ketua := e.KetuaKelas{
 			ID:        uuid.New(),
 			Nisn:      req.NISN,
-			Name:      req.Nama,
+			Name:      req.Name,
 			Password:  hashed,
 			CreatedAt: time.Now(),
 			UpdatedAt: time.Now(),

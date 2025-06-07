@@ -15,7 +15,7 @@ type CreateKelasRequest struct {
 	// @Description Name of the kelas
 	// @Required true
 	// @Example "XII RPL 1"
-	Nama string `json:"nama"`
+	Name string `json:"name"`
 	// @Description Jurusan ID of the kelas
 	// @Required true
 	// @Example "123456789"
@@ -27,11 +27,7 @@ type CreateKelasRequest struct {
 	// @Description Wali Kelas ID of the kelas
 	// @Required true
 	// @Example "123456789"
-	WaliKelasID string `json:"wali_kelas_id"`
-	// @Description Is Active of the kelas
-	// @Required true
-	// @Example true
-	IsActive bool `json:"is_active"`
+	// WaliKelasID string `json:"wali_kelas_id"`
 }
 
 // CreateKelasRequest godoc
@@ -58,10 +54,10 @@ func (h *KelasHandler) CreateKelas() fiber.Handler {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
 		}
 
-		wakilID, err := utils.ParseUUID(req.WaliKelasID)
-		if err != nil {
-			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
-		}
+		// wakilID, err := utils.ParseUUID(req.WaliKelasID)
+		// if err != nil {
+		// 	return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
+		// }
 		jurusanID, err := utils.ParseUUID(req.JurusanID)
 		if err != nil {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
@@ -75,26 +71,26 @@ func (h *KelasHandler) CreateKelas() fiber.Handler {
 		kelas := e.Kelas{
 			ID:        uuid.New(),
 			KetuaID:   ketuaID,
-			WakilID:   wakilID,
+			// WakilID:   wakilID,
 			JurusanID: jurusanID,
-			Nama:      req.Nama,
-			IsActive:  req.IsActive,
+			Name:      req.Name,
+			IsActive:  false,
 		}
 
 		if err := h.Service.CreateKelas(&kelas); err != nil {
 			return c.Status(500).JSON(e.ErrorResponse[any](500, err.Error(), nil))
 		}
 
+		ketua, err := h.KetuaKelasService.GetKetuaKelasByID(ketuaID.String())
+		if err != nil {
+			return c.Status(400).JSON(e.ErrorResponse[any](400, "Ketua Kelas not found", nil))
+		}
+
 		res := KelasResponse{
 			ID:   kelas.ID.String(),
-			Nama: kelas.Nama,
+			Name: kelas.Name,
 			Jurusan: h.JurusanService.ResponseJurusanMapper(jurusan),
-			// KetuaKelas: ketuakelas.KetuaKelasResponse{
-			// 	Name: ketuaID.String(),
-			// },
-			// WakilKelas: ketuakelas.KetuaKelasResponse{
-			// 	Name: wakilID.String(),
-			// },
+			KetuaKelas: h.KetuaKelasService.ResponseKetuaKelasMapper(ketua),
 			IsActive: kelas.IsActive,
 		}
 

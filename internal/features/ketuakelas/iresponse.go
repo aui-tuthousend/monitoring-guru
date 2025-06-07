@@ -16,7 +16,7 @@ type KetuaKelasResponse struct {
 	// @Description Name of the ketua
 	// @Required true
 	// @Example "John Doe"
-	Name string `json:"nama"`
+	Name string `json:"name"`
 }
 
 type KetuaKelasResponseWrapper struct {

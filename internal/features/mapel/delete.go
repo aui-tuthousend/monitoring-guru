@@ -2,9 +2,9 @@ package mapel
 
 import (
 	e "monitoring-guru/entities"
+	"monitoring-guru/utils"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/google/uuid"
 )
 
 // DeleteMapelHandler godoc
@@ -22,7 +22,7 @@ import (
 func (h *MapelHandler) DeleteMapel() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		id := c.Params("id")
-		mapelID, err := uuid.Parse(id)
+		mapelID, err := utils.ParseUUID(id)
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).JSON(e.ErrorResponse[any](400, "Invalid ID format", nil))
 		}

@@ -7,10 +7,9 @@ import (
 
 type KelasResponse struct {
 	ID   string `json:"id"`
-	Nama string `json:"nama"`
-	Jurusan* jurusan.JurusanResponse `json:"jurusan"`
-	KetuaKelas ketuakelas.KetuaKelasResponse `json:"ketua_kelas"`
-	WakilKelas ketuakelas.KetuaKelasResponse `json:"wakil_kelas"`
+	Name string `json:"name"`
+	Jurusan *jurusan.JurusanResponse `json:"jurusan"`
+	KetuaKelas *ketuakelas.KetuaKelasResponse `json:"ketua_kelas"`
 	IsActive   bool                          `json:"is_active"`
 }
 

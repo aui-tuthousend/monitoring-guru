@@ -824,12 +824,17 @@ const docTemplate = `{
         },
         "/api/kelas": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get all kelas",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "kelas"
+                    "Kelas"
                 ],
                 "summary": "Get all kelas",
                 "responses": {
@@ -851,6 +856,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a kelas by ID",
                 "consumes": [
                     "application/json"
@@ -859,7 +869,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "kelas"
+                    "Kelas"
                 ],
                 "summary": "Update kelas data",
                 "parameters": [
@@ -895,6 +905,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create Kelas baru request body",
                 "consumes": [
                     "application/json"
@@ -903,7 +918,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "kelas"
+                    "Kelas"
                 ],
                 "summary": "Create Kelas request body",
                 "parameters": [
@@ -945,7 +960,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/kelas/jurusan": {
+        "/api/kelas/jurusan/{id}": {
             "get": {
                 "security": [
                     {
@@ -957,15 +972,15 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "kelas"
+                    "Kelas"
                 ],
                 "summary": "Get kelas by jurusan",
                 "parameters": [
                     {
                         "type": "string",
                         "description": "Jurusan ID",
-                        "name": "jurusan_id",
-                        "in": "query",
+                        "name": "id",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -1040,7 +1055,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "kelas"
+                    "Kelas"
                 ],
                 "summary": "Get kelas by ID",
                 "parameters": [
@@ -1078,7 +1093,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "kelas"
+                    "Kelas"
                 ],
                 "summary": "Delete a kelas",
                 "parameters": [
@@ -1419,8 +1434,14 @@ const docTemplate = `{
                             "$ref": "#/definitions/mapel.MapelResponseWrapper"
                         }
                     },
-                    "404": {
-                        "description": "Not Found",
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/mapel.MapelResponseWrapper"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/mapel.MapelResponseWrapper"
                         }
@@ -1698,90 +1719,6 @@ const docTemplate = `{
                     }
                 }
             }
-        },
-        "/api/user/profile": {
-            "get": {
-                "security": [
-                    {
-                        "BearerAuth": []
-                    }
-                ],
-                "description": "Get Logged user profile",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "user"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/getprofile.GetUserResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/user/register": {
-            "post": {
-                "description": "Register a new user",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "user"
-                ],
-                "parameters": [
-                    {
-                        "description": "Create user request body",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/create.CreateUserRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/create.CreateUserResponseWrapper"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
         }
     },
     "definitions": {
@@ -1818,60 +1755,6 @@ const docTemplate = `{
                 "token": {
                     "type": "string",
                     "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                }
-            }
-        },
-        "create.CreateUserRequest": {
-            "description": "Create user request body",
-            "type": "object",
-            "properties": {
-                "email": {
-                    "description": "Your Email",
-                    "type": "string"
-                },
-                "name": {
-                    "description": "Your Name",
-                    "type": "string"
-                },
-                "password": {
-                    "description": "Your Password",
-                    "type": "string"
-                }
-            }
-        },
-        "create.CreateUserResponse": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            }
-        },
-        "create.CreateUserResponseWrapper": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "$ref": "#/definitions/create.CreateUserResponse"
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "getprofile.GetUserResponse": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
                 }
             }
         },
@@ -2105,7 +1988,7 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "nama": {
+                "name": {
                     "type": "string"
                 }
             }
@@ -2142,10 +2025,6 @@ const docTemplate = `{
             "description": "Create kelas request body",
             "type": "object",
             "properties": {
-                "is_active": {
-                    "description": "@Description Is Active of the kelas\n@Required true\n@Example true",
-                    "type": "boolean"
-                },
                 "jurusan_id": {
                     "description": "@Description Jurusan ID of the kelas\n@Required true\n@Example \"123456789\"",
                     "type": "string"
@@ -2154,12 +2033,8 @@ const docTemplate = `{
                     "description": "@Description Ketua Kelas ID of the kelas\n@Required true\n@Example \"123456789\"",
                     "type": "string"
                 },
-                "nama": {
+                "name": {
                     "description": "@Description Name of the kelas\n@Required true\n@Example \"XII RPL 1\"",
-                    "type": "string"
-                },
-                "wali_kelas_id": {
-                    "description": "@Description Wali Kelas ID of the kelas\n@Required true\n@Example \"123456789\"",
                     "type": "string"
                 }
             }
@@ -2173,19 +2048,14 @@ const docTemplate = `{
                 "is_active": {
                     "type": "boolean"
                 },
+                "jurusan": {
+                    "$ref": "#/definitions/jurusan.JurusanResponse"
+                },
                 "ketua_kelas": {
-                    "description": "Jurusan    entities.Jurusan ` + "`" + `json:\"jurusan\"` + "`" + `",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/ketuakelas.KetuaKelasResponse"
-                        }
-                    ]
-                },
-                "nama": {
-                    "type": "string"
-                },
-                "wakil_kelas": {
                     "$ref": "#/definitions/ketuakelas.KetuaKelasResponse"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         },
@@ -2211,24 +2081,12 @@ const docTemplate = `{
                     "description": "@Description ID of the kelas\n@Required true\n@Example \"123456789\"",
                     "type": "string"
                 },
-                "is_active": {
-                    "description": "@Description Is active of the kelas\n@Required true\n@Example true",
-                    "type": "boolean"
-                },
-                "jurusan_id": {
-                    "description": "@Description Jurusan ID of the kelas\n@Required true\n@Example \"123456789\"",
-                    "type": "string"
-                },
                 "ketua_id": {
-                    "description": "@Description Ketua ID of the kelas\n@Required true\n@Example \"123456789\"",
+                    "description": "@Description Jurusan ID of the kelas\n@Required true\n@Example \"123456789\"\nJurusanID string ` + "`" + `json:\"jurusan_id\"` + "`" + `\n@Description Ketua ID of the kelas\n@Required true\n@Example \"123456789\"",
                     "type": "string"
                 },
-                "nama": {
-                    "description": "@Description Nama of the kelas\n@Required true\n@Example \"XII RPL 1\"",
-                    "type": "string"
-                },
-                "wakil_id": {
-                    "description": "@Description Wakil ID of the kelas\n@Required true\n@Example \"123456789\"",
+                "name": {
+                    "description": "@Description Name of the kelas\n@Required true\n@Example \"XII RPL 1\"",
                     "type": "string"
                 }
             }
@@ -2237,7 +2095,7 @@ const docTemplate = `{
             "description": "Create ketua request body NISN of the ketua",
             "type": "object",
             "properties": {
-                "nama": {
+                "name": {
                     "description": "@Description Name of the ketua\n@Required true\n@Example \"John Doe\"",
                     "type": "string"
                 },
@@ -2258,7 +2116,7 @@ const docTemplate = `{
                     "description": "@Description ID of the ketua\n@Required true\n@Example \"123e4567-e89b-12d3-a456-426614174000\"",
                     "type": "string"
                 },
-                "nama": {
+                "name": {
                     "description": "@Description Name of the ketua\n@Required true\n@Example \"John Doe\"",
                     "type": "string"
                 },
@@ -2305,7 +2163,7 @@ const docTemplate = `{
                 "jurusan": {
                     "$ref": "#/definitions/jurusan.JurusanResponse"
                 },
-                "nama": {
+                "name": {
                     "type": "string"
                 }
             }
@@ -2336,7 +2194,7 @@ const docTemplate = `{
                     "description": "@Description Jurusan ID of the mapel\n@Required true\n@Example \"123e4567-e89b-12d3-a456-426614174001\"",
                     "type": "string"
                 },
-                "nama": {
+                "name": {
                     "description": "@Description Name of the mapel\n@Required true\n@Example \"Fisika\"",
                     "type": "string"
                 }

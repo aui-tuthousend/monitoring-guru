@@ -4,27 +4,29 @@ import (
 	e "monitoring-guru/entities"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
 // GetKelasByJurusanHandler godoc
 // @Summary Get kelas by jurusan
 // @Description Get kelas by jurusan
-// @Tags kelas
+// @Tags Kelas
 // @Security BearerAuth
 // @Produce json
-// @Param jurusan_id query string true "Jurusan ID"
+// @Param id path string true "Jurusan ID"
 // @Success 200 {object} []KelasResponse
 // @Failure 500 {object} KelasResponseWrapper
-// @Router /api/kelas/jurusan [get]
+// @Router /api/kelas/jurusan/{id} [get]
 func (h *KelasHandler) GetKelasByJurusanHandler() fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		jurusanID := c.Query("jurusan_id")
+		id := c.Params("id")
 
-		if jurusanID == "" {
-			return c.Status(400).JSON(e.ErrorResponse[any](400, "Jurusan ID is required", nil))
+		parsedId, err := uuid.Parse(id)
+		if err != nil {
+			return c.Status(404).JSON(e.ErrorResponse[any](404, "Invalid Guid", nil))
 		}
 
-		kelasList, err := h.Service.GetKelasByJurusan(jurusanID)
+		kelasList, err := h.Service.GetKelasByJurusan(parsedId)
 		if err != nil {
 			return c.Status(500).JSON(e.ErrorResponse[any](500, "Internal server error", nil))
 		}

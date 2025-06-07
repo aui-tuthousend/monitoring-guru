@@ -58,3 +58,4 @@ func (s *GuruService) DeleteGuru(id string) error {
 	}
 	return s.DB.Delete(&guru).Error
 }
+

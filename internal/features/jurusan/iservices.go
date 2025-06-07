@@ -35,17 +35,17 @@ func (s *JurusanService) GetAllJurusan() ([]e.Jurusan, error) {
 	return jurusanList, nil
 }
 
-func (s *JurusanService) ResponseJurusanMapper(jurusan *e.Jurusan) *JurusanResponse {
-	return &JurusanResponse{
-		ID: jurusan.ID.String(),
-		Name:      jurusan.Name,
-	}
-}
-
 func (s *JurusanService) DeleteJurusan(id string) error {
 	var jurusan e.Jurusan
 	if err := s.DB.Where("id = ?", id).First(&jurusan).Error; err != nil {
 		return err
 	}
 	return s.DB.Delete(&jurusan).Error
+}
+
+func (s *JurusanService) ResponseJurusanMapper(jurusan *e.Jurusan) *JurusanResponse {
+	return &JurusanResponse{
+		ID: jurusan.ID.String(),
+		Name:      jurusan.Name,
+	}
 }
