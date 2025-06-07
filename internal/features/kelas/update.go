@@ -85,7 +85,7 @@ func (h *KelasHandler) UpdateKelasHandler() fiber.Handler {
 		// 	return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
 		// }
 
-		ketua, err := h.KetuaKelasService.GetKetuaKelasByID(ketuaID.String())
+		ketua, err := h.KetuaKelasService.GetKetuaKelas(ketuaID.String())
 		if err != nil {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, "Ketua Kelas not found", nil))
 		}

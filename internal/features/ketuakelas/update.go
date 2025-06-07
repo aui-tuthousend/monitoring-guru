@@ -2,7 +2,7 @@ package ketuakelas
 
 import (
 	e "monitoring-guru/entities"
-	"monitoring-guru/infrastructure/repositories/user"
+	"monitoring-guru/utils"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -57,7 +57,7 @@ func (h *KetuaKelasHandler) UpdateKetuaKelasHandler() fiber.Handler {
 		if req.Name != "" { existing.Name = req.Name }
 		if req.Nisn != "" { existing.Nisn = req.Nisn }
 		if req.Password != "" {
-			if hashed, _ := user.HashPassword(req.Password); hashed != "" {
+			if hashed, _ := utils.HashPassword(req.Password); hashed != "" {
 				existing.Password = hashed
 			}
 		}

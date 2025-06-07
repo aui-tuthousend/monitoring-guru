@@ -55,7 +55,7 @@ func (h *KetuaKelasHandler) RegisterKetua() fiber.Handler {
 		ketua := e.KetuaKelas{
 			ID:        uuid.New(),
 			Nisn:      req.NISN,
-			Name:      req.Name,
+			Name:      req.Nama,
 			Password:  hashed,
 			CreatedAt: time.Now(),
 			UpdatedAt: time.Now(),
