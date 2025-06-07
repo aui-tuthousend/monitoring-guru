@@ -10,8 +10,24 @@ type KetuaKelasService struct {
 	DB *gorm.DB
 }
 
+func (s *KetuaKelasService) ResponseKetuaKelasMapper(ketua *e.KetuaKelas) *KetuaKelasResponse {
+	return &KetuaKelasResponse{
+		ID: ketua.ID.String(),
+		Nisn: ketua.Nisn,
+		Name: ketua.Name,
+	}
+}
+
 func (s *KetuaKelasService) CreateKetuaKelas(ketua *e.KetuaKelas) error {
 	return s.DB.Create(ketua).Error
+}
+
+func (s *KetuaKelasService) GetAllKetuaKelas() ([]e.KetuaKelas, error) {
+	var ketuaKelas []e.KetuaKelas
+	if err := s.DB.Find(&ketuaKelas).Error; err != nil {
+		return nil, err
+	}
+	return ketuaKelas, nil
 }
 
 func (s *KetuaKelasService) GetKetuaKelas(id string) (*e.KetuaKelas, error) {
@@ -22,20 +38,13 @@ func (s *KetuaKelasService) GetKetuaKelas(id string) (*e.KetuaKelas, error) {
 	return &ketua, nil
 }
 
-func (s *KetuaKelasService) GetKetuaKelasByNISN(nip string) (*e.KetuaKelas, error) {
+
+func (s *KetuaKelasService) GetKetuaKelasByNISN(nisn string) (*e.KetuaKelas, error) {
 	var ketua e.KetuaKelas
-	if err := s.DB.Where("nisn = ?", nip).First(&ketua).Error; err != nil {
+	if err := s.DB.Where("nisn = ?", nisn).First(&ketua).Error; err != nil {
 		return nil, err
 	}
 	return &ketua, nil
-}
-
-func (s *KetuaKelasService) GetAllKetuaKelas() ([]KetuaKelasResponse, error) {
-	var ketuaKelas []KetuaKelasResponse
-	if err := s.DB.Find(&ketuaKelas).Error; err != nil {
-		return nil, err
-	}
-	return ketuaKelas, nil
 }
 
 func (s *KetuaKelasService) UpdateKetuaKelas(ketua *e.KetuaKelas) error {
@@ -49,4 +58,3 @@ func (s *KetuaKelasService) DeleteKetuaKelas(id string) error {
 	}
 	return s.DB.Delete(&ketua).Error
 }
-

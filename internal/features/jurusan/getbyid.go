@@ -11,7 +11,7 @@ import (
 // GetJurusanByID godoc
 // @Summary Get jurusan by ID
 // @Description Get jurusan details by ID
-// @Tags jurusan
+// @Tags Jurusan
 // @Security BearerAuth
 // @Accept json
 // @Produce json

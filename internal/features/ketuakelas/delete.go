@@ -2,14 +2,16 @@ package ketuakelas
 
 import (
 	"github.com/gofiber/fiber/v2"
+	e "monitoring-guru/entities"
 )
 
 // DeleteKetuaHandler godoc
 // @summary Delete Ketua Kelas
 // @Description	Delete Ketua Kelas by ID
-// @Tags			ketua kelas
+// @Tags			Ketua Kelas
 // @security BearerAuth
-// produce json
+// @Accept json
+// @Produce json
 // @Param			id	path		string	true	"Ketua Kelas ID"
 // @Success		200	{object}	map[string]string
 // @Failure		400	{object}	map[string]string
@@ -18,12 +20,9 @@ import (
 func (h *KetuaKelasHandler) DeleteKetuaHandler() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		id := c.Params("id")
-		if id == "" {
-			return c.Status(400).JSON(fiber.Map{"error": "ID tidak boleh kosong"})
-		}
 
 		if err := h.Service.DeleteKetuaKelas(id); err != nil {
-			return c.Status(500).JSON(fiber.Map{"error": "Gagal menghapus ketua kelas"})
+			return c.Status(500).JSON(e.ErrorResponse[any](500, "Internal server error", nil))
 		}
 
 		return c.JSON(fiber.Map{"message": "Berhasil menghapus ketua kelas"})

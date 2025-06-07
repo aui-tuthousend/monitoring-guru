@@ -2,7 +2,7 @@ package jurusan
 
 type JurusanResponse struct {
 	ID string `json:"id"`
-	Name      string `json:"name"`
+	Name      string `json:"nama"`
 }
 
 type JurusanResponseWrapper struct {

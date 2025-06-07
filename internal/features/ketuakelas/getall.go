@@ -8,8 +8,7 @@ import (
 
 // GetAllKetuaKelasHandler godoc
 // @Summary Get all ketua kelas
-// @Description Get all ketua kelas
-// @Tags ketua kelas
+// @Tags Ketua Kelas
 // @Security BearerAuth
 // @Produce json
 // @Success 200 {object} []KetuaKelasResponse
@@ -22,6 +21,11 @@ func (h *KetuaKelasHandler) GetAllKetuaKelasHandler() fiber.Handler {
 			return c.Status(500).JSON(e.ErrorResponse[any](500, "Internal server error", nil))
 		}
 
-		return c.JSON(e.SuccessResponse(&ketuaKelasList))
+		var responses []KetuaKelasResponse
+		for _, ketua := range ketuaKelasList {
+			responses = append(responses, *h.Service.ResponseKetuaKelasMapper(&ketua))
+		}
+
+		return c.JSON(e.SuccessResponse(&responses))
 	}
 }

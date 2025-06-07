@@ -13,7 +13,6 @@ import (
 
 // CreateKetuaRequestBody
 // @Description Create ketua request body
-// @Description NISN of the ketua
 type CreateKetuaRequest struct {
 	// @Description NISN of the ketua
 	// @Required true
@@ -22,7 +21,7 @@ type CreateKetuaRequest struct {
 	// @Description Name of the ketua
 	// @Required true
 	// @Example "John Doe"
-	Nama string `json:"nama"`
+	Name string `json:"nama"`
 	// @Description Password of the ketua
 	// @Required true
 	// @Example "password123"
@@ -31,25 +30,24 @@ type CreateKetuaRequest struct {
 }
 
 // CreateKetuaRequest godoc
-// @summary Create Ketua Kelas request body
-// @Description	Create Ketua Kelas baru request body
-// @Tags			ketua kelas
+// @summary Mendaftarkan ketua kelas baru
+// @Tags			Ketua Kelas
 // @Accept			json
-// @Produce		json
+// @Produce			json
 // @Param			request	body		CreateKetuaRequest	true	"Create ketua request body"
 // @Success		200		{object}	KetuaKelasResponseWrapper
-// @Failure		400		{object}	map[string]string
-// @Failure		500		{object}	map[string]string
-// @Router			/api/ketua-kelas/register [post]
+// @Failure		400		{object}	KetuaKelasResponseWrapper
+// @Failure		500		{object}	KetuaKelasResponseWrapper
+// @Router			/api/ketua-kelas [post]
 func (h *KetuaKelasHandler) RegisterKetua() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var req CreateKetuaRequest
 		if err := c.BodyParser(&req); err != nil {
-			return c.Status(400).JSON(fiber.Map{"error": "Invalid request"})
+			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
 		}
 
 		if strings.TrimSpace(req.NISN) == "" || len(req.Password) < 6 {
-			return c.Status(400).JSON(fiber.Map{"error": "Invalid input"})
+			return c.Status(400).JSON(e.ErrorResponse[any](400, "Invalid input", nil))
 		}
 
 		hashed, _ := user.HashPassword(req.Password)
@@ -57,7 +55,7 @@ func (h *KetuaKelasHandler) RegisterKetua() fiber.Handler {
 		ketua := e.KetuaKelas{
 			ID:        uuid.New(),
 			Nisn:      req.NISN,
-			Name:      req.Nama,
+			Name:      req.Name,
 			Password:  hashed,
 			CreatedAt: time.Now(),
 			UpdatedAt: time.Now(),
@@ -67,10 +65,6 @@ func (h *KetuaKelasHandler) RegisterKetua() fiber.Handler {
 			return c.Status(500).JSON(fiber.Map{"error": "Ketua dengan NISN tersebut sudah ada"})
 		}
 
-		return c.JSON(e.SuccessResponse(&KetuaKelasResponse{
-			ID:   ketua.ID,
-			Nisn: ketua.Nisn,
-			Name: ketua.Name,
-		}))
+		return c.JSON(e.SuccessResponse(h.Service.ResponseKetuaKelasMapper(&ketua)))
 	}
 }

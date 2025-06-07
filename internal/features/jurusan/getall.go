@@ -9,7 +9,7 @@ import (
 // GetAllJurusan godoc
 // @Summary Get all jurusan
 // @Description Get list of all jurusan
-// @Tags jurusan
+// @Tags Jurusan
 // @Security BearerAuth
 // @Accept json
 // @Produce json

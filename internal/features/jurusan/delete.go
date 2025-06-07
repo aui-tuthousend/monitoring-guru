@@ -10,7 +10,7 @@ import (
 // DeleteJurusan godoc
 // @Summary Delete jurusan
 // @Description Delete jurusan by ID
-// @Tags jurusan
+// @Tags Jurusan
 // @Security BearerAuth
 // @Accept json
 // @Produce json

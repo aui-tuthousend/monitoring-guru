@@ -9,13 +9,13 @@ import (
 )
 
 type CreateJurusanRequest struct {
-	Name string `json:"name" validate:"required"`
+	Name string `json:"nama" validate:"required"`
 }
 
 // CreateJurusan godoc
 // @Summary Create jurusan
 // @Description Create a new jurusan
-// @Tags jurusan
+// @Tags Jurusan
 // @Security BearerAuth
 // @Accept json
 // @Produce json

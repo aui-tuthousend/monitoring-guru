@@ -15,7 +15,7 @@ type UpdateJurusanRequest struct {
 // UpdateJurusan godoc
 // @Summary Update jurusan
 // @Description Update jurusan data
-// @Tags jurusan
+// @Tags Jurusan
 // @Security BearerAuth
 // @Accept json
 // @Produce json
