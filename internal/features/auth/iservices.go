@@ -56,7 +56,7 @@ func (a *AuthService) FindGuruByNip(nip string) (*e.Guru, error) {
 
 func (a *AuthService) FindKetuaKelasByNisn(nisn string) (*e.KetuaKelas, error) {
 	var ketuaKelas e.KetuaKelas
-	result := a.DB.Raw("SELECT * FROM ketuakelas WHERE nisn = ? LIMIT 1", nisn).Scan(&ketuaKelas)
+	result := a.DB.Raw("SELECT * FROM ketua_kelas WHERE nisn = ? LIMIT 1", nisn).Scan(&ketuaKelas)
 	if result.Error != nil {
 		return nil, result.Error
 	}
