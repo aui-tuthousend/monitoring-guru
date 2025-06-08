@@ -9,19 +9,23 @@ import (
 	"gorm.io/gorm"
 )
 
+var JadwalajarServ *JadwalajarService
+
 func RegisterRoutes(api fiber.Router, db *gorm.DB) {
 
-	service := JadwalajarService{DB: db}
-	guruService := guru.GuruService{DB: db}
-	mapelService := mapel.MapelService{DB: db}
-	kelasService := kelas.KelasService{DB: db}
-	handler := JadwalajarHandler{Service: &service, GuruService: &guruService, MapelService: &mapelService, KelasService: &kelasService}
+	JadwalajarServ = &JadwalajarService{DB: db}
+	handler := JadwalajarHandler{
+		Service: JadwalajarServ,
+		GuruService: guru.GuruServ,
+		MapelService: mapel.MapelServ,
+		KelasService: kelas.KelasServ,
+	}
 
 	group := api.Group("jadwalajar", middleware.JWTProtected())
 	group.Get("/", handler.GetAllJadwalAjar())
 	group.Post("/", handler.CreateJadwalAjar())
 	group.Get("/:id", handler.GetJadwalajarByID())
 	group.Put("/", handler.UpdateJadwalajar())
-	group.Get("/guru", handler.GetJadwalAjarByIDGuru())
-	group.Get("/kelas", handler.GetJadwalAjarByIDKelas())
+	group.Get("/guru/:id/:hari", handler.GetJadwalAjarByIDGuru())
+	group.Get("/kelas/:id/:hari", handler.GetJadwalAjarByIDKelas())
 }

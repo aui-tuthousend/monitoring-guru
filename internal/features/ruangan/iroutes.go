@@ -7,9 +7,12 @@ import (
 	"gorm.io/gorm"
 )
 
+var RuanganServ *RuanganService
+
 func RegisterRoutes(api fiber.Router, db *gorm.DB) {
-	service := RuanganService{DB: db}
-	handler := RuanganHandler{Service: &service}
+
+	RuanganServ = &RuanganService{DB: db}
+	handler := RuanganHandler{Service: RuanganServ}
 
 	group := api.Group("ruangan", middleware.JWTProtected())
 	group.Post("/", handler.CreateRuangan())

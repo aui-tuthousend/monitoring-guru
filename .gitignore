@@ -1,6 +1,6 @@
 # Binaries
 app/
-tmp/
+/tmp/
 *.log
 *.exe
 *.out

@@ -24,26 +24,30 @@ type GetJadwalAjarGuruRequest struct {
 // @summary Get Jadwalajar by ID Guru request body
 // @Description	Get Jadwalajar by ID Guru request body
 // @Tags			Jadwalajar
+// @Security     BearerAuth
 // @Accept			json
 // @Produce		json
-// @Param			request	body		GetJadwalAjarGuruRequest	true	"Get jadwalajar guru request body"
+// @Param			id path		string	true	"Guru ID"
+// @Param			hari path	string	false	"Hari"
 // @Success		200		{object}	[]JadwalajarResponse
 // @Failure		400		{object}	JadwalajarResponseWrapper
 // @Failure		500		{object}	JadwalajarResponseWrapper
-// @Router			/api/jadwalajar/guru [get]
+// @Router			/api/jadwalajar/guru/{id}/{hari} [get]
 func (h *JadwalajarHandler) GetJadwalAjarByIDGuru() fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		var req GetJadwalAjarGuruRequest
-		if err := c.BodyParser(&req); err != nil {
-			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
+		id := c.Params("id")
+		hari := c.Params("hari")
+
+		if hari == "%7Bhari%7D" {
+			hari = ""
 		}
 		
-		id, err := uuid.Parse(req.GuruID)
+		parsedId, err := uuid.Parse(id)
         if err != nil {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
         }
 
-		jadwalajarList, err := h.Service.GetJadwalajarByIDGuru(id.String(), req.Hari)
+		jadwalajarList, err := h.Service.GetJadwalajarByIDGuru(parsedId, hari)
         if err != nil {
 			return c.Status(500).JSON(e.ErrorResponse[any](500, err.Error(), nil))
         }

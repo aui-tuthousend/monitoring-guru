@@ -10,6 +10,7 @@ import (
 // @summary Get All Jadwalajar request body
 // @Description	Get All Jadwalajar request body
 // @Tags			Jadwalajar
+// @Security     BearerAuth
 // @Accept			json
 // @Produce		json
 // @Success		200		{object}	[]JadwalajarResponse

@@ -7,10 +7,12 @@ import (
 	"gorm.io/gorm"
 )
 
+var GuruServ *GuruService
+
 func RegisterRoutes(api fiber.Router, db *gorm.DB) {
 
-	service := GuruService{DB: db}
-	handler := GuruHandler{Service: &service}
+	GuruServ = &GuruService{DB: db}
+	handler := GuruHandler{Service: GuruServ}
 
 	guruGroup := api.Group("/guru")
 	guruGroup.Get("/", middleware.JWTProtected(), middleware.JWTRoleProtected("kepala_sekolah"), handler.GetAllGuruHandler())

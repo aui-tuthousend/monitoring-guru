@@ -7,10 +7,12 @@ import (
 	"gorm.io/gorm"
 )
 
+var JurusanServ *JurusanService
+
 func RegisterRoutes(api fiber.Router, db *gorm.DB) {
 
-	service := JurusanService{DB: db}
-	handler := JurusanHandler{Service: &service}
+	JurusanServ = &JurusanService{DB: db}
+	handler := JurusanHandler{Service: JurusanServ}
 
 	group := api.Group("jurusan", middleware.JWTProtected())
 	group.Post("/", handler.CreateJurusan())

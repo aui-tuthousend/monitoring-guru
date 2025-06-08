@@ -5,9 +5,11 @@ import (
 	"gorm.io/gorm"
 )
 
+var AuthServ *AuthService
+
 func RegisterRoutes(api fiber.Router, db *gorm.DB) {
-	service := AuthService{DB: db}
-	handler := AuthHandler{Service: &service}
+	AuthServ = &AuthService{DB: db}
+	handler := AuthHandler{Service: AuthServ}
 	// if all routes should be authenticated
 	// group := api.Group("/routes", middleware.JWTProtected())
 	group := api.Group("/auth")

@@ -1,8 +1,8 @@
 package jadwalajar
 
 import (
-	"fmt"
 	e "monitoring-guru/entities"
+	"monitoring-guru/utils"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -49,6 +49,7 @@ type UpdateJadwalAjarRequest struct {
 // @summary Update Jadwalajar request body
 // @Description	Update Jadwalajar baru request body
 // @Tags			Jadwalajar
+// @Security     BearerAuth
 // @Accept			json
 // @Produce		json
 // @Param			request	body		UpdateJadwalAjarRequest	true	"Update jadwalajar request body"
@@ -63,32 +64,35 @@ func (h *JadwalajarHandler) UpdateJadwalajar() fiber.Handler {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
 		}
 
-		parseUUID := func(idStr, field string) (uuid.UUID, error) {
-			uid, err := uuid.Parse(idStr)
-			if err != nil {
-				return uuid.Nil, fmt.Errorf("%s tidak valid: %w", field, err)
-			}
-			return uid, nil
+		jadwalID, _ := utils.ParseUUID(req.ID)
+		guruID, _ := utils.ParseUUID(req.GuruID)
+		mapelID, _ := utils.ParseUUID(req.MapelID)
+		kelasID, _ := utils.ParseUUID(req.KelasID)
+
+		if jadwalID == uuid.Nil || guruID == uuid.Nil || mapelID == uuid.Nil || kelasID == uuid.Nil {
+			return c.Status(400).JSON(e.ErrorResponse[any](400, "Invalid ID format", nil))
 		}
 
-		jadwalID, err := parseUUID(req.ID, "ID")
+		guru, err := h.GuruService.GetGuru(guruID.String())
 		if err != nil {
-			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
+			return c.Status(400).JSON(e.ErrorResponse[any](400, "Guru not found", nil))
 		}
 
-		guruID, err := parseUUID(req.GuruID, "GuruID")
+		mapel, err := h.MapelService.GetMapelByID(mapelID)
 		if err != nil {
-			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
+			return c.Status(400).JSON(e.ErrorResponse[any](400, "Mapel not found", nil))
 		}
 
-		mapelID, err := parseUUID(req.MapelID, "MapelID")
+		kelas, err := h.KelasService.GetKelasByID(kelasID)
 		if err != nil {
-			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
+			return c.Status(400).JSON(e.ErrorResponse[any](400, "Kelas not found", nil))
 		}
 
-		kelasID, err := parseUUID(req.KelasID, "KelasID")
-		if err != nil {
-			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
+		jamMulai, _ := utils.ParseJamString(req.JamMulai)
+		jamSelesai, _ := utils.ParseJamString(req.JamSelesai)
+
+		if jamMulai.IsZero() || jamSelesai.IsZero() {
+			return c.Status(400).JSON(e.ErrorResponse[any](400, "Invalid time format", nil))
 		}
 
 		jadwalajar := e.JadwalAjar{
@@ -106,6 +110,14 @@ func (h *JadwalajarHandler) UpdateJadwalajar() fiber.Handler {
 			return c.Status(500).JSON(e.ErrorResponse[any](500, err.Error(), nil))
 		}
 
-		return c.JSON(e.SuccessResponse(&jadwalajar))
+		return c.JSON(e.SuccessResponse(&JadwalajarResponse{
+			ID:         jadwalajar.ID.String(),
+			Guru:       guru.Name,
+			Mapel:      mapel.Name,
+			Kelas:      kelas.Name,
+			Hari:       req.Hari,
+			JamMulai:   req.JamMulai,
+			JamSelesai: req.JamSelesai,
+		}))
 	}
 }

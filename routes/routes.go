@@ -17,12 +17,12 @@ import (
 func SetupRoutes(app *fiber.App, db *gorm.DB) {
 	api := app.Group("/api")
 
+	jurusan.RegisterRoutes(api, db)
 	auth.RegisterRoutes(api, db)
 	guru.RegisterRoutes(api, db)
 	ketua.RegisterRoutes(api, db)
 	kelas.RegisterRoutes(api, db)
-	ruangan.RegisterRoutes(api, db)
 	mapel.RegisterRoutes(api, db)
-	jurusan.RegisterRoutes(api, db)
 	jadwalajar.RegisterRoutes(api, db)
+	ruangan.RegisterRoutes(api, db)
 }

@@ -12,6 +12,7 @@ import (
 // @Summary Get jadwalajar by ID
 // @Description Get a jadwalajar by its ID
 // @Tags Jadwalajar
+// @Security     BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Jadwalajar ID"

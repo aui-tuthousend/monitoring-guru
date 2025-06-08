@@ -4,7 +4,8 @@ import (
     "os"
     "log"
 
-	e "monitoring-guru/entities"
+	// e "monitoring-guru/entities"
+	"monitoring-guru/docs"
     
     "gorm.io/driver/postgres"
     "gorm.io/gorm"
@@ -22,7 +23,19 @@ func Connect() *gorm.DB {
     }
 
     if os.Getenv("ENV") != "production" {
-	    db.AutoMigrate(&e.Guru{}, &e.Jurusan{}, &e.KetuaKelas{}, &e.Ruangan{}, &e.Mapel{}, &e.Kelas{}) //only call when in local
+		docs.SwaggerInfo.Host = "127.0.0.1:8080"
+	    // db.AutoMigrate(
+        //     &e.Guru{}, 
+        //     &e.Jurusan{}, 
+        //     &e.KetuaKelas{}, 
+        //     &e.Ruangan{}, 
+        //     &e.Mapel{}, 
+        //     &e.Kelas{}, 
+        //     &e.JadwalAjar{},
+        // ) //only call when in local
+    } else {
+		docs.SwaggerInfo.Host = "monitoring-guru-aui-tuthousend6429-iwkswixv.leapcell.dev" // change later
+
     }
     return db
 }

@@ -322,6 +322,11 @@ const docTemplate = `{
         },
         "/api/jadwalajar": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get All Jadwalajar request body",
                 "consumes": [
                     "application/json"
@@ -352,6 +357,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update Jadwalajar baru request body",
                 "consumes": [
                     "application/json"
@@ -396,6 +406,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create Jadwalajar baru request body",
                 "consumes": [
                     "application/json"
@@ -440,8 +455,13 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/jadwalajar/guru": {
+        "/api/jadwalajar/guru/{id}/{hari}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get Jadwalajar by ID Guru request body",
                 "consumes": [
                     "application/json"
@@ -455,13 +475,17 @@ const docTemplate = `{
                 "summary": "Get Jadwalajar by ID Guru request body",
                 "parameters": [
                     {
-                        "description": "Get jadwalajar guru request body",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/jadwalajar.GetJadwalAjarGuruRequest"
-                        }
+                        "type": "string",
+                        "description": "Guru ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Hari",
+                        "name": "hari",
+                        "in": "path"
                     }
                 ],
                 "responses": {
@@ -489,8 +513,13 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/jadwalajar/kelas": {
+        "/api/jadwalajar/kelas/{id}/{hari}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get Jadwalajar by ID Kelas request body",
                 "consumes": [
                     "application/json"
@@ -504,13 +533,17 @@ const docTemplate = `{
                 "summary": "Get Jadwalajar by ID Kelas request body",
                 "parameters": [
                     {
-                        "description": "Get jadwalajar kelas request body",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/jadwalajar.GetJadwalAjarKelasRequest"
-                        }
+                        "type": "string",
+                        "description": "Kelas ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Hari",
+                        "name": "hari",
+                        "in": "path"
                     }
                 ],
                 "responses": {
@@ -540,6 +573,11 @@ const docTemplate = `{
         },
         "/api/jadwalajar/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get a jadwalajar by its ID",
                 "consumes": [
                     "application/json"
@@ -597,7 +635,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "jurusan"
+                    "Jurusan"
                 ],
                 "summary": "Get all jurusan",
                 "responses": {
@@ -632,7 +670,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "jurusan"
+                    "Jurusan"
                 ],
                 "summary": "Update jurusan",
                 "parameters": [
@@ -681,7 +719,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "jurusan"
+                    "Jurusan"
                 ],
                 "summary": "Create jurusan",
                 "parameters": [
@@ -732,7 +770,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "jurusan"
+                    "Jurusan"
                 ],
                 "summary": "Get jurusan by ID",
                 "parameters": [
@@ -779,7 +817,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "jurusan"
+                    "Jurusan"
                 ],
                 "summary": "Delete jurusan",
                 "parameters": [
@@ -1015,7 +1053,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "kelas"
+                    "Kelas"
                 ],
                 "summary": "Get kelas by ketua or wakil",
                 "parameters": [
@@ -1134,12 +1172,11 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
-                "description": "Get all ketua kelas",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "ketua kelas"
+                    "Ketua Kelas"
                 ],
                 "summary": "Get all ketua kelas",
                 "responses": {
@@ -1159,11 +1196,14 @@ const docTemplate = `{
                         }
                     }
                 }
-            }
-        },
-        "/api/ketua-kelas/register": {
-            "post": {
-                "description": "Create Ketua Kelas baru request body",
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update Ketua Kelas by ID, only fields provided will be updated",
                 "consumes": [
                     "application/json"
                 ],
@@ -1171,9 +1211,58 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "ketua kelas"
+                    "Ketua Kelas"
                 ],
-                "summary": "Create Ketua Kelas request body",
+                "summary": "Update Ketua Kelas",
+                "parameters": [
+                    {
+                        "description": "Ketua Kelas update data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ketuakelas.UpdateKetuaKelasRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ketuakelas.KetuaKelasResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ketuakelas.KetuaKelasResponseWrapper"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ketuakelas.KetuaKelasResponseWrapper"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ketuakelas.KetuaKelasResponseWrapper"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Ketua Kelas"
+                ],
+                "summary": "Mendaftarkan ketua kelas baru",
                 "parameters": [
                     {
                         "description": "Create ketua request body",
@@ -1195,19 +1284,43 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/ketuakelas.KetuaKelasResponseWrapper"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/ketuakelas.KetuaKelasResponseWrapper"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/ketua-kelas/profile": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Ketua Kelas"
+                ],
+                "summary": "Get Logged user profile",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ketuakelas.KetuaKelasResponseWrapper"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ketuakelas.KetuaKelasResponseWrapper"
                         }
                     }
                 }
@@ -1221,8 +1334,14 @@ const docTemplate = `{
                     }
                 ],
                 "description": "Delete Ketua Kelas by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
                 "tags": [
-                    "ketua kelas"
+                    "Ketua Kelas"
                 ],
                 "summary": "Delete Ketua Kelas",
                 "parameters": [
@@ -1862,39 +1981,11 @@ const docTemplate = `{
                 }
             }
         },
-        "jadwalajar.GetJadwalAjarGuruRequest": {
-            "description": "Get jadwalajar by ID Guru request body",
-            "type": "object",
-            "properties": {
-                "guru_id": {
-                    "description": "@Description Guru ID of the jadwalajar\n@Required true\n@Example \"123456789\"",
-                    "type": "string"
-                },
-                "hari": {
-                    "description": "@Description Hari of the jadwalajar\n@Required true\n@Example \"Senin\"",
-                    "type": "string"
-                }
-            }
-        },
-        "jadwalajar.GetJadwalAjarKelasRequest": {
-            "description": "Get jadwalajar by ID Kelas request body",
-            "type": "object",
-            "properties": {
-                "hari": {
-                    "description": "@Description Hari of the jadwalajar\n@Required true\n@Example \"Senin\"",
-                    "type": "string"
-                },
-                "kelas_id": {
-                    "description": "@Description Kelas ID of the jadwalajar\n@Required true\n@Example \"123456789\"",
-                    "type": "string"
-                }
-            }
-        },
         "jadwalajar.JadwalajarResponse": {
             "type": "object",
             "properties": {
                 "guru": {
-                    "$ref": "#/definitions/guru.GuruResponse"
+                    "type": "string"
                 },
                 "hari": {
                     "type": "string"
@@ -1909,13 +2000,10 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "kelas": {
-                    "$ref": "#/definitions/kelas.KelasResponse"
-                },
-                "last_editor": {
                     "type": "string"
                 },
                 "mapel": {
-                    "$ref": "#/definitions/mapel.MapelResponse"
+                    "type": "string"
                 }
             }
         },
@@ -1974,10 +2062,10 @@ const docTemplate = `{
         "jurusan.CreateJurusanRequest": {
             "type": "object",
             "required": [
-                "name"
+                "nama"
             ],
             "properties": {
-                "name": {
+                "nama": {
                     "type": "string"
                 }
             }
@@ -1988,7 +2076,7 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "name": {
+                "nama": {
                     "type": "string"
                 }
             }
@@ -2092,10 +2180,10 @@ const docTemplate = `{
             }
         },
         "ketuakelas.CreateKetuaRequest": {
-            "description": "Create ketua request body NISN of the ketua",
+            "description": "Create ketua request body",
             "type": "object",
             "properties": {
-                "name": {
+                "nama": {
                     "description": "@Description Name of the ketua\n@Required true\n@Example \"John Doe\"",
                     "type": "string"
                 },
@@ -2113,15 +2201,13 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "id": {
-                    "description": "@Description ID of the ketua\n@Required true\n@Example \"123e4567-e89b-12d3-a456-426614174000\"",
                     "type": "string"
                 },
-                "name": {
+                "nama": {
                     "description": "@Description Name of the ketua\n@Required true\n@Example \"John Doe\"",
                     "type": "string"
                 },
                 "nisn": {
-                    "description": "@Description NISN of the ketua\n@Required true\n@Example \"123456789\"",
                     "type": "string"
                 }
             }
@@ -2136,6 +2222,23 @@ const docTemplate = `{
                     "$ref": "#/definitions/ketuakelas.KetuaKelasResponse"
                 },
                 "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "ketuakelas.UpdateKetuaKelasRequest": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "nama": {
+                    "type": "string"
+                },
+                "nisn": {
+                    "type": "string"
+                },
+                "password": {
                     "type": "string"
                 }
             }

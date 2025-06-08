@@ -9,11 +9,12 @@ import (
 	"gorm.io/gorm"
 )
 
+var KelasServ *KelasService
+
 func RegisterRoutes(api fiber.Router, db *gorm.DB) {
-	service := KelasService{DB: db}
-	ketuaKelasService := ketuakelas.KetuaKelasService{DB: db}
-	jurusanService := jurusan.JurusanService{DB: db}
-	handler := KelasHandler{Service: &service, KetuaKelasService: &ketuaKelasService, JurusanService: &jurusanService}
+
+	KelasServ = &KelasService{DB: db}
+	handler := KelasHandler{Service: KelasServ, KetuaKelasService: ketuakelas.KetuaKelasServ, JurusanService: jurusan.JurusanServ}
 
 	group := api.Group("kelas", middleware.JWTProtected())
 	group.Post("/", handler.CreateKelas())

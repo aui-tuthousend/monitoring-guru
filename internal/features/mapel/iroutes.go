@@ -8,10 +8,11 @@ import (
 	"gorm.io/gorm"
 )
 
+var MapelServ *MapelService
+
 func RegisterRoutes(api fiber.Router, db *gorm.DB) {
-	service := MapelService{DB: db}
-	jurusanService := jurusan.JurusanService{DB: db}
-	handler := MapelHandler{Service: &service, JurusanService: &jurusanService}
+	MapelServ = &MapelService{DB: db}
+	handler := MapelHandler{Service: MapelServ, JurusanService: jurusan.JurusanServ}
 
 	group := api.Group("mapel", middleware.JWTProtected())
 	group.Post("/", handler.CreateMapel())

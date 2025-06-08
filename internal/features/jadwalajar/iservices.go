@@ -1,7 +1,11 @@
 package jadwalajar
 
 import (
+	"encoding/json"
+	"fmt"
 	e "monitoring-guru/entities"
+
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -31,9 +35,9 @@ func (s *JadwalajarService) GetJadwalajarByID(id string) (*JadwalajarResponse, e
 			j.jam_mulai,
 			j.jam_selesai,
 			j.last_editor
-		FROM jadwal_ajar j
-		JOIN guru g ON g.id = j.guru_id
-		JOIN mapel m ON m.id = j.mapel_id
+		FROM jadwal_ajars j
+		JOIN gurus g ON g.id = j.guru_id
+		JOIN mapels m ON m.id = j.mapel_id
 		JOIN kelas k ON k.id = j.kelas_id
 		WHERE j.id = ?
 	`
@@ -45,30 +49,80 @@ func (s *JadwalajarService) GetJadwalajarByID(id string) (*JadwalajarResponse, e
 	return &response, nil
 }
 
-
-
 func (s *JadwalajarService) GetAllJadwalajar() ([]JadwalajarResponse, error) {
-	var jadwalajarList []JadwalajarResponse
-	if err := s.DB.
-		Preload("Mapel").
-		Preload("Guru").
-		// Preload("Kelas").
-		Find(&jadwalajarList).Error; err != nil {
+	var jsonData *string
+	query := `
+		SELECT json_agg(
+			json_build_object(
+				'id', j.id,
+				'guru', g.name,
+				'mapel', m.name,
+				'kelas', k.name,
+				'hari', j.hari,
+				'jam_mulai', j.jam_mulai,
+				'jam_selesai', j.jam_selesai
+			)
+		)
+		FROM jadwal_ajars j
+		JOIN gurus g ON g.id = j.guru_id::uuid
+		JOIN mapels m ON m.id = j.mapel_id::uuid
+		JOIN kelas k ON k.id = j.kelas_id::uuid
+	`
+	if err := s.DB.Raw(query).Scan(&jsonData).Error; err != nil {
+		return nil, err
+	}
+	jadwalajarList := []JadwalajarResponse{}
+	if jsonData == nil {
+		return jadwalajarList, nil
+	}
+	if err := json.Unmarshal([]byte(*jsonData), &jadwalajarList); err != nil {
 		return nil, err
 	}
 	return jadwalajarList, nil
 }
 
+func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]JadwalajarResponse, error) {
+	var jsonData *string
 
-func (s *JadwalajarService) GetJadwalajarByIDGuru(id string, hari string) ([]JadwalajarResponse, error) {
-	var jadwalajarList []JadwalajarResponse
+	whereClause := "WHERE j.guru_id = ?::uuid"
+	args := []interface{}{id}
 
-	if err := s.DB.
-		Preload("Mapel").
-		Preload("Guru").
-		Preload("Kelas").
-		Where("guru_id = ? AND hari = ?", id, hari).
-		Find(&jadwalajarList).Error; err != nil {
+	if hari != "" {
+		whereClause += " AND j.hari = ?"
+		args = append(args, hari)
+	}
+
+	query := fmt.Sprintf(`
+		SELECT json_agg(result)
+		FROM (
+			SELECT json_build_object(
+				'id', j.id,
+				'guru', g.name,
+				'mapel', m.name,
+				'kelas', k.name,
+				'hari', j.hari,
+				'jam_mulai', j.jam_mulai,
+				'jam_selesai', j.jam_selesai
+			) AS result
+			FROM jadwal_ajars j
+			JOIN gurus g ON g.id = j.guru_id::uuid
+			JOIN mapels m ON m.id = j.mapel_id::uuid
+			JOIN kelas k ON k.id = j.kelas_id::uuid
+			%s
+			ORDER BY j.jam_mulai
+		) sub;
+	`, whereClause)
+
+	if err := s.DB.Raw(query, args...).Scan(&jsonData).Error; err != nil {
+		return nil, err
+	}
+
+	jadwalajarList := []JadwalajarResponse{}
+	if jsonData == nil {
+		return jadwalajarList, nil
+	}
+
+	if err := json.Unmarshal([]byte(*jsonData), &jadwalajarList); err != nil {
 		return nil, err
 	}
 
@@ -76,15 +130,49 @@ func (s *JadwalajarService) GetJadwalajarByIDGuru(id string, hari string) ([]Jad
 }
 
 
-func (s *JadwalajarService) GetJadwalajarByIDKelas(id string, hari string) ([]JadwalajarResponse, error) {
-	var jadwalajarList []JadwalajarResponse
 
-	if err := s.DB.
-		Preload("Mapel").
-		Preload("Guru").
-		// Preload("Kelas").
-		Where("kelas_id = ? AND hari = ?", id, hari).
-		Find(&jadwalajarList).Error; err != nil {
+func (s *JadwalajarService) GetJadwalajarByIDKelas(id uuid.UUID, hari string) ([]JadwalajarResponse, error) {
+	var jsonData *string
+
+	whereClause := "WHERE j.kelas_id = ?::uuid"
+	args := []interface{}{id}
+
+	if hari != "" {
+		whereClause += " AND j.hari = ?"
+		args = append(args, hari)
+	}
+
+	query := fmt.Sprintf(`
+		SELECT json_agg(result)
+		FROM (
+			SELECT json_build_object(
+				'id', j.id,
+				'guru', g.name,
+				'mapel', m.name,
+				'kelas', k.name,
+				'hari', j.hari,
+				'jam_mulai', j.jam_mulai,
+				'jam_selesai', j.jam_selesai
+			) AS result
+			FROM jadwal_ajars j
+			JOIN gurus g ON g.id = j.guru_id::uuid
+			JOIN mapels m ON m.id = j.mapel_id::uuid
+			JOIN kelas k ON k.id = j.kelas_id::uuid
+			%s
+			ORDER BY j.jam_mulai
+		) sub;
+	`, whereClause)
+
+	if err := s.DB.Raw(query, args...).Scan(&jsonData).Error; err != nil {
+		return nil, err
+	}
+
+	jadwalajarList := []JadwalajarResponse{}
+	if jsonData == nil {
+		return jadwalajarList, nil
+	}
+
+	if err := json.Unmarshal([]byte(*jsonData), &jadwalajarList); err != nil {
 		return nil, err
 	}
 

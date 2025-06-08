@@ -7,10 +7,12 @@ import (
 	"gorm.io/gorm"
 )
 
+var KetuaKelasServ *KetuaKelasService
+
 func RegisterRoutes(api fiber.Router, db *gorm.DB) {
 	
-	service := KetuaKelasService{DB: db}
-	handler := KetuaKelasHandler{Service: &service}
+	KetuaKelasServ = &KetuaKelasService{DB: db}
+	handler := KetuaKelasHandler{Service: KetuaKelasServ}
 	
 	ketuaGroup := api.Group("/ketua-kelas")
 	ketuaGroup.Post("/", handler.RegisterKetua())	

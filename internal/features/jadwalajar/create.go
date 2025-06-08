@@ -44,6 +44,7 @@ type CreateJadwalAjarRequest struct {
 // @summary Create Jadwalajar request body
 // @Description	Create Jadwalajar baru request body
 // @Tags			Jadwalajar
+// @Security     BearerAuth
 // @Accept			json
 // @Produce		json
 // @Param			request	body		CreateJadwalAjarRequest	true	"Create jadwalajar request body"
@@ -81,6 +82,13 @@ func (h *JadwalajarHandler) CreateJadwalAjar() fiber.Handler {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, "Kelas not found", nil))
 		}
 
+		jamMulai, _ := utils.ParseJamString(req.JamMulai)
+		jamSelesai, _ := utils.ParseJamString(req.JamSelesai)
+
+		if jamMulai.IsZero() || jamSelesai.IsZero() {
+			return c.Status(400).JSON(e.ErrorResponse[any](400, "Invalid time format", nil))
+		}
+
 		jadwalajar := e.JadwalAjar{
 			ID:         uuid.New(),
 			GuruID:     guruID,
@@ -98,12 +106,12 @@ func (h *JadwalajarHandler) CreateJadwalAjar() fiber.Handler {
 
 		return c.JSON(e.SuccessResponse(&JadwalajarResponse{
 			ID:         jadwalajar.ID.String(),
-			Guru:       h.GuruService.ResponseGuruMapper(guru),
-			Mapel:      mapel,
-			Kelas:      kelas,
-			JamMulai:   jadwalajar.JamMulai,
-			JamSelesai: jadwalajar.JamSelesai,
-			LastEditor: jadwalajar.LastEditor,
+			Guru:       guru.Name,
+			Mapel:      mapel.Name,
+			Kelas:      kelas.Name,
+			Hari:       req.Hari,
+			JamMulai:   req.JamMulai,
+			JamSelesai: req.JamSelesai,
 		}))
 	}
 }
