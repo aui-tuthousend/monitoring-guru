@@ -34,8 +34,7 @@ func Connect() *gorm.DB {
         //     &e.JadwalAjar{},
         // ) //only call when in local
     } else {
-		docs.SwaggerInfo.Host = "monitoring-guru-aui-tuthousend6429-iwkswixv.leapcell.dev" // change later
-
+		docs.SwaggerInfo.Host = "monitoring.aui-tuthousend.cyou" // change later
     }
     return db
 }
