@@ -1,6 +1,9 @@
 package auth
 
 import (
+	"monitoring-guru/internal/features/guru"
+	"monitoring-guru/internal/features/ketuakelas"
+
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -58,7 +61,12 @@ func (h *AuthHandler) LoginGuru() fiber.Handler {
 			return c.Status(400).JSON(fiber.Map{"error": "Invalid credentials"})
 		}
 		token, _ := h.Service.GenerateJWT(user.ID, user.Jabatan)
-		return c.JSON(AuthResponse{Token: token})
+		return c.JSON(AuthGuruResponse{Token: token, UserData: &guru.GuruResponse{
+			ID:       user.ID.String(),
+			Nip:      user.Nip,
+			Name:     user.Name,
+			Jabatan:  user.Jabatan,
+		}})
 	}
 }
 
@@ -88,6 +96,10 @@ func (h *AuthHandler) LoginKetuaKelas() fiber.Handler {
 			return c.Status(400).JSON(fiber.Map{"error": "Invalid credentials"})
 		}
 		token, _ := h.Service.GenerateJWT(user.ID, "ketua_kelas")
-		return c.JSON(AuthResponse{Token: token})
+		return c.JSON(AuthKetuaKelasResponse{Token: token, UserData: &ketuakelas.KetuaKelasResponse{
+			ID:       user.ID.String(),
+			Nisn:     user.Nisn,
+			Name:     user.Name,
+		}})
 	}
 }
