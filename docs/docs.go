@@ -42,7 +42,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/auth.AuthResponse"
+                            "$ref": "#/definitions/auth.AuthGuruResponse"
                         }
                     },
                     "400": {
@@ -93,7 +93,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/auth.AuthResponse"
+                            "$ref": "#/definitions/auth.AuthKetuaKelasResponse"
                         }
                     },
                     "400": {
@@ -1854,6 +1854,18 @@ const docTemplate = `{
                 }
             }
         },
+        "auth.AuthGuruResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                },
+                "user_data": {
+                    "$ref": "#/definitions/guru.GuruResponse"
+                }
+            }
+        },
         "auth.AuthKetuaKelasRequest": {
             "description": "Login ketua kelas request body",
             "type": "object",
@@ -1868,12 +1880,15 @@ const docTemplate = `{
                 }
             }
         },
-        "auth.AuthResponse": {
+        "auth.AuthKetuaKelasResponse": {
             "type": "object",
             "properties": {
                 "token": {
                     "type": "string",
                     "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                },
+                "user_data": {
+                    "$ref": "#/definitions/ketuakelas.KetuaKelasResponse"
                 }
             }
         },

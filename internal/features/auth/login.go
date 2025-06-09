@@ -43,7 +43,7 @@ type AuthKetuaKelasRequest struct {
 //	@Accept			json
 //	@Produce		json
 //	@Param			request	body		AuthGuruRequest	true	"Login Guru request body"
-//	@Success		200		{object}	AuthResponse
+//	@Success		200		{object}	AuthGuruResponse
 //	@Failure		400		{object}	map[string]string
 //	@Failure		500		{object}	map[string]string
 //	@Router			/api/auth/login-guru [post]
@@ -78,7 +78,7 @@ func (h *AuthHandler) LoginGuru() fiber.Handler {
 //	@Accept			json
 //	@Produce		json
 //	@Param			request	body		AuthKetuaKelasRequest	true	"Create user request body"
-//	@Success		200		{object}	AuthResponse
+//	@Success		200		{object}	AuthKetuaKelasResponse
 //	@Failure		400		{object}	map[string]string
 //	@Failure		500		{object}	map[string]string
 //	@Router			/api/auth/login-ketua-kelas [post]
