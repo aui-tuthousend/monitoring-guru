@@ -33,18 +33,9 @@ func main() {
 	app.Use(logger.New())
 	// app.Use(cors.New())
 	app.Use(cors.New(cors.Config{
-		// AllowOrigins: "https://gofiber.io, https://gofiber.net", // only FE domain allowed (soon)
+		AllowOrigins: "http://localhost:3000", // only FE domain allowed (soon)
 		AllowHeaders: "Content-Type, Authorization",           // allowed header
 	}))
-
-	app.Use(func(c *fiber.Ctx) error {
-		err := c.Next()
-		c.Response().Header.Del("X-Request-ID")
-		c.Response().Header.Del("Server")
-		c.Response().Header.Del("Access-Control-Allow-Origin")
-		return err
-	})
-	
 	
 	db := database.Connect()
 	routes.SetupRoutes(app, db)
