@@ -13,6 +13,11 @@ type KelasResponse struct {
 	IsActive   bool                          `json:"is_active"`
 }
 
+type KelasMiniResponse struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
 type KelasResponseWrapper struct {
 	Code    int           `json:"code"`
 	Message string        `json:"message"`

@@ -8,6 +8,11 @@ type MapelResponse struct {
 	Name    string                  `json:"name"`
 }
 
+type MapelMiniResponse struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
 type MapelResponseWrapper struct {
 	Code    int           `json:"code"`
 	Message string        `json:"message"`

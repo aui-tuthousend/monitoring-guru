@@ -28,10 +28,19 @@ func (s *JadwalajarService) GetJadwalajarByID(id string) (*JadwalajarResponse, e
 	query := `
 		SELECT 
 			j.id,
-			g.nama AS guru,
-			m.nama AS mapel,
-			k.nama AS kelas,
 			j.hari,
+			'guru', json_build_object(
+				'id', g.id,
+				'name', g.name
+			),
+			'mapel', json_build_object(
+				'id', m.id,
+				'name', m.name
+			),
+			'kelas', json_build_object(
+				'id', k.id,
+				'name', k.name
+			),
 			j.jam_mulai,
 			j.jam_selesai,
 			j.last_editor

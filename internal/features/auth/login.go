@@ -55,10 +55,10 @@ func (h *AuthHandler) LoginGuru() fiber.Handler {
 		}
 		user, err := h.Service.FindGuruByNip(req.NIP)
 		if err != nil {
-			return c.Status(500).JSON(fiber.Map{"error": "Internal server error"})
+			return c.Status(500).JSON(fiber.Map{"error": "Nip not found"})
 		}
 		if user == nil || !h.Service.CheckPasswordHash(req.Password, user.Password) {
-			return c.Status(400).JSON(fiber.Map{"error": "Invalid credentials"})
+			return c.Status(400).JSON(fiber.Map{"error": "Invalid Password"})
 		}
 		token, _ := h.Service.GenerateJWT(user.ID, user.Jabatan)
 		return c.JSON(AuthGuruResponse{Token: token, UserData: &guru.GuruResponse{

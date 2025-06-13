@@ -2,6 +2,9 @@ package jadwalajar
 
 import (
 	e "monitoring-guru/entities"
+	"monitoring-guru/internal/features/guru"
+	"monitoring-guru/internal/features/kelas"
+	"monitoring-guru/internal/features/mapel"
 	"monitoring-guru/utils"
 
 	"github.com/gofiber/fiber/v2"
@@ -73,17 +76,17 @@ func (h *JadwalajarHandler) UpdateJadwalajar() fiber.Handler {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, "Invalid ID format", nil))
 		}
 
-		guru, err := h.GuruService.GetGuru(guruID.String())
+		guruResponse, err := h.GuruService.GetGuru(guruID.String())
 		if err != nil {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, "Guru not found", nil))
 		}
 
-		mapel, err := h.MapelService.GetMapelByID(mapelID)
+		mapelResponse, err := h.MapelService.GetMapelByID(mapelID)
 		if err != nil {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, "Mapel not found", nil))
 		}
 
-		kelas, err := h.KelasService.GetKelasByID(kelasID)
+		kelasResponse, err := h.KelasService.GetKelasByID(kelasID)
 		if err != nil {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, "Kelas not found", nil))
 		}
@@ -112,9 +115,18 @@ func (h *JadwalajarHandler) UpdateJadwalajar() fiber.Handler {
 
 		return c.JSON(e.SuccessResponse(&JadwalajarResponse{
 			ID:         jadwalajar.ID.String(),
-			Guru:       guru.Name,
-			Mapel:      mapel.Name,
-			Kelas:      kelas.Name,
+			Guru:       &guru.GuruMiniResponse{
+				ID:       guruResponse.ID.String(),
+				Name:     guruResponse.Name,
+			},
+			Mapel:      &mapel.MapelMiniResponse{
+				ID:       mapelResponse.ID,
+				Name:     mapelResponse.Name,
+			},
+			Kelas:      &kelas.KelasMiniResponse{
+				ID:       kelasResponse.ID,
+				Name:     kelasResponse.Name,
+			},
 			Hari:       req.Hari,
 			JamMulai:   req.JamMulai,
 			JamSelesai: req.JamSelesai,

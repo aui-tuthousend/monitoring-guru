@@ -1,11 +1,17 @@
 package jadwalajar
 
+import (
+	"monitoring-guru/internal/features/guru"
+	"monitoring-guru/internal/features/kelas"
+	"monitoring-guru/internal/features/mapel"
+)
+
 
 type JadwalajarResponse struct {
 	ID         string   `json:"id"`
-	Guru       string `json:"guru"`
-	Mapel      string   `json:"mapel"`
-	Kelas      string   `json:"kelas"`
+	Guru       *guru.GuruMiniResponse `json:"guru"`
+	Mapel      *mapel.MapelMiniResponse   `json:"mapel"`
+	Kelas      *kelas.KelasMiniResponse   `json:"kelas"`
 	Hari       string   `json:"hari"`
 	JamMulai   string   `json:"jam_mulai"`
 	JamSelesai string   `json:"jam_selesai"`

@@ -1914,6 +1914,17 @@ const docTemplate = `{
                 }
             }
         },
+        "guru.GuruMiniResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "guru.GuruResponse": {
             "type": "object",
             "properties": {
@@ -1923,7 +1934,7 @@ const docTemplate = `{
                 "jabatan": {
                     "type": "string"
                 },
-                "nama": {
+                "name": {
                     "type": "string"
                 },
                 "nip": {
@@ -2000,7 +2011,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "guru": {
-                    "type": "string"
+                    "$ref": "#/definitions/guru.GuruMiniResponse"
                 },
                 "hari": {
                     "type": "string"
@@ -2015,10 +2026,10 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "kelas": {
-                    "type": "string"
+                    "$ref": "#/definitions/kelas.KelasMiniResponse"
                 },
                 "mapel": {
-                    "type": "string"
+                    "$ref": "#/definitions/mapel.MapelMiniResponse"
                 }
             }
         },
@@ -2138,6 +2149,17 @@ const docTemplate = `{
                 },
                 "name": {
                     "description": "@Description Name of the kelas\n@Required true\n@Example \"XII RPL 1\"",
+                    "type": "string"
+                }
+            }
+        },
+        "kelas.KelasMiniResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
                     "type": "string"
                 }
             }
@@ -2268,6 +2290,17 @@ const docTemplate = `{
                 },
                 "name": {
                     "description": "@Description Nama mapel\n@Required true\n@Example \"Matematika\"",
+                    "type": "string"
+                }
+            }
+        },
+        "mapel.MapelMiniResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
                     "type": "string"
                 }
             }
