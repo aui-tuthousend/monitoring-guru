@@ -64,12 +64,22 @@ func (s *JadwalajarService) GetAllJadwalajar() ([]JadwalajarResponse, error) {
 		SELECT json_agg(
 			json_build_object(
 				'id', j.id,
-				'guru', g.name,
-				'mapel', m.name,
-				'kelas', k.name,
 				'hari', j.hari,
-				'jam_mulai', j.jam_mulai,
-				'jam_selesai', j.jam_selesai
+				'guru', json_build_object(
+					'id', g.id,
+					'name', g.name
+			),
+			'mapel', json_build_object(
+				'id', m.id,
+				'name', m.name
+			),
+			'kelas', json_build_object(
+				'id', k.id,
+				'name', k.name
+			),
+			'jam_mulai', j.jam_mulai,
+			'jam_selesai', j.jam_selesai,
+			'last_editor', j.last_editor
 			)
 		)
 		FROM jadwal_ajars j
@@ -106,9 +116,18 @@ func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]
 		FROM (
 			SELECT json_build_object(
 				'id', j.id,
-				'guru', g.name,
-				'mapel', m.name,
-				'kelas', k.name,
+				'guru', json_build_object(
+					'id', g.id,
+					'name', g.name
+				),
+				'mapel', json_build_object(
+					'id', m.id,
+					'name', m.name
+				),
+				'kelas', json_build_object(
+					'id', k.id,
+					'name', k.name
+				),
 				'hari', j.hari,
 				'jam_mulai', j.jam_mulai,
 				'jam_selesai', j.jam_selesai
@@ -156,9 +175,18 @@ func (s *JadwalajarService) GetJadwalajarByIDKelas(id uuid.UUID, hari string) ([
 		FROM (
 			SELECT json_build_object(
 				'id', j.id,
-				'guru', g.name,
-				'mapel', m.name,
-				'kelas', k.name,
+				'guru', json_build_object(
+					'id', g.id,
+					'name', g.name
+				),
+				'mapel', json_build_object(
+					'id', m.id,
+					'name', m.name
+				),
+				'kelas', json_build_object(
+					'id', k.id,
+					'name', k.name
+				),
 				'hari', j.hari,
 				'jam_mulai', j.jam_mulai,
 				'jam_selesai', j.jam_selesai

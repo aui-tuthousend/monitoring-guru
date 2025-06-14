@@ -19,7 +19,8 @@ type CreateRuanganRequest struct {
 // CreateRuangan godoc
 // @summary     Create Ruangan request body
 // @Description Buat ruangan baru
-// @Tags        ruangan
+// @Tags        Ruangan
+// @Security     BearerAuth
 // @Accept      json
 // @Produce     json
 // @Param       request body CreateRuanganRequest true "Create ruangan request body"
@@ -48,7 +49,7 @@ func (h *RuanganHandler) CreateRuangan() fiber.Handler {
 		}
 
 		res := RuanganResponse{
-			RuanganID: ruangan.ID.String(),
+			ID: ruangan.ID.String(),
 			Name:      ruangan.Name,
 		}
 

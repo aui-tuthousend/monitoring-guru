@@ -10,7 +10,8 @@ import (
 // DeleteRuangan godoc
 // @Summary Delete ruangan
 // @Description Hapus ruangan berdasarkan ID
-// @Tags ruangan
+// @Tags Ruangan
+// @Security     BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Ruangan ID"

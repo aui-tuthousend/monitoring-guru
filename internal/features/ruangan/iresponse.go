@@ -1,7 +1,7 @@
 package ruangan
 
 type RuanganResponse struct {
-	RuanganID string `json:"ruangan_id" gorm:"column:id"`
+	ID string `json:"id" gorm:"column:id"`
 	Name      string `json:"nama"`
 }
 

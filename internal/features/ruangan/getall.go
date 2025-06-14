@@ -9,7 +9,8 @@ import (
 // GetAllRuanganHandler godoc
 // @Summary Get all ruangan
 // @Description Get semua data ruangan
-// @Tags ruangan
+// @Tags Ruangan
+// @Security     BearerAuth
 // @Produce json
 // @Success 200 {object} []RuanganResponse
 // @Failure 500 {object} RuanganResponseWrapper

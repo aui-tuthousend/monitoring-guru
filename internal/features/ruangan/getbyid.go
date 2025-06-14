@@ -10,7 +10,8 @@ import (
 // GetRuanganByIDHandler godoc
 // @Summary Get ruangan by ID
 // @Description Ambil data ruangan berdasarkan ID
-// @Tags ruangan
+// @Tags Ruangan
+// @Security     BearerAuth
 // @Produce json
 // @Param id path string true "Ruangan ID"
 // @Success 200 {object} RuanganResponseWrapper

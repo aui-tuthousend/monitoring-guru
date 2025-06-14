@@ -24,7 +24,8 @@ type UpdateRuanganRequest struct {
 // UpdateRuanganHandler godoc
 // @Summary Update ruangan data
 // @Description Update a ruangan by ID
-// @Tags ruangan
+// @Tags Ruangan
+// @Security     BearerAuth
 // @Accept json
 // @Produce json
 // @Param request body UpdateRuanganRequest true "Update ruangan request body"

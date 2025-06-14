@@ -1626,12 +1626,17 @@ const docTemplate = `{
         },
         "/api/ruangan": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get semua data ruangan",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "ruangan"
+                    "Ruangan"
                 ],
                 "summary": "Get all ruangan",
                 "responses": {
@@ -1653,6 +1658,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a ruangan by ID",
                 "consumes": [
                     "application/json"
@@ -1661,7 +1671,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "ruangan"
+                    "Ruangan"
                 ],
                 "summary": "Update ruangan data",
                 "parameters": [
@@ -1703,6 +1713,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Buat ruangan baru",
                 "consumes": [
                     "application/json"
@@ -1711,7 +1726,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "ruangan"
+                    "Ruangan"
                 ],
                 "summary": "Create Ruangan request body",
                 "parameters": [
@@ -1755,12 +1770,17 @@ const docTemplate = `{
         },
         "/api/ruangan/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Ambil data ruangan berdasarkan ID",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "ruangan"
+                    "Ruangan"
                 ],
                 "summary": "Get ruangan by ID",
                 "parameters": [
@@ -1788,6 +1808,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Hapus ruangan berdasarkan ID",
                 "consumes": [
                     "application/json"
@@ -1796,7 +1821,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "ruangan"
+                    "Ruangan"
                 ],
                 "summary": "Delete ruangan",
                 "parameters": [
@@ -2364,10 +2389,10 @@ const docTemplate = `{
         "ruangan.RuanganResponse": {
             "type": "object",
             "properties": {
-                "nama": {
+                "id": {
                     "type": "string"
                 },
-                "ruangan_id": {
+                "nama": {
                     "type": "string"
                 }
             }
