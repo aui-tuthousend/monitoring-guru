@@ -21,7 +21,7 @@ type CreateGuruRequest struct {
 	// @Description Name of the guru
 	// @Required true
 	// @Example "John Doe"
-	Nama string `json:"nama"`
+	Name string `json:"name"`
 	// @Description Password of the guru
 	// @Required true
 	// @Example "password123"
@@ -62,7 +62,7 @@ func (h *GuruHandler) RegisterGuru() fiber.Handler {
 		guru := e.Guru{
 			ID:        uuid.New(),
 			Nip:       req.NIP,
-			Name:      req.Nama,
+			Name:      req.Name,
 			Password:  hashedPassword,
 			Jabatan:   req.Jabatan,
 			CreatedAt: time.Now(),
