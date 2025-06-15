@@ -38,7 +38,7 @@ func (h *JadwalajarHandler) GetJadwalAjarByIDGuru() fiber.Handler {
 		id := c.Params("id")
 		hari := c.Params("hari")
 
-		if hari == "%7Bhari%7D" {
+		if hari == "%7Bhari%7D" || hari == "undefined" || hari == "" {
 			hari = ""
 		}
 		

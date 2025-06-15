@@ -1326,6 +1326,39 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/ketua-kelas/unsigned": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Ketua Kelas"
+                ],
+                "summary": "Get all unsigned ketua kelas",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ketuakelas.KetuaKelasResponse"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ketuakelas.KetuaKelasResponseWrapper"
+                        }
+                    }
+                }
+            }
+        },
         "/api/ketua-kelas/{id}": {
             "delete": {
                 "security": [

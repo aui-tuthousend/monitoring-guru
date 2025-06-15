@@ -18,6 +18,7 @@ func RegisterRoutes(api fiber.Router, db *gorm.DB) {
 	ketuaGroup.Post("/", handler.RegisterKetua())	
 	ketuaGroup.Get("/", handler.GetAllKetuaKelasHandler())
 	ketuaGroup.Get("/profile", middleware.JWTProtected(), handler.GetProfileHandler())
+	ketuaGroup.Get("/unsigned", middleware.JWTProtected(), handler.GetUnsignedKetuaKelasHandler())
 	ketuaGroup.Put("/", middleware.JWTProtected(), handler.UpdateKetuaKelasHandler())
 	ketuaGroup.Delete("/:id", middleware.JWTProtected(), handler.DeleteKetuaHandler())
 }
