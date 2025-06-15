@@ -68,6 +68,11 @@ func (h *KelasHandler) CreateKelas() fiber.Handler {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, "Jurusan not found", nil))
 		}
 
+		ketuaKelas, err := h.KetuaKelasService.GetKetuaKelas(ketuaID.String())
+		if err != nil {
+			return c.Status(400).JSON(e.ErrorResponse[any](400, "Ketua Kelas not found", nil))
+		}
+
 		kelas := e.Kelas{
 			ID:        uuid.New(),
 			KetuaID:   ketuaID,
@@ -81,16 +86,16 @@ func (h *KelasHandler) CreateKelas() fiber.Handler {
 			return c.Status(500).JSON(e.ErrorResponse[any](500, err.Error(), nil))
 		}
 
-		ketua, err := h.KetuaKelasService.GetKetuaKelas(ketuaID.String())
-		if err != nil {
-			return c.Status(400).JSON(e.ErrorResponse[any](400, "Ketua Kelas not found", nil))
+		ketuaKelas.KelasID = kelas.ID
+		if err := h.KetuaKelasService.UpdateKetuaKelas(ketuaKelas); err != nil {
+			return c.Status(500).JSON(e.ErrorResponse[any](500, err.Error(), nil))
 		}
 
 		res := KelasResponse{
 			ID:   kelas.ID.String(),
 			Name: kelas.Name,
 			Jurusan: h.JurusanService.ResponseJurusanMapper(jurusan),
-			KetuaKelas: h.KetuaKelasService.ResponseKetuaKelasMapper(ketua),
+			KetuaKelas: h.KetuaKelasService.ResponseKetuaKelasMapper(ketuaKelas),
 			IsActive: kelas.IsActive,
 		}
 
