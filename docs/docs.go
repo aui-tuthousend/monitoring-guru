@@ -1925,7 +1925,7 @@ const docTemplate = `{
                     "description": "@Description Jabatan of the guru\n@Required true\n@Enum \"guru\" \"kepala_sekolah\"\n@Example \"guru\"",
                     "type": "string"
                 },
-                "nama": {
+                "name": {
                     "description": "@Description Name of the guru\n@Required true\n@Example \"John Doe\"",
                     "type": "string"
                 },
@@ -2127,7 +2127,7 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "nama": {
+                "name": {
                     "type": "string"
                 }
             }
@@ -2265,7 +2265,7 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "nama": {
+                "name": {
                     "description": "@Description Name of the ketua\n@Required true\n@Example \"John Doe\"",
                     "type": "string"
                 },
