@@ -21,7 +21,7 @@ type CreateKetuaRequest struct {
 	// @Description Name of the ketua
 	// @Required true
 	// @Example "John Doe"
-	Nama string `json:"nama"`
+	Name string `json:"name"`
 	// @Description Password of the ketua
 	// @Required true
 	// @Example "password123"
@@ -55,7 +55,7 @@ func (h *KetuaKelasHandler) RegisterKetua() fiber.Handler {
 		ketua := e.KetuaKelas{
 			ID:        uuid.New(),
 			Nisn:      req.NISN,
-			Name:      req.Nama,
+			Name:      req.Name,
 			Password:  hashed,
 			CreatedAt: time.Now(),
 			UpdatedAt: time.Now(),

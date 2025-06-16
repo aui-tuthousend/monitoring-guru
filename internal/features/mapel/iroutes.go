@@ -14,7 +14,7 @@ func RegisterRoutes(api fiber.Router, db *gorm.DB) {
 	MapelServ = &MapelService{DB: db}
 	handler := MapelHandler{Service: MapelServ, JurusanService: jurusan.JurusanServ}
 
-	group := api.Group("mapel", middleware.JWTProtected())
+	group := api.Group("mapel", middleware.JWTRoleProtected("kepala_sekolah"))
 	group.Post("/", handler.CreateMapel())
 	group.Get("/", handler.GetAllMapel())
 	group.Get("/:id", handler.GetMapelByID())

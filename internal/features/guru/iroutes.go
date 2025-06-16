@@ -15,9 +15,9 @@ func RegisterRoutes(api fiber.Router, db *gorm.DB) {
 	handler := GuruHandler{Service: GuruServ}
 
 	guruGroup := api.Group("/guru")
-	guruGroup.Get("/", middleware.JWTProtected(), middleware.JWTRoleProtected("kepala_sekolah"), handler.GetAllGuruHandler())
-	guruGroup.Put("/", middleware.JWTProtected(), handler.UpdateGuruHandler())
-	guruGroup.Post("/", handler.RegisterGuru())
+	guruGroup.Get("/", middleware.JWTRoleProtected("kepala_sekolah"), handler.GetAllGuruHandler())
+	guruGroup.Put("/", middleware.JWTRoleProtected("guru"), handler.UpdateGuruHandler())
+	guruGroup.Post("/", middleware.JWTRoleProtected("kepala_sekolah"), handler.RegisterGuru())
 	guruGroup.Get("/profile", middleware.JWTProtected(), handler.GetProfileHandler())
-	guruGroup.Delete("/:id", middleware.JWTProtected(), middleware.JWTRoleProtected("kepala_sekolah"), handler.DeleteGuruHandler())
+	guruGroup.Delete("/:id", middleware.JWTRoleProtected("kepala_sekolah"), handler.DeleteGuruHandler())
 }

@@ -21,7 +21,7 @@ func RegisterRoutes(api fiber.Router, db *gorm.DB) {
 		KelasService: kelas.KelasServ,
 	}
 
-	group := api.Group("jadwalajar", middleware.JWTProtected())
+	group := api.Group("jadwalajar", middleware.JWTRoleProtected("kepala_sekolah"))
 	group.Get("/", handler.GetAllJadwalAjar())
 	group.Post("/", handler.CreateJadwalAjar())
 	group.Get("/:id", handler.GetJadwalajarByID())

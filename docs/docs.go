@@ -2278,7 +2278,7 @@ const docTemplate = `{
             "description": "Create ketua request body",
             "type": "object",
             "properties": {
-                "nama": {
+                "name": {
                     "description": "@Description Name of the ketua\n@Required true\n@Example \"John Doe\"",
                     "type": "string"
                 },
@@ -2327,7 +2327,10 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "nama": {
+                "kelas_id": {
+                    "type": "string"
+                },
+                "name": {
                     "type": "string"
                 },
                 "nisn": {

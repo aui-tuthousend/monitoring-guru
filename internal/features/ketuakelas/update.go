@@ -10,9 +10,10 @@ import (
 
 type UpdateKetuaKelasRequest struct {
 	ID       string `json:"id"`
-	Name     string `json:"nama,omitempty"`
+	Name     string `json:"name,omitempty"`
 	Nisn     string `json:"nisn,omitempty"`
 	Password string `json:"password,omitempty"`
+	KelasId  string `json:"kelas_id,omitempty"`
 }
 
 // UpdateKetuaKelasHandler godoc
@@ -60,6 +61,18 @@ func (h *KetuaKelasHandler) UpdateKetuaKelasHandler() fiber.Handler {
 			if hashed, _ := utils.HashPassword(req.Password); hashed != "" {
 				existing.Password = hashed
 			}
+		}
+
+		if req.KelasId != "" {
+			kelasId, err := uuid.Parse(req.KelasId)
+			if err != nil {
+				return c.Status(fiber.StatusBadRequest).JSON(e.ErrorResponse[any](400, "Invalid ID format", nil))
+			}
+			// kelas, err := h.KelasService.GetKelasByID(kelasId)
+			// if err != nil {
+			// 	return c.Status(400).JSON(e.ErrorResponse[any](400, "Kelas not found", nil))
+			// }
+			existing.KelasID = kelasId
 		}
 
 		if err := h.Service.UpdateKetuaKelas(existing); err != nil {
