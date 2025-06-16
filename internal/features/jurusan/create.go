@@ -9,7 +9,7 @@ import (
 )
 
 type CreateJurusanRequest struct {
-	Name string `json:"nama" validate:"required"`
+	Name string `json:"name" validate:"required"`
 }
 
 // CreateJurusan godoc

@@ -44,7 +44,8 @@ func (s *KetuaKelasService) GetUnsignedKetuaKelas() ([]KetuaKelasResponse, error
 			)
 		)
 		FROM ketua_kelas k
-		WHERE k.kelas_id IS NULL
+		WHERE k.kelas_id = '00000000-0000-0000-0000-000000000000'
+		AND k.deleted_at IS NULL
 	`
 	if err := s.DB.Raw(query).Scan(&jsonData).Error; err != nil {
 		return nil, err

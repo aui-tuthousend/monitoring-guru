@@ -2146,10 +2146,10 @@ const docTemplate = `{
         "jurusan.CreateJurusanRequest": {
             "type": "object",
             "required": [
-                "nama"
+                "name"
             ],
             "properties": {
-                "nama": {
+                "name": {
                     "type": "string"
                 }
             }
