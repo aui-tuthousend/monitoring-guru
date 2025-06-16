@@ -1,8 +1,10 @@
 package ketuakelas
 
 import (
-	"github.com/gofiber/fiber/v2"
 	e "monitoring-guru/entities"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
 // DeleteKetuaHandler godoc
@@ -20,8 +22,12 @@ import (
 func (h *KetuaKelasHandler) DeleteKetuaHandler() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		id := c.Params("id")
+		uid, err := uuid.Parse(id)
+			if err != nil {
+			return c.Status(400).JSON(e.ErrorResponse[any](400, "Invalid ID format", nil))
+		}
 
-		if err := h.Service.DeleteKetuaKelas(id); err != nil {
+		if err := h.Service.DeleteKetuaKelas(uid); err != nil {
 			return c.Status(500).JSON(e.ErrorResponse[any](500, "Internal server error", nil))
 		}
 

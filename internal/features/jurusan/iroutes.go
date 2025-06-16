@@ -14,7 +14,7 @@ func RegisterRoutes(api fiber.Router, db *gorm.DB) {
 	JurusanServ = &JurusanService{DB: db}
 	handler := JurusanHandler{Service: JurusanServ}
 
-	group := api.Group("jurusan", middleware.JWTRoleProtected("kepala_sekolah"))
+	group := api.Group("jurusan", middleware.JWTProtected())
 	group.Post("/", handler.CreateJurusan())
 	group.Get("/", handler.GetAllJurusan())
 	group.Get("/:id", handler.GetJurusanByID())

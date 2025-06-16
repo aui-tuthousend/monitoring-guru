@@ -11,6 +11,9 @@ import (
 func JWTProtected() func(*fiber.Ctx) error {
 	return jwtware.New(jwtware.Config{
 		SigningKey:   []byte(os.Getenv("JWT_SECRET")),
+		ContextKey:   "user", // penting! ini yang kamu ambil di c.Locals("user")
+		TokenLookup:  "header:Authorization",
+		AuthScheme:   "Bearer",
 		ErrorHandler: jwtError,
 	})
 }

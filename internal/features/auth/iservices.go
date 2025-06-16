@@ -21,7 +21,7 @@ func (a *AuthService) CheckPasswordHash(password, hash string) bool {
 
 func (a *AuthService) GenerateJWT(userID uuid.UUID, role string) (string, error) {
 	claims := jwt.MapClaims{
-		"sub":  userID,
+		"sub":  userID.String(),
 		"role": role,
 		"exp":  time.Now().Add(time.Hour * 72).Unix(),
 	}

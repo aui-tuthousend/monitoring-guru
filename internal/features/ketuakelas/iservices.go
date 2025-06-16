@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	e "monitoring-guru/entities"
 
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -79,7 +80,7 @@ func (s *KetuaKelasService) UpdateKetuaKelas(ketua *e.KetuaKelas) error {
 	return s.DB.Save(ketua).Error
 }
 
-func (s *KetuaKelasService) DeleteKetuaKelas(id string) error {
+func (s *KetuaKelasService) DeleteKetuaKelas(id uuid.UUID) error {
 	var ketua e.KetuaKelas
 	if err := s.DB.Where("id = ?", id).First(&ketua).Error; err != nil {
 		return err
