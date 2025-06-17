@@ -2,7 +2,7 @@ module monitoring-guru
 
 go 1.23
 
-toolchain go1.24.3
+toolchain go1.24.4
 
 require (
 	github.com/gofiber/contrib/websocket v1.3.4

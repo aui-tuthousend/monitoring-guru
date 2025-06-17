@@ -2,7 +2,7 @@ package ruangan
 
 type RuanganResponse struct {
 	ID string `json:"id" gorm:"column:id"`
-	Name      string `json:"nama"`
+	Name      string `json:"name"`
 }
 
 type RuanganResponseWrapper struct {

@@ -32,6 +32,7 @@ type CreateKetuaRequest struct {
 // CreateKetuaRequest godoc
 // @summary Mendaftarkan ketua kelas baru
 // @Tags			Ketua Kelas
+// @Security		BearerAuth
 // @Accept			json
 // @Produce			json
 // @Param			request	body		CreateKetuaRequest	true	"Create ketua request body"

@@ -100,6 +100,7 @@ func (h *AuthHandler) LoginKetuaKelas() fiber.Handler {
 			ID:       user.ID.String(),
 			Nisn:     user.Nisn,
 			Name:     user.Name,
+			KelasID:  user.KelasID.String(),
 		}})
 	}
 }
