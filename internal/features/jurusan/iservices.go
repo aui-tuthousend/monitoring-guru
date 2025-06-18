@@ -47,5 +47,6 @@ func (s *JurusanService) ResponseJurusanMapper(jurusan *e.Jurusan) *JurusanRespo
 	return &JurusanResponse{
 		ID: jurusan.ID.String(),
 		Name:      jurusan.Name,
+		KodeJurusan: jurusan.KodeJurusan,
 	}
 }

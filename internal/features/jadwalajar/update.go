@@ -5,6 +5,7 @@ import (
 	"monitoring-guru/internal/features/guru"
 	"monitoring-guru/internal/features/kelas"
 	"monitoring-guru/internal/features/mapel"
+	"monitoring-guru/internal/features/ruangan"
 	"monitoring-guru/utils"
 
 	"github.com/gofiber/fiber/v2"
@@ -30,6 +31,10 @@ type UpdateJadwalAjarRequest struct {
 	// @Required true
 	// @Example "adasd323"
 	KelasID string `json:"kelas_id"`
+	// @Description Ruangan ID of the jadwalajar
+	// @Required true
+	// @Example "adasd323"
+	RuanganID string `json:"ruangan_id"`
 	// @Description Hari of the jadwalajar
 	// @Required true
 	// @Example "Senin"
@@ -71,8 +76,9 @@ func (h *JadwalajarHandler) UpdateJadwalajar() fiber.Handler {
 		guruID, _ := utils.ParseUUID(req.GuruID)
 		mapelID, _ := utils.ParseUUID(req.MapelID)
 		kelasID, _ := utils.ParseUUID(req.KelasID)
+		ruanganID, _ := utils.ParseUUID(req.RuanganID)
 
-		if jadwalID == uuid.Nil || guruID == uuid.Nil || mapelID == uuid.Nil || kelasID == uuid.Nil {
+		if jadwalID == uuid.Nil || guruID == uuid.Nil || mapelID == uuid.Nil || kelasID == uuid.Nil || ruanganID == uuid.Nil {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, "Invalid ID format", nil))
 		}
 
@@ -89,6 +95,11 @@ func (h *JadwalajarHandler) UpdateJadwalajar() fiber.Handler {
 		kelasResponse, err := h.KelasService.GetKelasByID(kelasID)
 		if err != nil {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, "Kelas not found", nil))
+		}
+
+		ruanganResponse, err := h.RuanganService.GetRuanganByID(ruanganID.String())
+		if err != nil {
+			return c.Status(400).JSON(e.ErrorResponse[any](400, "Ruangan not found", nil))
 		}
 
 		jamMulai, _ := utils.ParseJamString(req.JamMulai)
@@ -126,6 +137,10 @@ func (h *JadwalajarHandler) UpdateJadwalajar() fiber.Handler {
 			Kelas:      &kelas.KelasMiniResponse{
 				ID:       kelasResponse.ID,
 				Name:     kelasResponse.Name,
+			},
+			Ruangan: &ruangan.RuanganResponse{
+				ID:       ruanganResponse.ID.String(),
+				Name:     ruanganResponse.Name,
 			},
 			Hari:       req.Hari,
 			JamMulai:   req.JamMulai,

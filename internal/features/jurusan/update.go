@@ -2,6 +2,7 @@ package jurusan
 
 import (
 	e "monitoring-guru/entities"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
@@ -9,7 +10,8 @@ import (
 
 type UpdateJurusanRequest struct {
 	ID   string `json:"id"`
-	Name string `json:"nama" validate:"required"`
+	Name string `json:"name" validate:"required"`
+	KodeJurusan string `json:"kode_jurusan" validate:"required"`
 }
 
 // UpdateJurusan godoc
@@ -45,7 +47,14 @@ func (h *JurusanHandler) UpdateJurusan() fiber.Handler {
 			return c.JSON(e.ErrorResponse[any](400, "Nama jurusan is required", nil))
 		}
 
+		if req.KodeJurusan == "" {
+			return c.JSON(e.ErrorResponse[any](400, "Kode jurusan is required", nil))
+		}
+
 		jurusan.Name = req.Name
+		jurusan.KodeJurusan = req.KodeJurusan
+		jurusan.UpdatedAt = time.Now()
+
 		if err := h.Service.UpdateJurusan(jurusan); err != nil {
 			return c.JSON(e.ErrorResponse[any](500, "Failed to update jurusan", nil))
 		}

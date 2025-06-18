@@ -5,6 +5,7 @@ import (
 	"monitoring-guru/internal/features/guru"
 	"monitoring-guru/internal/features/kelas"
 	"monitoring-guru/internal/features/mapel"
+	"monitoring-guru/internal/features/ruangan"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
@@ -19,6 +20,7 @@ func RegisterRoutes(api fiber.Router, db *gorm.DB) {
 		GuruService: guru.GuruServ,
 		MapelService: mapel.MapelServ,
 		KelasService: kelas.KelasServ,
+		RuanganService: ruangan.RuanganServ,
 	}
 
 	group := api.Group("jadwalajar", middleware.JWTProtected())

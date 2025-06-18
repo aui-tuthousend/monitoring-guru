@@ -41,6 +41,10 @@ func (s *JadwalajarService) GetJadwalajarByID(id string) (*JadwalajarResponse, e
 				'id', k.id,
 				'name', k.name
 			),
+			'ruangan', json_build_object(
+				'id', r.id,
+				'name', r.name
+			),
 			j.jam_mulai,
 			j.jam_selesai,
 			j.last_editor
@@ -48,6 +52,7 @@ func (s *JadwalajarService) GetJadwalajarByID(id string) (*JadwalajarResponse, e
 		JOIN gurus g ON g.id = j.guru_id
 		JOIN mapels m ON m.id = j.mapel_id
 		JOIN kelas k ON k.id = j.kelas_id
+		JOIN ruangans r ON r.id = j.ruangan_id
 		WHERE j.id = ?
 	`
 
@@ -77,6 +82,10 @@ func (s *JadwalajarService) GetAllJadwalajar() ([]JadwalajarResponse, error) {
 				'id', k.id,
 				'name', k.name
 			),
+			'ruangan', json_build_object(
+				'id', r.id,
+				'name', r.name
+			),
 			'jam_mulai', j.jam_mulai,
 			'jam_selesai', j.jam_selesai,
 			'last_editor', j.last_editor
@@ -86,6 +95,7 @@ func (s *JadwalajarService) GetAllJadwalajar() ([]JadwalajarResponse, error) {
 		JOIN gurus g ON g.id = j.guru_id::uuid
 		JOIN mapels m ON m.id = j.mapel_id::uuid
 		JOIN kelas k ON k.id = j.kelas_id::uuid
+		JOIN ruangans r ON r.id = j.ruangan_id::uuid
 	`
 	if err := s.DB.Raw(query).Scan(&jsonData).Error; err != nil {
 		return nil, err
@@ -128,6 +138,10 @@ func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]
 					'id', k.id,
 					'name', k.name
 				),
+				'ruangan', json_build_object(
+					'id', r.id,
+					'name', r.name
+				),
 				'hari', j.hari,
 				'jam_mulai', j.jam_mulai,
 				'jam_selesai', j.jam_selesai
@@ -136,6 +150,7 @@ func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]
 			JOIN gurus g ON g.id = j.guru_id::uuid
 			JOIN mapels m ON m.id = j.mapel_id::uuid
 			JOIN kelas k ON k.id = j.kelas_id::uuid
+			JOIN ruangans r ON r.id = j.ruangan_id::uuid
 			%s
 			ORDER BY j.jam_mulai
 		) sub;
@@ -187,6 +202,10 @@ func (s *JadwalajarService) GetJadwalajarByIDKelas(id uuid.UUID, hari string) ([
 					'id', k.id,
 					'name', k.name
 				),
+				'ruangan', json_build_object(
+					'id', r.id,
+					'name', r.name
+				),
 				'hari', j.hari,
 				'jam_mulai', j.jam_mulai,
 				'jam_selesai', j.jam_selesai
@@ -195,6 +214,7 @@ func (s *JadwalajarService) GetJadwalajarByIDKelas(id uuid.UUID, hari string) ([
 			JOIN gurus g ON g.id = j.guru_id::uuid
 			JOIN mapels m ON m.id = j.mapel_id::uuid
 			JOIN kelas k ON k.id = j.kelas_id::uuid
+			JOIN ruangans r ON r.id = j.ruangan_id::uuid
 			%s
 			ORDER BY j.jam_mulai
 		) sub;

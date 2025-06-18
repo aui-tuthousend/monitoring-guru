@@ -2067,6 +2067,10 @@ const docTemplate = `{
                 "mapel_id": {
                     "description": "@Description Mapel ID of the jadwalajar\n@Required true\n@Example \"John Doe\"",
                     "type": "string"
+                },
+                "ruangan_id": {
+                    "description": "@Description Ruangan ID of the jadwalajar\n@Required true\n@Example \"adasd323\"",
+                    "type": "string"
                 }
             }
         },
@@ -2093,6 +2097,9 @@ const docTemplate = `{
                 },
                 "mapel": {
                     "$ref": "#/definitions/mapel.MapelMiniResponse"
+                },
+                "ruangan": {
+                    "$ref": "#/definitions/ruangan.RuanganResponse"
                 }
             }
         },
@@ -2145,15 +2152,23 @@ const docTemplate = `{
                 "mapel_id": {
                     "description": "@Description Mapel ID of the jadwalajar\n@Required true\n@Example \"John Doe\"",
                     "type": "string"
+                },
+                "ruangan_id": {
+                    "description": "@Description Ruangan ID of the jadwalajar\n@Required true\n@Example \"adasd323\"",
+                    "type": "string"
                 }
             }
         },
         "jurusan.CreateJurusanRequest": {
             "type": "object",
             "required": [
+                "kode_jurusan",
                 "name"
             ],
             "properties": {
+                "kode_jurusan": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
                 }
@@ -2163,6 +2178,9 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "id": {
+                    "type": "string"
+                },
+                "kode_jurusan": {
                     "type": "string"
                 },
                 "name": {
@@ -2187,13 +2205,17 @@ const docTemplate = `{
         "jurusan.UpdateJurusanRequest": {
             "type": "object",
             "required": [
-                "nama"
+                "kode_jurusan",
+                "name"
             ],
             "properties": {
                 "id": {
                     "type": "string"
                 },
-                "nama": {
+                "kode_jurusan": {
+                    "type": "string"
+                },
+                "name": {
                     "type": "string"
                 }
             }

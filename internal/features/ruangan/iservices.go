@@ -26,8 +26,8 @@ func (s *RuanganService) GetAllRuangan() ([]RuanganResponse, error) {
 	return ruanganList, nil
 }
 
-func (s *RuanganService) GetRuanganByID(id string) (*RuanganResponse, error) {
-	var ruangan RuanganResponse
+func (s *RuanganService) GetRuanganByID(id string) (*e.Ruangan, error) {
+	var ruangan e.Ruangan
 	if err := s.DB.Table("ruangans").Where("id = ?", id).First(&ruangan).Error; err != nil {
 		return nil, err
 	}

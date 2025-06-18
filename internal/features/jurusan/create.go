@@ -10,6 +10,7 @@ import (
 
 type CreateJurusanRequest struct {
 	Name string `json:"name" validate:"required"`
+	KodeJurusan string `json:"kode_jurusan" validate:"required"`
 }
 
 // CreateJurusan godoc
@@ -37,9 +38,16 @@ func (h *JurusanHandler) CreateJurusan() fiber.Handler {
 			})
 		}
 
+		if req.KodeJurusan == "" {
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Kode jurusan is required",
+			})
+		}
+
 		jurusan := e.Jurusan{
 			ID:        uuid.New(),
 			Name:      req.Name,
+			KodeJurusan: req.KodeJurusan,
 			CreatedAt: time.Now(),
 			UpdatedAt: time.Now(),
 		}
