@@ -14,7 +14,7 @@ type StatusKelas struct {
 	Mapel string `json:"mapel" gorm:"null"`
 	Pengajar string `json:"pengajar" gorm:"null"`
 	Ruangan string `json:"ruangan" gorm:"null"`
-	IsActive  bool           `json:"is_active" gorm:"default:false"`
+	IsActive bool `json:"is_active" gorm:"column:is_active;default:false"`
 	CreatedAt time.Time      `json:"-"`
 	UpdatedAt time.Time      `json:"-"`
 	DeletedAt gorm.DeletedAt `json:"deleted_at" gorm:"index" swaggerignore:"true"`
