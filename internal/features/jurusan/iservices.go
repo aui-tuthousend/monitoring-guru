@@ -26,6 +26,14 @@ func (s *JurusanService) GetJurusanByID(id string) (*e.Jurusan, error) {
 	return &jurusan, nil
 }
 
+func (s *JurusanService) IsJurusanExist(kodeJurusan string, name string) bool {
+	var jurusan e.Jurusan
+	if err := s.DB.Where("kode_jurusan = ? AND name = ?", kodeJurusan, name).First(&jurusan).Error; err != nil {
+		return false
+	}
+	return true
+}
+
 func (s *JurusanService) GetAllJurusan() ([]e.Jurusan, error) {
 	var jurusanList []e.Jurusan
 	if err := s.DB.

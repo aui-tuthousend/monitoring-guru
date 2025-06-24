@@ -39,6 +39,14 @@ func (s *GuruService) GetGuruByNIP(nip string) (*e.Guru, error) {
 	return &guru, nil
 }
 
+func (s *GuruService) IsGuruExist(nip string, name string) bool {
+	var guru e.Guru
+	if err := s.DB.Where("nip = ? AND name = ?", nip, name).First(&guru).Error; err != nil {
+		return false
+	}
+	return true
+}
+
 func (s *GuruService) GetAllGuru() ([]e.Guru, error) {
 	var gurus []e.Guru
 	if err := s.DB.Find(&gurus).Error; err != nil {

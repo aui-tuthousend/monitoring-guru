@@ -9,7 +9,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -31,9 +31,9 @@ func main() {
 		// EnablePrintRoutes: true,
 	})
 	app.Use(logger.New())
-	// app.Use(cors.New())
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "http://localhost:3000",
+		// AllowOrigins: "http://localhost:3000",
+		AllowOrigins: "*",
 		AllowHeaders: "Content-Type, Authorization",         
 	}))
 	

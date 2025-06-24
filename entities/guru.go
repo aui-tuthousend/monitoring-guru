@@ -9,7 +9,7 @@ import (
 
 type Guru struct {
 	ID        uuid.UUID      `gorm:"type:uuid;default:uuid_generate_v4();primaryKey" json:"id"`
-	Name      string         `json:"nama" gorm:"not null"`
+	Name      string         `json:"name" gorm:"not null"`
 	Nip       string         `json:"nip" gorm:"not null"`
 	Jabatan   string         `json:"jabatan" gorm:"not null"`
 	Password  string         `json:"password" gorm:"not null"`
