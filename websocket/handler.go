@@ -3,6 +3,7 @@ package websocket
 import (
 	"encoding/json"
 	"log"
+	// "monitoring-guru/entities"
 
 	"github.com/gofiber/contrib/websocket"
 	"github.com/gofiber/fiber/v2"
@@ -22,11 +23,14 @@ func SetupWebSocket(app *fiber.App, db *gorm.DB) {
 	app.Get("/ws/:id", websocket.New(func(c *websocket.Conn) {
 		id := c.Params("id")
 		AddClient(id, c)
+		log.Printf("Client connected: %s", id)
+	
 		defer func() {
 			RemoveClient(id)
 			c.Close()
+			log.Printf("Client disconnected: %s", id)
 		}()
-		
+	
 		for {
 			_, msg, err := c.ReadMessage()
 			if err != nil {
@@ -34,28 +38,33 @@ func SetupWebSocket(app *fiber.App, db *gorm.DB) {
 			}
 	
 			var payload struct {
-				IsActive bool `json:"IsActive"`
-				UUID string `json:"UUID"`
-			}
-
-			error := json.Unmarshal(msg, &payload)
-			if error != nil {
-				log.Println("error unmarshalling:", error)
-			} else {
-				log.Printf("Parsed payload: %+v\n", payload.IsActive)
+				IsActive bool   `json:"isActive"`
+				Id       string `json:"id"`
+				Mapel string `json:"mapel"`
+				Pengajar string `json:"pengajar"`
+				Ruangan string `json:"ruangan"`
 			}
 	
-			if payload.IsActive {
-				log.Printf("activating")
-				// db.Model(&Class{}).Where("id = ?", payload.uuid).Update("is_active", true)
-				BroadcastToAll(`{"UUID":"` + payload.UUID + `", "IsActive":true}`, make(chan<- string))
+			if err := json.Unmarshal(msg, &payload); err != nil {
+				log.Println("Error unmarshalling:", err)
+				continue
 			}
 	
-			if !payload.IsActive {
-				// db.Model(&Class{}).Where("id = ?", payload.uuid).Update("is_active", false)
-				BroadcastToAll(`{"UUID":"` + payload.UUID + `", "IsActive":false}`, make(chan<- string))
+			if payload.Id == "" {
+				log.Println("Payload missing ID")
+				continue
 			}
+	
+			// log.Printf("Parsed payload: %+v\n", payload)
+	
+			// err := db.Model(&entities.Kelas{}).Where("id = ?", payload.Id).Update("is_active", payload.IsActive).Error
+			// if err != nil {
+			// 	log.Printf("Failed to update DB: %v", err)
+			// }
+	
+			response, _ := json.Marshal(payload)
+			BroadcastToAll(string(response))
 		}
-	}))
+	}))	
 	
 }

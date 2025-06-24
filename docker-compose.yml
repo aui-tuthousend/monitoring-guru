@@ -1,11 +1,12 @@
-version: '3.8'
+# version: '3.8'
 
 services:
   go-backend:
     build:
       context: .
     ports:
-      - "127.0.0.1:8080:8080"
+      # - "127.0.0.1:8080:8080"
+      - "8080:8080"
     volumes:
       - .:/app
     env_file:

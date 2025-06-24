@@ -50,16 +50,19 @@ func CleanupWebSocketClients() {
 }
 
 
-func BroadcastToAll(message string, ch chan<-string) {
+func BroadcastToAll(message string) {
 	wsMutex.Lock()
-	defer wsMutex.Unlock()
-
+	clients := make(map[string]*websocket.Conn, len(wsClients))
 	for id, conn := range wsClients {
-		log.Printf("broadcasting to %s with message: %s", id, message)
-		
+		clients[id] = conn
+	}
+	wsMutex.Unlock()
+
+	for id, conn := range clients {
 		wg.Add(1)
 		go func(id string, conn *websocket.Conn) {
 			defer wg.Done()
+			log.Printf("broadcasting to %s with message: %s", id, message)
 			if err := conn.WriteMessage(websocket.TextMessage, []byte(message)); err != nil {
 				log.Printf("error sending to %s: %v", id, err)
 			}
@@ -67,4 +70,5 @@ func BroadcastToAll(message string, ch chan<-string) {
 	}
 	wg.Wait()
 }
+
 

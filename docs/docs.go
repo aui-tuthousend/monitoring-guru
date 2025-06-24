@@ -2224,16 +2224,20 @@ const docTemplate = `{
             "description": "Create kelas request body",
             "type": "object",
             "properties": {
+                "grade": {
+                    "description": "@Description Grade of the kelas\n@Required true\n@Example \"XII\"",
+                    "type": "string"
+                },
+                "index": {
+                    "description": "@Description Index of the kelas\n@Required true\n@Example \"1\"",
+                    "type": "integer"
+                },
                 "jurusan_id": {
-                    "description": "@Description Jurusan ID of the kelas\n@Required true\n@Example \"123456789\"",
+                    "description": "@Description Jurusan ID of the kelas\n@Required true\n@Example \"1\"",
                     "type": "string"
                 },
                 "ketua_kelas_id": {
                     "description": "@Description Ketua Kelas ID of the kelas\n@Required true\n@Example \"123456789\"",
-                    "type": "string"
-                },
-                "name": {
-                    "description": "@Description Name of the kelas\n@Required true\n@Example \"XII RPL 1\"",
                     "type": "string"
                 }
             }

@@ -2,7 +2,8 @@ package kelas
 
 import (
 	e "monitoring-guru/entities"
-	
+	"strconv"
+
 	"monitoring-guru/utils"
 
 	"github.com/gofiber/fiber/v2"
@@ -12,22 +13,23 @@ import (
 // CreateKelasRequestBody
 // @Description Create kelas request body
 type CreateKelasRequest struct {
-	// @Description Name of the kelas
+	// @Description Grade of the kelas
 	// @Required true
-	// @Example "XII RPL 1"
-	Name string `json:"name"`
+	// @Example "XII"
+	Grade string `json:"grade"`
+	// @Description Index of the kelas
+	// @Required true
+	// @Example "1"
+	Index int `json:"index"`
 	// @Description Jurusan ID of the kelas
 	// @Required true
-	// @Example "123456789"
+	// @Example "1"
 	JurusanID string `json:"jurusan_id"`
 	// @Description Ketua Kelas ID of the kelas
 	// @Required true
 	// @Example "123456789"
 	KetuaKelasID string `json:"ketua_kelas_id"`
-	// @Description Wali Kelas ID of the kelas
-	// @Required true
-	// @Example "123456789"
-	// WaliKelasID string `json:"wali_kelas_id"`
+
 }
 
 // CreateKelasRequest godoc
@@ -49,15 +51,23 @@ func (h *KelasHandler) CreateKelas() fiber.Handler {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
 		}
 
+		if req.Grade == "" || req.Index == 0 || req.JurusanID == "" || req.KetuaKelasID == "" {
+			return c.Status(400).JSON(e.ErrorResponse[any](400, "Invalid request body", nil))
+		}
+
+		if req.Grade != "X" && req.Grade != "XI" && req.Grade != "XII" {
+			return c.Status(400).JSON(e.ErrorResponse[any](400, "Invalid grade", nil))
+		}
+
+		if req.Index < 1 {
+			return c.Status(400).JSON(e.ErrorResponse[any](400, "Invalid index", nil))
+		}
+
 		ketuaID, err := utils.ParseUUID(req.KetuaKelasID)
 		if err != nil {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
 		}
 
-		// wakilID, err := utils.ParseUUID(req.WaliKelasID)
-		// if err != nil {
-		// 	return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
-		// }
 		jurusanID, err := utils.ParseUUID(req.JurusanID)
 		if err != nil {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
@@ -73,16 +83,24 @@ func (h *KelasHandler) CreateKelas() fiber.Handler {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, "Ketua Kelas not found", nil))
 		}
 
+		name := jurusan.KodeJurusan + " " + req.Grade + " " + strconv.Itoa(req.Index)
+
 		kelas := e.Kelas{
 			ID:        uuid.New(),
 			KetuaID:   ketuaID,
-			// WakilID:   wakilID,
 			JurusanID: jurusanID,
-			Name:      req.Name,
+			Name:      name,
+			Grade:      req.Grade,
+			Index:      req.Index,
 			IsActive:  false,
 		}
 
-		if err := h.Service.CreateKelas(&kelas); err != nil {
+		statusKelas := e.StatusKelas{
+			ID:        uuid.New(),
+			KelasID: kelas.ID,
+		}
+
+		if err := h.Service.CreateKelas(&kelas, &statusKelas); err != nil {
 			return c.Status(500).JSON(e.ErrorResponse[any](500, err.Error(), nil))
 		}
 

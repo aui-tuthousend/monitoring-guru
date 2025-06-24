@@ -18,6 +18,14 @@ type KelasMiniResponse struct {
 	Name string `json:"name"`
 }
 
+type KelasStatusResponse struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+	Grade string `json:"grade"`
+	Jurusan string `json:"jurusan"`
+	
+}
+
 type KelasResponseWrapper struct {
 	Code    int           `json:"code"`
 	Message string        `json:"message"`

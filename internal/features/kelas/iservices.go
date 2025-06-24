@@ -12,8 +12,13 @@ type KelasService struct {
 	DB *gorm.DB
 }
 
-func (s *KelasService) CreateKelas(kelas *e.Kelas) error {
-	return s.DB.Create(kelas).Error
+func (s *KelasService) CreateKelas(kelas *e.Kelas, statusKelas *e.StatusKelas) error {
+	err := s.DB.Create(kelas).Error
+	err2 := s.DB.Create(statusKelas)
+	if err != nil || err2 != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *KelasService) UpdateKelas(kelas *e.Kelas) error {
