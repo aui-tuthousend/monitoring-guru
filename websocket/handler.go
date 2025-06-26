@@ -44,6 +44,15 @@ func SetupWebSocket(app *fiber.App, db *gorm.DB) {
 			
 			if err := json.Unmarshal(msg, &message); err != nil {
 				log.Println("Error unmarshalling message:", err)
+
+				response, _ := json.Marshal(struct {
+					Type    string      `json:"type"`
+					Payload string `json:"payload"`
+				}{
+					Type:    "Error",
+					Payload: "Error: Wrong QR Code",
+				})
+				BroadcastToAll(string(response))
 				continue
 			}
 			
@@ -68,11 +77,13 @@ func SetupWebSocket(app *fiber.App, db *gorm.DB) {
 			
 				log.Printf("Parsed payload: %+v\n", payload)
 			
-				err := db.Model(&entities.StatusKelas{}).Where("id = ?", payload.Id).Update("is_active", payload.IsActive).Error
+				err := db.Model(&entities.StatusKelas{}).Where("kelas_id = ?", payload.Id).Update("is_active", payload.IsActive).Update("mapel", payload.Mapel).Update("pengajar", payload.Pengajar).Update("ruangan", payload.Ruangan).Error
 				log.Printf("Attempting to update StatusKelas id=%s isActive=%v\n", payload.Id, payload.IsActive)
 
 				if err != nil {
 					log.Printf("Failed to update DB: %v", err)
+					BroadcastToAll("Failed")
+					continue
 				}
 			
 				response, _ := json.Marshal(struct {
@@ -84,7 +95,16 @@ func SetupWebSocket(app *fiber.App, db *gorm.DB) {
 				})
 			
 				BroadcastToAll(string(response))
-			}			
+			}
+			response, _ := json.Marshal(struct {
+				Type    string      `json:"type"`
+				Payload string `json:"payload"`
+			}{
+				Type:    "Error",
+				Payload: "Error: Wrong QR Code",
+			})
+			BroadcastToAll(string(response))
+			continue			
 		}
 	}))	
 	
