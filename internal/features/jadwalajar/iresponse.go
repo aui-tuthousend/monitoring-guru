@@ -20,8 +20,9 @@ type JadwalajarResponse struct {
 	JamSelesai string   `json:"jam_selesai"`
 }
 
-type JadwalajarGuruResponse struct {
+type JadwalajarAbsenResponse struct {
 	ID         string   `json:"id"`
+	Guru       *guru.GuruMiniResponse `json:"guru"`
 	Mapel      *mapel.MapelMiniResponse   `json:"mapel"`
 	Kelas      *kelas.KelasMiniResponse   `json:"kelas"`
 	Ruangan    *ruangan.RuanganResponse   `json:"ruangan"`

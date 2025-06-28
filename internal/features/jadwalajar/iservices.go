@@ -117,7 +117,7 @@ func (s *JadwalajarService) GetAllJadwalajar() ([]JadwalajarResponse, error) {
 	return jadwalajarList, nil
 }
 
-func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]JadwalajarGuruResponse, error) {
+func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]JadwalajarAbsenResponse, error) {
 	var jsonData *string
 
 	whereClause := "WHERE j.guru_id = ?::uuid"
@@ -135,6 +135,10 @@ func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]
 		FROM (
 			SELECT json_build_object(
 				'id', j.id,
+				'guru', json_build_object(
+					'id', g.id,
+					'name', g.name
+				),
 				'mapel', json_build_object(
 					'id', m.id,
 					'name', m.name
@@ -170,7 +174,7 @@ func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]
 		return nil, err
 	}
 
-	jadwalajarList := []JadwalajarGuruResponse{}
+	jadwalajarList := []JadwalajarAbsenResponse{}
 	if jsonData == nil {
 		return jadwalajarList, nil
 	}
@@ -184,7 +188,7 @@ func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]
 
 
 
-func (s *JadwalajarService) GetJadwalajarByIDKelas(id uuid.UUID, hari string) ([]JadwalajarResponse, error) {
+func (s *JadwalajarService) GetJadwalajarByIDKelas(id uuid.UUID, hari string) ([]JadwalajarAbsenResponse, error) {
 	var jsonData *string
 
 	whereClause := "WHERE j.kelas_id = ?::uuid"
@@ -216,6 +220,10 @@ func (s *JadwalajarService) GetJadwalajarByIDKelas(id uuid.UUID, hari string) ([
 					'id', r.id,
 					'name', r.name
 				),
+				'absen_masuk', json_build_object(
+					'id', a.id,
+					'jam_masuk', a.jam_masuk
+				),
 				'hari', j.hari,
 				'jam_mulai', j.jam_mulai,
 				'jam_selesai', j.jam_selesai
@@ -225,6 +233,7 @@ func (s *JadwalajarService) GetJadwalajarByIDKelas(id uuid.UUID, hari string) ([
 			JOIN mapels m ON m.id = j.mapel_id::uuid
 			JOIN kelas k ON k.id = j.kelas_id::uuid
 			JOIN ruangans r ON r.id = j.ruangan_id::uuid
+			LEFT JOIN absen_masuks a ON a.jadwal_ajar_id = j.id::uuid AND a.tanggal = CURRENT_DATE
 			%s
 			ORDER BY j.jam_mulai
 		) sub;
@@ -234,7 +243,7 @@ func (s *JadwalajarService) GetJadwalajarByIDKelas(id uuid.UUID, hari string) ([
 		return nil, err
 	}
 
-	jadwalajarList := []JadwalajarResponse{}
+	jadwalajarList := []JadwalajarAbsenResponse{}
 	if jsonData == nil {
 		return jadwalajarList, nil
 	}
