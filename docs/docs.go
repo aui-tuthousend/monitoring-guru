@@ -320,6 +320,226 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/izin": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get all izin",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Izin"
+                ],
+                "summary": "Get all izin",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/izin.IzinResponse"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/izin.IzinResponseWrapper"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Update data izin",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Izin"
+                ],
+                "summary": "Update izin",
+                "parameters": [
+                    {
+                        "description": "Izin data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/izin.UpdateIzinRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/izin.IzinResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/izin.IzinResponseWrapper"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/izin.IzinResponseWrapper"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create Izin request body",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Izin"
+                ],
+                "summary": "Create izin guru",
+                "parameters": [
+                    {
+                        "description": "Create izin request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/izin.CreateIzinRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/izin.IzinResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/izin.IzinResponseWrapper"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/izin.IzinResponseWrapper"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/izin/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get izin details by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Izin"
+                ],
+                "summary": "Get izin by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Izin ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/izin.IzinResponseWrapper"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/izin.IzinResponseWrapper"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/izin.IzinResponseWrapper"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Delete izin by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Izin"
+                ],
+                "summary": "Delete izin",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Izin ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/jadwalajar": {
             "get": {
                 "security": [
@@ -2032,6 +2252,79 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "nip": {
+                    "type": "string"
+                }
+            }
+        },
+        "izin.CreateIzinRequest": {
+            "description": "Create izin request body",
+            "type": "object",
+            "properties": {
+                "guru_id": {
+                    "description": "@Description UUID guru yang mengajukan izin\n@Required true\n@Example \"3f2c1db1-8a1b-4d53-91a9-f8d3e5b0a7d5\"",
+                    "type": "string"
+                },
+                "jadwal_ajar_id": {
+                    "description": "@Description UUID jadwal ajar yang akan di-izin-kan\n@Required true\n@Example \"a1b2c3d4-5e6f-7a8b-9c0d-e1f2a3b4c5d6\"",
+                    "type": "string"
+                },
+                "pesan": {
+                    "description": "@Description Alasan izin guru\n@Required true\n@Example \"Sakit Hati\"",
+                    "type": "string"
+                },
+                "tanggal_izin": {
+                    "description": "@Description Tanggal izin (format YYYY-MM-DD)\n@Required true\n@Example \"2025-06-28\"",
+                    "type": "string"
+                }
+            }
+        },
+        "izin.IzinResponse": {
+            "type": "object",
+            "properties": {
+                "approval": {
+                    "type": "boolean"
+                },
+                "guru_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "jadwal_ajar_id": {
+                    "type": "string"
+                },
+                "pesan": {
+                    "type": "string"
+                },
+                "tanggal_izin": {
+                    "type": "string"
+                }
+            }
+        },
+        "izin.IzinResponseWrapper": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/izin.IzinResponse"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "izin.UpdateIzinRequest": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "pesan": {
+                    "type": "string"
+                },
+                "tanggal_izin": {
                     "type": "string"
                 }
             }
