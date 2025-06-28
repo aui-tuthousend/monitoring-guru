@@ -1,9 +1,9 @@
 package absenmasuk
 
 import (
-	"monitoring-guru/internal/features/guru"
-	"monitoring-guru/internal/features/jadwalajar"
-	"monitoring-guru/internal/features/ruangan"
+	// "monitoring-guru/internal/features/guru"
+	// "monitoring-guru/internal/features/jadwalajar"
+	// "monitoring-guru/internal/features/ruangan"
 )
 
 type CreateAbsenMasukResponse struct {
@@ -14,17 +14,22 @@ type CreateAbsenMasukResponse struct {
 	IsActive bool   `json:"is_active"`
 }
 
-type GetAbsenMasukResponse struct {
-	ID        string `json:"id"`
-	Guru      guru.GuruResponse `json:"guru"`
-	JadwalAjar jadwalajar.JadwalajarResponse `json:"jadwal_ajar"`
-	Ruangan   ruangan.RuanganResponse `json:"ruangan"`
-	Tanggal   string `json:"tanggal"`
+// type GetAbsenMasukResponse struct {
+// 	ID        string `json:"id"`
+// 	Guru      guru.GuruResponse `json:"guru"`
+// 	JadwalAjar jadwalajar.JadwalajarResponse `json:"jadwal_ajar"`
+// 	Ruangan   ruangan.RuanganResponse `json:"ruangan"`
+// 	Tanggal   string `json:"tanggal"`
+// 	JamMasuk  string `json:"jam_masuk"`
+// }
+
+type AbsenMasukMiniResponse struct {
+	ID string `json:"id"`
 	JamMasuk  string `json:"jam_masuk"`
 }
 
-type GetAbsenMasukResponseWrapper struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-	Data    []GetAbsenMasukResponse `json:"data"`
-}
+// type GetAbsenMasukResponseWrapper struct {
+// 	Code    int    `json:"code"`
+// 	Message string `json:"message"`
+// 	Data    []GetAbsenMasukResponse `json:"data"`
+// }

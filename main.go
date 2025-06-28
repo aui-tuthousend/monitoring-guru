@@ -39,7 +39,7 @@ func main() {
 	
 	db := database.Connect()
 	routes.SetupRoutes(app, db)
-	websocket.SetupWebSocket(app, db)
+	websocket.SetupWebSocket(app)
 	app.Get("/swagger/*", swagger.HandlerDefault)
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("What are you doing here?")

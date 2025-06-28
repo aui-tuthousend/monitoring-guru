@@ -23,12 +23,12 @@ func (s *JadwalajarService) UpdateJadwalajar(jadwalajar *e.JadwalAjar) error {
 }
 
 func (s *JadwalajarService) GetJadwalajarByID(id string) (*JadwalajarResponse, error) {
-	var response JadwalajarResponse
+	var jsonData string
 
 	query := `
-		SELECT 
-			j.id,
-			j.hari,
+		SELECT json_build_object(
+			'id', j.id,
+			'hari', j.hari,
 			'guru', json_build_object(
 				'id', g.id,
 				'name', g.name
@@ -45,9 +45,10 @@ func (s *JadwalajarService) GetJadwalajarByID(id string) (*JadwalajarResponse, e
 				'id', r.id,
 				'name', r.name
 			),
-			j.jam_mulai,
-			j.jam_selesai,
-			j.last_editor
+			'jam_mulai', j.jam_mulai,
+			'jam_selesai', j.jam_selesai,
+			'last_editor', j.last_editor
+		)
 		FROM jadwal_ajars j
 		JOIN gurus g ON g.id = j.guru_id
 		JOIN mapels m ON m.id = j.mapel_id
@@ -56,12 +57,18 @@ func (s *JadwalajarService) GetJadwalajarByID(id string) (*JadwalajarResponse, e
 		WHERE j.id = ?
 	`
 
-	if err := s.DB.Raw(query, id).Scan(&response).Error; err != nil {
+	if err := s.DB.Raw(query, id).Scan(&jsonData).Error; err != nil {
+		return nil, err
+	}
+
+	var response JadwalajarResponse
+	if err := json.Unmarshal([]byte(jsonData), &response); err != nil {
 		return nil, err
 	}
 
 	return &response, nil
 }
+
 
 func (s *JadwalajarService) GetAllJadwalajar() ([]JadwalajarResponse, error) {
 	var jsonData *string
@@ -110,7 +117,7 @@ func (s *JadwalajarService) GetAllJadwalajar() ([]JadwalajarResponse, error) {
 	return jadwalajarList, nil
 }
 
-func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]JadwalajarResponse, error) {
+func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]JadwalajarGuruResponse, error) {
 	var jsonData *string
 
 	whereClause := "WHERE j.guru_id = ?::uuid"
@@ -121,15 +128,13 @@ func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]
 		args = append(args, hari)
 	}
 
+	// whereClause += " AND a.tanggal = CURRENT_DATE"
+
 	query := fmt.Sprintf(`
 		SELECT json_agg(result)
 		FROM (
 			SELECT json_build_object(
 				'id', j.id,
-				'guru', json_build_object(
-					'id', g.id,
-					'name', g.name
-				),
 				'mapel', json_build_object(
 					'id', m.id,
 					'name', m.name
@@ -142,6 +147,10 @@ func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]
 					'id', r.id,
 					'name', r.name
 				),
+				'absen_masuk', json_build_object(
+					'id', a.id,
+					'jam_masuk', a.jam_masuk
+				),
 				'hari', j.hari,
 				'jam_mulai', j.jam_mulai,
 				'jam_selesai', j.jam_selesai
@@ -151,6 +160,7 @@ func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]
 			JOIN mapels m ON m.id = j.mapel_id::uuid
 			JOIN kelas k ON k.id = j.kelas_id::uuid
 			JOIN ruangans r ON r.id = j.ruangan_id::uuid
+			LEFT JOIN absen_masuks a ON a.jadwal_ajar_id = j.id::uuid AND a.tanggal = CURRENT_DATE
 			%s
 			ORDER BY j.jam_mulai
 		) sub;
@@ -160,7 +170,7 @@ func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]
 		return nil, err
 	}
 
-	jadwalajarList := []JadwalajarResponse{}
+	jadwalajarList := []JadwalajarGuruResponse{}
 	if jsonData == nil {
 		return jadwalajarList, nil
 	}
