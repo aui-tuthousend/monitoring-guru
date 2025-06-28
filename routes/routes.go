@@ -8,6 +8,7 @@ import (
 	"monitoring-guru/internal/features/auth"
 	"monitoring-guru/internal/features/guru"
 	"monitoring-guru/internal/features/importdata"
+	"monitoring-guru/internal/features/izin"
 	"monitoring-guru/internal/features/jadwalajar"
 	"monitoring-guru/internal/features/jurusan"
 	"monitoring-guru/internal/features/kelas"
@@ -31,4 +32,5 @@ func SetupRoutes(app *fiber.App, db *gorm.DB) {
 	statuskelas.RegisterRoutes(api, db)
 	absenmasuk.RegisterRoutes(api, db)
 	importdata.RegisterRoutes(api)
+	izin.RegisterRoutes(api, db)
 }
