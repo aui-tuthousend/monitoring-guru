@@ -1,6 +1,7 @@
 package jadwalajar
 
 import (
+	"monitoring-guru/internal/features/absenkeluar"
 	"monitoring-guru/internal/features/absenmasuk"
 	"monitoring-guru/internal/features/guru"
 	"monitoring-guru/internal/features/kelas"
@@ -30,6 +31,7 @@ type JadwalajarAbsenResponse struct {
 	JamMulai   string   `json:"jam_mulai"`
 	JamSelesai string   `json:"jam_selesai"`
 	AbsenMasuk *absenmasuk.AbsenMasukMiniResponse `json:"absen_masuk"`
+	AbsenKeluar *absenkeluar.AbsenKeluarMiniResponse `json:"absen_keluar"`
 }
 
 type JadwalajarResponseWrapper struct {

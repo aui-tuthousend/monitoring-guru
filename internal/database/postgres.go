@@ -22,6 +22,7 @@ func Connect() *gorm.DB {
         log.Fatal("Failed to connect to database:", err)
     }
 
+
     if os.Getenv("ENV") != "production" {
 		docs.SwaggerInfo.Host = "127.0.0.1:8080"
 	    db.AutoMigrate(

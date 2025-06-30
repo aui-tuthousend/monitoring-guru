@@ -3,6 +3,7 @@ package websocket
 import (
 	"encoding/json"
 	"log"
+	"monitoring-guru/internal/features/absenkeluar"
 	"monitoring-guru/internal/features/absenmasuk"
 	"monitoring-guru/internal/features/jadwalajar"
 
@@ -15,6 +16,7 @@ func SetupWebSocket(app *fiber.App) {
 	var WebsocketServ *WebsocketService = &WebsocketService{
 		JadwalajarService: jadwalajar.JadwalajarServ,
 		AbsenMasukService: absenmasuk.AbsenMasukServ,
+		AbsenKeluarService: absenkeluar.AbsenKeluarServ,
 	}
 	
 	app.Use("/ws", func(c *fiber.Ctx) error {
@@ -52,9 +54,11 @@ func SetupWebSocket(app *fiber.App) {
 
 			}
 			
-			if message.Type == "update-kelas" {
+			if message.Type == "clock-in" {
 				WebsocketServ.CreateAbsenMasuk(message.Payload)
-			}	
+			} else if message.Type == "clock-out" {
+				WebsocketServ.CreateAbsenKeluar(message.Payload)
+			}
 		}
 	}))	
 	

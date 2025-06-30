@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 
+	"monitoring-guru/internal/features/absenkeluar"
 	"monitoring-guru/internal/features/absenmasuk"
 	"monitoring-guru/internal/features/auth"
 	"monitoring-guru/internal/features/guru"
@@ -31,6 +32,7 @@ func SetupRoutes(app *fiber.App, db *gorm.DB) {
 	jadwalajar.RegisterRoutes(api, db)
 	statuskelas.RegisterRoutes(api, db)
 	absenmasuk.RegisterRoutes(api, db)
+	absenkeluar.RegisterRoutes(api, db)
 	importdata.RegisterRoutes(api)
 	izin.RegisterRoutes(api, db)
 }

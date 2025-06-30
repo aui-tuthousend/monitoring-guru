@@ -155,6 +155,10 @@ func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]
 					'id', a.id,
 					'jam_masuk', a.jam_masuk
 				),
+				'absen_keluar', json_build_object(
+					'id', ak.id,
+					'jam_keluar', ak.jam_keluar
+				),
 				'hari', j.hari,
 				'jam_mulai', j.jam_mulai,
 				'jam_selesai', j.jam_selesai
@@ -165,6 +169,7 @@ func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]
 			JOIN kelas k ON k.id = j.kelas_id::uuid
 			JOIN ruangans r ON r.id = j.ruangan_id::uuid
 			LEFT JOIN absen_masuks a ON a.jadwal_ajar_id = j.id::uuid AND a.tanggal = CURRENT_DATE
+			LEFT JOIN absen_keluars ak ON ak.absen_masuk_id = a.id::uuid
 			%s
 			ORDER BY j.jam_mulai
 		) sub;
@@ -224,6 +229,10 @@ func (s *JadwalajarService) GetJadwalajarByIDKelas(id uuid.UUID, hari string) ([
 					'id', a.id,
 					'jam_masuk', a.jam_masuk
 				),
+				'absen_keluar', json_build_object(
+					'id', ak.id,
+					'jam_keluar', ak.jam_keluar
+				),
 				'hari', j.hari,
 				'jam_mulai', j.jam_mulai,
 				'jam_selesai', j.jam_selesai
@@ -234,6 +243,7 @@ func (s *JadwalajarService) GetJadwalajarByIDKelas(id uuid.UUID, hari string) ([
 			JOIN kelas k ON k.id = j.kelas_id::uuid
 			JOIN ruangans r ON r.id = j.ruangan_id::uuid
 			LEFT JOIN absen_masuks a ON a.jadwal_ajar_id = j.id::uuid AND a.tanggal = CURRENT_DATE
+			LEFT JOIN absen_keluars ak ON ak.absen_masuk_id = a.id::uuid
 			%s
 			ORDER BY j.jam_mulai
 		) sub;
