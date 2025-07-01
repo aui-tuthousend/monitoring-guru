@@ -6,6 +6,7 @@ import (
 	"monitoring-guru/entities"
 	"monitoring-guru/internal/features/absenkeluar"
 	"monitoring-guru/internal/features/absenmasuk"
+	"monitoring-guru/internal/features/izin"
 	"monitoring-guru/internal/features/jadwalajar"
 	"monitoring-guru/utils"
 	"time"
@@ -17,6 +18,7 @@ type WebsocketService struct {
 	JadwalajarService *jadwalajar.JadwalajarService
 	AbsenMasukService *absenmasuk.AbsenMasukService
 	AbsenKeluarService *absenkeluar.AbsenKeluarService
+	IzinService *izin.IzinService
 }
 
 func (s *WebsocketService) CreateAbsenMasuk(data json.RawMessage) bool {
@@ -210,6 +212,7 @@ func (s *WebsocketService) CreateIzin(data json.RawMessage) bool {
 		TanggalIzin string `json:"tanggal_izin"`
 		Read bool `json:"read"`
 		Approval bool `json:"approval"`
+		Guru string `json:"guru"`
 	}
 
 	if err := json.Unmarshal(data, &payload); err != nil {
@@ -234,25 +237,21 @@ func (s *WebsocketService) CreateIzin(data json.RawMessage) bool {
 		UpdatedAt:    time.Now(),
 	}
 
-	err := s.JadwalajarService.DB.Create(&izinEntity)
+	err := s.IzinService.CreateIzin(&izinEntity)
 	if err != nil {
 		log.Printf("Failed to create Izin: %v", err)
 		BroadcastToGroup("admin", "Failed")
 		return false
 	}
 
-	// jadwalajar, err := s.JadwalajarService.GetJadwalajarByID(payload.JadwalajarID)
-	// if err != nil {
-	// 	log.Printf("Failed to get JadwalAjar: %v", err)
-	// 	BroadcastToGroup("admin", "Failed")
-	// 	return false
-	// }
+	jadwalajar, _ := s.JadwalajarService.GetJadwalajarByID(payload.JadwalajarID)
 
 	payload.Id = izinEntity.ID.String()
 	payload.JamIzin = izinEntity.JamIzin
 	payload.TanggalIzin = izinEntity.TanggalIzin.Format("2006-01-02")
 	payload.Read = false
 	payload.Approval = false
+	payload.Guru = jadwalajar.Guru.Name
 
 	response, _ := json.Marshal(struct {
 		Type    string      `json:"type"`

@@ -5,6 +5,7 @@ import (
 	"log"
 	"monitoring-guru/internal/features/absenkeluar"
 	"monitoring-guru/internal/features/absenmasuk"
+	"monitoring-guru/internal/features/izin"
 	"monitoring-guru/internal/features/jadwalajar"
 
 	"github.com/gofiber/contrib/websocket"
@@ -17,6 +18,7 @@ func SetupWebSocket(app *fiber.App) {
 		JadwalajarService: jadwalajar.JadwalajarServ,
 		AbsenMasukService: absenmasuk.AbsenMasukServ,
 		AbsenKeluarService: absenkeluar.AbsenKeluarServ,
+		IzinService: izin.IzinServ,
 	}
 	
 	app.Use("/ws", func(c *fiber.Ctx) error {
@@ -60,7 +62,7 @@ func SetupWebSocket(app *fiber.App) {
 				WebsocketServ.CreateAbsenMasuk(message.Payload)
 			} else if message.Type == "clock-out" {
 				WebsocketServ.CreateAbsenKeluar(message.Payload)
-			} else if message.Type == "izin" {
+			} else if message.Type == "create-izin" {
 				WebsocketServ.CreateIzin(message.Payload)
 			}
 		}
