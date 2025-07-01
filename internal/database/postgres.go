@@ -4,7 +4,7 @@ import (
     "os"
     "log"
 
-	// e "monitoring-guru/entities"
+	e "monitoring-guru/entities"
 	"monitoring-guru/docs"
     
     "gorm.io/driver/postgres"
@@ -36,6 +36,7 @@ func Connect() *gorm.DB {
             // &e.StatusKelas{},
             // &e.AbsenMasuk{},
             // &e.AbsenKeluar{},
+            &e.Izin{},
         ) //only call when in local
     } else {
 		docs.SwaggerInfo.Host = "monitoring.aui-tuthousend.cyou" // change later
