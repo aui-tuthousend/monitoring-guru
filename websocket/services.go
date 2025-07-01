@@ -116,7 +116,16 @@ func (s *WebsocketService) CreateAbsenMasuk(data json.RawMessage) bool {
 		Payload: payload,
 	})
 
+	siswaMessage, _ := json.Marshal(struct {
+		Type    string `json:"type"`
+		Payload string `json:"payload"`
+	}{
+		Type:    "absen-success",
+		Payload: "Absen berhasil",
+	})
+
 	BroadcastToGroup("admin", string(response))
+	BroadcastToGroup("siswa", string(siswaMessage))
 	return true
 }
 
@@ -195,8 +204,16 @@ func (s *WebsocketService) CreateAbsenKeluar(data json.RawMessage) bool {
 		Type:    "update-kelas",
 		Payload: payload,
 	})
+	siswaMessage, _ := json.Marshal(struct {
+		Type    string `json:"type"`
+		Payload string `json:"payload"`
+	}{
+		Type:    "absen-success",
+		Payload: "Absen berhasil",
+	})
 
 	BroadcastToGroup("admin", string(response))
+	BroadcastToGroup("siswa", string(siswaMessage))
 	return true
 }
 
