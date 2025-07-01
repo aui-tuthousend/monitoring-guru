@@ -7,30 +7,30 @@ import (
 	"github.com/gofiber/contrib/websocket"
 )
 
-var wsClients = make(map[string]*websocket.Conn)
-var wsMutex sync.Mutex
-var wg sync.WaitGroup
+var (
+	wsGroups = make(map[string]map[string]*websocket.Conn)
+	wsMutex  sync.Mutex
+	wg       sync.WaitGroup
+)
 
-func AddClient(id string, conn *websocket.Conn) {
-	wsMutex.Lock()
-	wsClients[id] = conn
-	wsMutex.Unlock()
-}
-
-func RemoveClient(id string) {
-	wsMutex.Lock()
-	delete(wsClients, id)
-	wsMutex.Unlock()
-	log.Printf("client removed: %s logged out", id)
-}
-
-func SendToClient(id string, message string) {
+func AddClientToGroup(group string, id string, conn *websocket.Conn) {
 	wsMutex.Lock()
 	defer wsMutex.Unlock()
 
-	if conn, ok := wsClients[id]; ok {
-		if err := conn.WriteMessage(websocket.TextMessage, []byte(message)); err != nil {
-			log.Printf("Failed to send message to %s: %v", id, err)
+	if wsGroups[group] == nil {
+		wsGroups[group] = make(map[string]*websocket.Conn)
+	}
+	wsGroups[group][id] = conn
+}
+
+func RemoveClientFromGroup(group string, id string) {
+	wsMutex.Lock()
+	defer wsMutex.Unlock()
+
+	if groupClients, ok := wsGroups[group]; ok {
+		delete(groupClients, id)
+		if len(groupClients) == 0 {
+			delete(wsGroups, group) // Bersihkan grup jika kosong
 		}
 	}
 }
@@ -39,36 +39,40 @@ func CleanupWebSocketClients() {
 	wsMutex.Lock()
 	defer wsMutex.Unlock()
 
-	for id, conn := range wsClients {
-		log.Printf("Closing connection for client: %s", id)
-		err := conn.Close()
-		if err != nil {
-			log.Printf("Error closing connection for client %s: %v", id, err)
+	for group, clients := range wsGroups {
+		for id, conn := range clients {
+			log.Printf("Closing connection for client: %s in group: %s", id, group)
+			if err := conn.Close(); err != nil {
+				log.Printf("Error closing connection for client %s: %v", id, err)
+			}
+			delete(clients, id)
 		}
-		delete(wsClients, id)
+		delete(wsGroups, group)
 	}
 }
 
-
-func BroadcastToAll(message string) {
+func BroadcastToGroup(group string, message string) {
 	wsMutex.Lock()
-	clients := make(map[string]*websocket.Conn, len(wsClients))
-	for id, conn := range wsClients {
-		clients[id] = conn
+	clients, ok := wsGroups[group]
+	if !ok {
+		wsMutex.Unlock()
+		return
+	}
+	copyClients := make(map[string]*websocket.Conn, len(clients))
+	for id, conn := range clients {
+		copyClients[id] = conn
 	}
 	wsMutex.Unlock()
 
-	for id, conn := range clients {
+	for id, conn := range copyClients {
 		wg.Add(1)
 		go func(id string, conn *websocket.Conn) {
 			defer wg.Done()
-			log.Printf("broadcasting to %s with message: %s", id, message)
 			if err := conn.WriteMessage(websocket.TextMessage, []byte(message)); err != nil {
-				log.Printf("error sending to %s: %v", id, err)
+				log.Printf("failed to send to %s in group %s: %v", id, group, err)
 			}
 		}(id, conn)
 	}
 	wg.Wait()
 }
-
 

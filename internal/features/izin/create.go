@@ -12,20 +12,15 @@ import (
 // CreateIzinRequest
 // @Description Create izin request body
 type CreateIzinRequest struct {
-	// @Description UUID guru yang mengajukan izin
+	// @Description Tittle izin
 	// @Required true
-	// @Example "3f2c1db1-8a1b-4d53-91a9-f8d3e5b0a7d5"
-	GuruID string `json:"guru_id"`
+	// @Example "Izin"
+	Judul string `json:"judul"`
 
 	// @Description UUID jadwal ajar yang akan di-izin-kan
 	// @Required true
 	// @Example "a1b2c3d4-5e6f-7a8b-9c0d-e1f2a3b4c5d6"
 	JadwalAjarID string `json:"jadwal_ajar_id"`
-
-	// @Description Tanggal izin (format YYYY-MM-DD)
-	// @Required true
-	// @Example "2025-06-28"
-	TanggalIzin string `json:"tanggal_izin"`
 
 	// @Description Alasan izin guru
 	// @Required true
@@ -51,22 +46,21 @@ func (h *IzinHandler) CreateIzin() fiber.Handler {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, err.Error(), nil))
 		}
 
-		if req.GuruID == "" || req.JadwalAjarID == "" || req.TanggalIzin == "" || len(req.Pesan) < 3 {
+		if req.JadwalAjarID == "" || len(req.Pesan) < 3 || len(req.Judul) < 3 {
 			return c.Status(400).JSON(e.ErrorResponse[any](400, "Invalid input data", nil))
 		}
 
-		tgl, err := time.Parse("2006-01-02", req.TanggalIzin)
-		if err != nil {
-			return c.Status(400).JSON(e.ErrorResponse[any](400, "Invalid tanggal_izin format, harus YYYY-MM-DD", nil))
-		}
-
+		loc, _ := time.LoadLocation("Asia/Jakarta")
 		izinEntity := e.Izin{
 			ID:           uuid.New(),
-			GuruID:       uuid.MustParse(req.GuruID),
-			JadwalAjarID: uuid.MustParse(req.JadwalAjarID),
-			TanggalIzin:  tgl,
+			// GuruID:       uuid.MustParse(req.GuruID),
+			Judul:       req.Judul,
 			Pesan:        req.Pesan,
+			JadwalAjarID: uuid.MustParse(req.JadwalAjarID),
+			TanggalIzin:  time.Now().In(loc),
+			JamIzin: time.Now().In(loc).Format("15:04"),
 			Approval:     false,
+			Read: false,
 			CreatedAt:    time.Now(),
 			UpdatedAt:    time.Now(),
 		}

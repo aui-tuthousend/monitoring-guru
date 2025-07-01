@@ -25,10 +25,13 @@ func (s *IzinService) GetIzin(id string) (*e.Izin, error) {
 func (s *IzinService) ResponseIzinMapper(izin *e.Izin) *IzinResponse {
 	return &IzinResponse{
 		ID:           izin.ID.String(),
-		GuruID:       izin.GuruID.String(),
+		Judul:       izin.Judul,
+		// GuruID:       izin.GuruID.String(),
 		JadwalAjarID: izin.JadwalAjarID.String(),
 		TanggalIzin:  izin.TanggalIzin.Format("2006-01-02"), // Format YYYY-MM-DD
+		JamIzin: izin.JamIzin,
 		Pesan:        izin.Pesan,
+		Read: izin.Read,
 		Approval:     izin.Approval,
 	}
 }

@@ -2,10 +2,12 @@ package izin
 
 type IzinResponse struct {
 	ID           string `json:"id"`
-	GuruID       string `json:"guru_id"`
+	Judul       string `json:"judul"`
+	Pesan        string `json:"pesan"`
 	JadwalAjarID string `json:"jadwal_ajar_id"`
 	TanggalIzin  string `json:"tanggal_izin"`
-	Pesan        string `json:"pesan"`
+	JamIzin      string `json:"jam_izin"`
+	Read		bool	`json:"read"`
 	Approval     bool   `json:"approval"`
 }
 

@@ -43,7 +43,7 @@ func (s *WebsocketService) CreateAbsenMasuk(data json.RawMessage) bool {
 	jadwalajar, err := s.JadwalajarService.GetJadwalajarByID(payload.JadwalajarID)
 	if err != nil {
 		log.Printf("Failed to get JadwalAjar: %v", err)
-		BroadcastToAll("Failed")
+		BroadcastToGroup("admin", "Failed")
 		return false
 	}
 
@@ -58,7 +58,7 @@ func (s *WebsocketService) CreateAbsenMasuk(data json.RawMessage) bool {
 
 	if errr != nil {
 		log.Printf("Failed to update DB: %v", err)
-		BroadcastToAll("Failed")
+		BroadcastToGroup("admin", "Failed")
 		return false
 	}
 
@@ -98,7 +98,7 @@ func (s *WebsocketService) CreateAbsenMasuk(data json.RawMessage) bool {
 	_, err = s.AbsenMasukService.CreateAbsenMasuk(absenMasuk)
 	if err != nil {
 		log.Printf("Failed to create AbsenMasuk: %v", err)
-		BroadcastToAll("Failed")
+		BroadcastToGroup("admin", "Failed")
 		return false
 	}
 
@@ -114,9 +114,12 @@ func (s *WebsocketService) CreateAbsenMasuk(data json.RawMessage) bool {
 		Payload: payload,
 	})
 
-	BroadcastToAll(string(response))
+	BroadcastToGroup("admin", string(response))
 	return true
 }
+
+
+
 
 
 func (s *WebsocketService) CreateAbsenKeluar(data json.RawMessage) bool {
@@ -152,7 +155,7 @@ func (s *WebsocketService) CreateAbsenKeluar(data json.RawMessage) bool {
 
 	if errr != nil {
 		log.Printf("Failed to update DB: %v", errr)
-		BroadcastToAll("Failed")
+		BroadcastToGroup("admin", "Failed")
 		return false
 	}
 
@@ -174,7 +177,7 @@ func (s *WebsocketService) CreateAbsenKeluar(data json.RawMessage) bool {
 	err = s.AbsenKeluarService.CreateAbsenKeluar(absenKeluar)
 	if err != nil {
 		log.Printf("Failed to create AbsenKeluar: %v", err)
-		BroadcastToAll("Failed")
+		BroadcastToGroup("admin", "Failed")
 		return false
 	}
 
@@ -191,6 +194,74 @@ func (s *WebsocketService) CreateAbsenKeluar(data json.RawMessage) bool {
 		Payload: payload,
 	})
 
-	BroadcastToAll(string(response))
+	BroadcastToGroup("admin", string(response))
+	return true
+}
+
+
+
+func (s *WebsocketService) CreateIzin(data json.RawMessage) bool {
+	var payload struct {
+		Id string `json:"id"`
+		Judul string `json:"judul"`
+		Pesan string `json:"pesan"`
+		JadwalajarID  string `json:"jadwalajar_id"`
+		JamIzin string `json:"jam_izin"`
+		TanggalIzin string `json:"tanggal_izin"`
+		Read bool `json:"read"`
+		Approval bool `json:"approval"`
+	}
+
+	if err := json.Unmarshal(data, &payload); err != nil {
+		log.Println("Error unmarshalling payload:", err)
+		return false
+	}
+
+	log.Printf("Parsed payload: %+v\n", payload)
+
+	loc, _ := time.LoadLocation("Asia/Jakarta")
+	izinEntity := entities.Izin{
+		ID:           uuid.New(),
+		// GuruID:       uuid.MustParse(req.GuruID),
+		Judul:       payload.Judul,
+		Pesan:        payload.Pesan,
+		JadwalAjarID: uuid.MustParse(payload.JadwalajarID),
+		JamIzin: time.Now().In(loc).Format("15:04"),
+		TanggalIzin:  time.Now().In(loc),
+		Approval:     false,
+		Read: false,
+		CreatedAt:    time.Now(),
+		UpdatedAt:    time.Now(),
+	}
+
+	err := s.JadwalajarService.DB.Create(&izinEntity)
+	if err != nil {
+		log.Printf("Failed to create Izin: %v", err)
+		BroadcastToGroup("admin", "Failed")
+		return false
+	}
+
+	// jadwalajar, err := s.JadwalajarService.GetJadwalajarByID(payload.JadwalajarID)
+	// if err != nil {
+	// 	log.Printf("Failed to get JadwalAjar: %v", err)
+	// 	BroadcastToGroup("admin", "Failed")
+	// 	return false
+	// }
+
+	payload.Id = izinEntity.ID.String()
+	payload.JamIzin = izinEntity.JamIzin
+	payload.TanggalIzin = izinEntity.TanggalIzin.Format("2006-01-02")
+	payload.Read = false
+	payload.Approval = false
+
+	response, _ := json.Marshal(struct {
+		Type    string      `json:"type"`
+		Payload interface{} `json:"payload"`
+	}{
+		Type:    "create-izin",
+		Payload: payload,
+	})
+
+	BroadcastToGroup("admin", string(response))
 	return true
 }

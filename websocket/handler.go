@@ -27,15 +27,17 @@ func SetupWebSocket(app *fiber.App) {
 		return fiber.ErrUpgradeRequired
 	})
 
-	app.Get("/ws/:id", websocket.New(func(c *websocket.Conn) {
-		id := c.Params("id")
-		AddClient(id, c)
-		log.Printf("Client connected: %s", id)
+	app.Get("/ws/:group/:id", websocket.New(func(c *websocket.Conn) {
+		group := c.Params("group")
+		id := c.Params("id") 
+		
+		AddClientToGroup(group, id, c)
+		log.Printf("Client %s joined group %s", id, group)
 	
 		defer func() {
-			RemoveClient(id)
+			RemoveClientFromGroup(group, id)
 			c.Close()
-			log.Printf("Client disconnected: %s", id)
+			log.Printf("Client %s disconnected from group %s", id, group)
 		}()
 	
 		for {
@@ -58,8 +60,11 @@ func SetupWebSocket(app *fiber.App) {
 				WebsocketServ.CreateAbsenMasuk(message.Payload)
 			} else if message.Type == "clock-out" {
 				WebsocketServ.CreateAbsenKeluar(message.Payload)
+			} else if message.Type == "izin" {
+				WebsocketServ.CreateIzin(message.Payload)
 			}
 		}
 	}))	
+
 	
 }
