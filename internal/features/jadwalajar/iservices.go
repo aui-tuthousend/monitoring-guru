@@ -31,7 +31,8 @@ func (s *JadwalajarService) GetJadwalajarByID(id string) (*JadwalajarResponse, e
 			'hari', j.hari,
 			'guru', json_build_object(
 				'id', g.id,
-				'name', g.name
+				'name', g.name,
+				'nip', g.nip
 			),
 			'mapel', json_build_object(
 				'id', m.id,
@@ -79,8 +80,9 @@ func (s *JadwalajarService) GetAllJadwalajar() ([]JadwalajarResponse, error) {
 				'hari', j.hari,
 				'guru', json_build_object(
 					'id', g.id,
-					'name', g.name
-			),
+					'name', g.name,
+					'nip', g.nip
+				),
 			'mapel', json_build_object(
 				'id', m.id,
 				'name', m.name
@@ -137,7 +139,8 @@ func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]
 				'id', j.id,
 				'guru', json_build_object(
 					'id', g.id,
-					'name', g.name
+					'name', g.name,
+					'nip', g.nip
 				),
 				'mapel', json_build_object(
 					'id', m.id,

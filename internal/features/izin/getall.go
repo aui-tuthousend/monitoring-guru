@@ -22,11 +22,6 @@ func (h *IzinHandler) GetAllIzinHandler() fiber.Handler {
 			return c.Status(500).JSON(e.ErrorResponse[any](500, "Internal server error", nil))
 		}
 
-		var responses []IzinResponse
-		for _, izin := range izins {
-			responses = append(responses, *h.Service.ResponseIzinMapper(&izin))
-		}
-
-		return c.JSON(e.SuccessResponse(&responses))
+		return c.JSON(e.SuccessResponse(&izins))
 	}
 }

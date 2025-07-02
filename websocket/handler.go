@@ -64,6 +64,8 @@ func SetupWebSocket(app *fiber.App) {
 				WebsocketServ.CreateAbsenKeluar(message.Payload)
 			} else if message.Type == "create-izin" {
 				WebsocketServ.CreateIzin(message.Payload)
+			} else if message.Type == "handle-izin" {
+				WebsocketServ.HandleIzin(message.Payload)
 			}
 		}
 	}))	

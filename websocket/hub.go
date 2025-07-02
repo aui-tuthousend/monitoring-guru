@@ -51,6 +51,33 @@ func CleanupWebSocketClients() {
 	}
 }
 
+func SendToUserInGroup(group string, userID string, message string) {
+	wsMutex.Lock()
+	clients, ok := wsGroups[group]
+	if !ok {
+		wsMutex.Unlock()
+		log.Printf("Group '%s' not found", group)
+		return
+	}
+
+	conn, exists := clients[userID]
+	wsMutex.Unlock()
+
+	if !exists {
+		log.Printf("User '%s' not found in group '%s'", userID, group)
+		return
+	}
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		if err := conn.WriteMessage(websocket.TextMessage, []byte(message)); err != nil {
+			log.Printf("Failed to send message to user '%s' in group '%s': %v", userID, group, err)
+		}
+	}()
+	wg.Wait()
+}
+
 func BroadcastToGroup(group string, message string) {
 	wsMutex.Lock()
 	clients, ok := wsGroups[group]

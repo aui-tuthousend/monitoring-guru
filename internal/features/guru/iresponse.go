@@ -9,6 +9,7 @@ type GuruResponse struct {
 
 type GuruMiniResponse struct {
 	ID      string `json:"id"`
+	Nip     string `json:"nip"`
 	Name    string `json:"name"`
 }
 

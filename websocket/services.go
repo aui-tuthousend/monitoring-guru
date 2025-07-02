@@ -261,23 +261,71 @@ func (s *WebsocketService) CreateIzin(data json.RawMessage) bool {
 		return false
 	}
 
-	jadwalajar, _ := s.JadwalajarService.GetJadwalajarByID(payload.JadwalajarID)
-
-	payload.Id = izinEntity.ID.String()
-	payload.JamIzin = izinEntity.JamIzin
-	payload.TanggalIzin = izinEntity.TanggalIzin.Format("2006-01-02")
-	payload.Read = false
-	payload.Approval = false
-	payload.Guru = jadwalajar.Guru.Name
+	izin, err := s.IzinService.GetIzinByID(izinEntity.ID.String())
+	if err != nil {
+		log.Printf("Failed to get Izin: %v", err)
+		BroadcastToGroup("admin", "Failed")
+		return false
+	}
 
 	response, _ := json.Marshal(struct {
 		Type    string      `json:"type"`
 		Payload interface{} `json:"payload"`
 	}{
-		Type:    "create-izin",
-		Payload: payload,
+		Type:    "izin-masuk",
+		Payload: izin,
 	})
 
 	BroadcastToGroup("admin", string(response))
+	return true
+}
+
+func (s *WebsocketService) HandleIzin(data json.RawMessage) bool {
+	var payload struct {
+		Id string `json:"id"`
+		Status bool `json:"status"`
+	}
+
+	if err := json.Unmarshal(data, &payload); err != nil {
+		log.Println("Error unmarshalling payload:", err)
+		return false
+	}
+
+	log.Printf("Parsed payload: %+v\n", payload)
+
+	izin, err := s.IzinService.GetIzin(payload.Id)
+	if err != nil {
+		log.Printf("Failed to get Izin: %v", err)
+		BroadcastToGroup("admin", "Failed")
+		return false
+	}
+
+	izin.Approval = payload.Status
+	izin.Read = true
+	err = s.IzinService.UpdateIzin(izin)
+	if err != nil {
+		log.Printf("Failed to update Izin: %v", err)
+		BroadcastToGroup("admin", "Failed")
+		return false
+	}
+
+	var statusIzin string
+	if payload.Status {
+		statusIzin = "disetujui"
+	} else {
+		statusIzin = "ditolak"
+	}
+
+	jadwalajar, _ := s.JadwalajarService.GetJadwalajarByID(izin.JadwalAjarID.String())
+	guruID := "user-" + jadwalajar.Guru.Nip
+
+	response, _ := json.Marshal(struct {
+		Type    string      `json:"type"`
+		Payload interface{} `json:"payload"`
+	}{
+		Type:    "handle-izin",
+		Payload: "Izin telah " + statusIzin,
+	})
+	SendToUserInGroup("guru", guruID, string(response))
 	return true
 }

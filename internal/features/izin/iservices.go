@@ -1,6 +1,7 @@
 package izin
 
 import (
+	"encoding/json"
 	e "monitoring-guru/entities"
 
 	"gorm.io/gorm"
@@ -27,7 +28,7 @@ func (s *IzinService) ResponseIzinMapper(izin *e.Izin) *IzinResponse {
 		ID:           izin.ID.String(),
 		Judul:       izin.Judul,
 		// GuruID:       izin.GuruID.String(),
-		JadwalAjarID: izin.JadwalAjarID.String(),
+		// JadwalAjarID: izin.JadwalAjarID.String(),
 		TanggalIzin:  izin.TanggalIzin.Format("2006-01-02"), // Format YYYY-MM-DD
 		JamIzin: izin.JamIzin,
 		Pesan:        izin.Pesan,
@@ -36,13 +37,85 @@ func (s *IzinService) ResponseIzinMapper(izin *e.Izin) *IzinResponse {
 	}
 }
 
-func (s *IzinService) GetAllIzin() ([]e.Izin, error) {
-	var izins []e.Izin
-	if err := s.DB.Find(&izins).Error; err != nil {
+func (s *IzinService) GetAllIzin() ([]IzinResponse, error) {
+	var jsonData *string
+	query := `
+		SELECT json_agg(result)
+		FROM (
+			SELECT json_build_object(
+				'id', i.id,
+				'judul', i.judul,
+				'pesan', i.pesan,
+				'guru', g.name,
+				'mapel', m.name,
+				'jam_mulai', j.jam_mulai,
+				'jam_selesai', j.jam_selesai,
+				'tanggal_izin', i.tanggal_izin,
+				'jam_izin', i.jam_izin,
+				'read', i.read,
+				'approval', i.approval
+			) AS result
+			FROM izins i
+			JOIN jadwal_ajars j ON j.id = i.jadwal_ajar_id::uuid
+			JOIN gurus g ON g.id = j.guru_id::uuid
+			JOIN mapels m ON m.id = j.mapel_id::uuid
+			WHERE i.read = false
+			ORDER BY i.jam_izin DESC
+		) sub;
+	`
+	if err := s.DB.Raw(query).Scan(&jsonData).Error; err != nil {
 		return nil, err
 	}
-	return izins, nil
+	izinList := []IzinResponse{}
+	if jsonData == nil {
+		return izinList, nil
+	}
+	if err := json.Unmarshal([]byte(*jsonData), &izinList); err != nil {
+		return nil, err
+	}
+	return izinList, nil
 }
+
+func (s *IzinService) GetIzinByID(id string) (*IzinResponse, error) {
+	var jsonData string
+
+	query := `
+		SELECT json_build_object(
+			'id', i.id,
+			'judul', i.judul,
+			'pesan', i.pesan,
+			'guru', g.name,
+			'mapel', m.name,
+			'jam_mulai', j.jam_mulai,
+			'jam_selesai', j.jam_selesai,
+			'tanggal_izin', i.tanggal_izin,
+			'jam_izin', i.jam_izin,
+			'read', i.read,
+			'approval', i.approval
+		)
+		FROM izins i
+		JOIN jadwal_ajars j ON j.id = i.jadwal_ajar_id::uuid
+		JOIN gurus g ON g.id = j.guru_id::uuid
+		JOIN mapels m ON m.id = j.mapel_id::uuid
+		WHERE i.id = ?::uuid
+	`
+
+	if err := s.DB.Raw(query, id).Scan(&jsonData).Error; err != nil {
+		return nil, err
+	}
+
+	if jsonData == "" {
+		return nil, nil // or return custom not found error
+	}
+
+	var izin IzinResponse
+	if err := json.Unmarshal([]byte(jsonData), &izin); err != nil {
+		return nil, err
+	}
+
+	return &izin, nil
+}
+
 
 func (s *IzinService) UpdateIzin(izin *e.Izin) error {
 	return s.DB.Save(izin).Error
