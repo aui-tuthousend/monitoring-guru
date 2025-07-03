@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	e "monitoring-guru/entities"
 
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -75,6 +76,85 @@ func (s *IzinService) GetAllIzin() ([]IzinResponse, error) {
 	}
 	return izinList, nil
 }
+
+func (s *IzinService) GetAllIzinGuru(nip string) ([]IzinResponse, error) {
+	var jsonData *string
+	query := `
+		SELECT json_agg(result)
+		FROM (
+			SELECT json_build_object(
+				'id', i.id,
+				'judul', i.judul,
+				'pesan', i.pesan,
+				'guru', g.name,
+				'mapel', m.name,
+				'jam_mulai', j.jam_mulai,
+				'jam_selesai', j.jam_selesai,
+				'tanggal_izin', i.tanggal_izin,
+				'jam_izin', i.jam_izin,
+				'read', i.read,
+				'approval', i.approval
+			) AS result
+			FROM izins i
+			JOIN jadwal_ajars j ON j.id = i.jadwal_ajar_id::uuid
+			JOIN gurus g ON g.id = j.guru_id::uuid
+			JOIN mapels m ON m.id = j.mapel_id::uuid
+			WHERE g.nip = ? AND i.tanggal_izin = CURRENT_DATE
+			ORDER BY i.jam_izin DESC
+		) sub;
+	`
+	if err := s.DB.Raw(query, nip).Scan(&jsonData).Error; err != nil {
+		return nil, err
+	}
+	izinList := []IzinResponse{}
+	if jsonData == nil {
+		return izinList, nil
+	}
+	if err := json.Unmarshal([]byte(*jsonData), &izinList); err != nil {
+		return nil, err
+	}
+	return izinList, nil
+}
+
+func (s *IzinService) GetAllIzinKelas(kelasID uuid.UUID) ([]IzinResponse, error) {
+	var jsonData *string
+	query := `
+		SELECT json_agg(result)
+		FROM (
+			SELECT json_build_object(
+				'id', i.id,
+				'judul', i.judul,
+				'pesan', i.pesan,
+				'guru', g.name,
+				'mapel', m.name,
+				'jam_mulai', j.jam_mulai,
+				'jam_selesai', j.jam_selesai,
+				'tanggal_izin', i.tanggal_izin,
+				'jam_izin', i.jam_izin,
+				'read', i.read,
+				'approval', i.approval
+			) AS result
+			FROM izins i
+			JOIN jadwal_ajars j ON j.id = i.jadwal_ajar_id::uuid
+			JOIN gurus g ON g.id = j.guru_id::uuid
+			JOIN mapels m ON m.id = j.mapel_id::uuid
+			WHERE j.kelas_id = ?::uuid AND i.tanggal_izin = CURRENT_DATE
+			ORDER BY i.jam_izin DESC
+		) sub;
+	`
+	if err := s.DB.Raw(query, kelasID).Scan(&jsonData).Error; err != nil {
+		return nil, err
+	}
+	izinList := []IzinResponse{}
+	if jsonData == nil {
+		return izinList, nil
+	}
+	if err := json.Unmarshal([]byte(*jsonData), &izinList); err != nil {
+		return nil, err
+	}
+	return izinList, nil
+}
+
 
 func (s *IzinService) GetIzinByID(id string) (*IzinResponse, error) {
 	var jsonData string

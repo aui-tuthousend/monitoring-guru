@@ -17,6 +17,8 @@ func RegisterRoutes(api fiber.Router, db *gorm.DB) {
 	izinGroup := api.Group("/izin", middleware.JWTProtected())
 	izinGroup.Get("/", middleware.JWTRoleProtected("kepala_sekolah"), handler.GetAllIzinHandler())
 	izinGroup.Get("/:id", middleware.JWTRoleProtected("kepala_sekolah"), handler.GetIzinByID())
+	izinGroup.Get("/guru/:nip", middleware.JWTRoleProtected("guru"), handler.GetAllIzinGuruHandler())
+	izinGroup.Get("/kelas/:kelas_id", handler.GetAllIzinKelasHandler())
 	izinGroup.Put("/", handler.UpdateIzinHandler())
 	izinGroup.Post("/", handler.CreateIzin())
 	izinGroup.Delete("/:id", handler.DeleteIzinHandler())
