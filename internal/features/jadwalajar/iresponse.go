@@ -27,6 +27,7 @@ type JadwalajarAbsenResponse struct {
 	Mapel      *mapel.MapelMiniResponse   `json:"mapel"`
 	Kelas      *kelas.KelasMiniResponse   `json:"kelas"`
 	Ruangan    *ruangan.RuanganResponse   `json:"ruangan"`
+	Izin	bool `json:"izin"`
 	Hari       string   `json:"hari"`
 	JamMulai   string   `json:"jam_mulai"`
 	JamSelesai string   `json:"jam_selesai"`

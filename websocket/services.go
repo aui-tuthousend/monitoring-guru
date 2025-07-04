@@ -309,22 +309,18 @@ func (s *WebsocketService) HandleIzin(data json.RawMessage) bool {
 		return false
 	}
 
-	var statusIzin string
-	if payload.Status {
-		statusIzin = "disetujui"
-	} else {
-		statusIzin = "ditolak"
-	}
-
 	jadwalajar, _ := s.JadwalajarService.GetJadwalajarByID(izin.JadwalAjarID.String())
 	guruID := "user-" + jadwalajar.Guru.Nip
+
+	izinpayload,_:= s.IzinService.GetIzinByID(payload.Id)
+
 
 	response, _ := json.Marshal(struct {
 		Type    string      `json:"type"`
 		Payload interface{} `json:"payload"`
 	}{
 		Type:    "handle-izin",
-		Payload: "Izin telah " + statusIzin,
+		Payload: izinpayload,
 	})
 	SendToUserInGroup("guru", guruID, string(response))
 	return true

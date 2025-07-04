@@ -130,8 +130,6 @@ func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]
 		args = append(args, hari)
 	}
 
-	// whereClause += " AND a.tanggal = CURRENT_DATE"
-
 	query := fmt.Sprintf(`
 		SELECT json_agg(result)
 		FROM (
@@ -162,6 +160,7 @@ func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]
 					'id', ak.id,
 					'jam_keluar', ak.jam_keluar
 				),
+				'izin', i.approval,
 				'hari', j.hari,
 				'jam_mulai', j.jam_mulai,
 				'jam_selesai', j.jam_selesai
@@ -171,8 +170,28 @@ func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]
 			JOIN mapels m ON m.id = j.mapel_id::uuid
 			JOIN kelas k ON k.id = j.kelas_id::uuid
 			JOIN ruangans r ON r.id = j.ruangan_id::uuid
-			LEFT JOIN absen_masuks a ON a.jadwal_ajar_id = j.id::uuid AND a.tanggal = CURRENT_DATE
-			LEFT JOIN absen_keluars ak ON ak.absen_masuk_id = a.id::uuid
+
+			LEFT JOIN LATERAL (
+				SELECT a.id, a.jam_masuk
+				FROM absen_masuks a
+				WHERE a.jadwal_ajar_id = j.id::uuid AND a.tanggal = CURRENT_DATE
+				ORDER BY a.jam_masuk LIMIT 1
+			) a ON true
+
+			LEFT JOIN LATERAL (
+				SELECT ak.id, ak.jam_keluar
+				FROM absen_keluars ak
+				WHERE ak.absen_masuk_id = a.id::uuid
+				ORDER BY ak.jam_keluar LIMIT 1
+			) ak ON true
+
+			LEFT JOIN LATERAL (
+				SELECT i.approval
+				FROM izins i
+				WHERE i.jadwal_ajar_id = j.id::uuid AND i.tanggal_izin = CURRENT_DATE
+				ORDER BY i.updated_at DESC NULLS LAST LIMIT 1
+			) i ON true
+
 			%s
 			ORDER BY j.jam_mulai
 		) sub;
@@ -193,6 +212,7 @@ func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]
 
 	return jadwalajarList, nil
 }
+
 
 
 
@@ -236,6 +256,7 @@ func (s *JadwalajarService) GetJadwalajarByIDKelas(id uuid.UUID, hari string) ([
 					'id', ak.id,
 					'jam_keluar', ak.jam_keluar
 				),
+				'izin', i.approval,
 				'hari', j.hari,
 				'jam_mulai', j.jam_mulai,
 				'jam_selesai', j.jam_selesai
@@ -245,8 +266,31 @@ func (s *JadwalajarService) GetJadwalajarByIDKelas(id uuid.UUID, hari string) ([
 			JOIN mapels m ON m.id = j.mapel_id::uuid
 			JOIN kelas k ON k.id = j.kelas_id::uuid
 			JOIN ruangans r ON r.id = j.ruangan_id::uuid
-			LEFT JOIN absen_masuks a ON a.jadwal_ajar_id = j.id::uuid AND a.tanggal = CURRENT_DATE
-			LEFT JOIN absen_keluars ak ON ak.absen_masuk_id = a.id::uuid
+
+			LEFT JOIN LATERAL (
+				SELECT a.id, a.jam_masuk
+				FROM absen_masuks a
+				WHERE a.jadwal_ajar_id = j.id::uuid AND a.tanggal = CURRENT_DATE
+				ORDER BY a.jam_masuk
+				LIMIT 1
+			) a ON true
+
+			LEFT JOIN LATERAL (
+				SELECT ak.id, ak.jam_keluar
+				FROM absen_keluars ak
+				WHERE ak.absen_masuk_id = a.id::uuid
+				ORDER BY ak.jam_keluar
+				LIMIT 1
+			) ak ON true
+
+			LEFT JOIN LATERAL (
+				SELECT i.approval
+				FROM izins i
+				WHERE i.jadwal_ajar_id = j.id::uuid AND i.tanggal_izin = CURRENT_DATE
+				ORDER BY i.created_at DESC
+				LIMIT 1
+			) i ON true
+
 			%s
 			ORDER BY j.jam_mulai
 		) sub;

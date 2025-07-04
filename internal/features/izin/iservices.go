@@ -139,6 +139,7 @@ func (s *IzinService) GetAllIzinKelas(kelasID uuid.UUID) ([]IzinResponse, error)
 			JOIN gurus g ON g.id = j.guru_id::uuid
 			JOIN mapels m ON m.id = j.mapel_id::uuid
 			WHERE j.kelas_id = ?::uuid AND i.tanggal_izin = CURRENT_DATE
+			AND i.approval = true
 			ORDER BY i.jam_izin DESC
 		) sub;
 	`
