@@ -160,7 +160,11 @@ func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]
 					'id', ak.id,
 					'jam_keluar', ak.jam_keluar
 				),
-				'izin', i.approval,
+				'izin', json_build_object(
+					'id', i.id,
+					'read', i.read,
+					'approval', i.approval
+				),
 				'hari', j.hari,
 				'jam_mulai', j.jam_mulai,
 				'jam_selesai', j.jam_selesai
@@ -186,7 +190,7 @@ func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]
 			) ak ON true
 
 			LEFT JOIN LATERAL (
-				SELECT i.approval
+				SELECT i.id, i.approval, i.read
 				FROM izins i
 				WHERE i.jadwal_ajar_id = j.id::uuid AND i.tanggal_izin = CURRENT_DATE
 				ORDER BY i.updated_at DESC NULLS LAST LIMIT 1
@@ -200,6 +204,8 @@ func (s *JadwalajarService) GetJadwalajarByIDGuru(id uuid.UUID, hari string) ([]
 	if err := s.DB.Raw(query, args...).Scan(&jsonData).Error; err != nil {
 		return nil, err
 	}
+
+
 
 	jadwalajarList := []JadwalajarAbsenResponse{}
 	if jsonData == nil {
@@ -256,7 +262,11 @@ func (s *JadwalajarService) GetJadwalajarByIDKelas(id uuid.UUID, hari string) ([
 					'id', ak.id,
 					'jam_keluar', ak.jam_keluar
 				),
-				'izin', i.approval,
+				'izin', json_build_object(
+					'id', i.id,
+					'read', i.read,
+					'approval', i.approval
+				),
 				'hari', j.hari,
 				'jam_mulai', j.jam_mulai,
 				'jam_selesai', j.jam_selesai
@@ -284,7 +294,7 @@ func (s *JadwalajarService) GetJadwalajarByIDKelas(id uuid.UUID, hari string) ([
 			) ak ON true
 
 			LEFT JOIN LATERAL (
-				SELECT i.approval
+				SELECT i.id, i.approval, i.read
 				FROM izins i
 				WHERE i.jadwal_ajar_id = j.id::uuid AND i.tanggal_izin = CURRENT_DATE
 				ORDER BY i.created_at DESC

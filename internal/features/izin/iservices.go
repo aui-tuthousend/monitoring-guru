@@ -197,6 +197,15 @@ func (s *IzinService) GetIzinByID(id string) (*IzinResponse, error) {
 	return &izin, nil
 }
 
+func (s *IzinService) IsIzinToday(jadwal_id uuid.UUID) (bool, error) {
+	var izin e.Izin
+	if err := s.DB.Where("jadwal_ajar_id = ?::uuid AND tanggal_izin = CURRENT_DATE", jadwal_id).First(&izin).Error; err != nil {
+		return false, err
+	}
+	return true, nil
+}
+	
+
 
 func (s *IzinService) UpdateIzin(izin *e.Izin) error {
 	return s.DB.Save(izin).Error

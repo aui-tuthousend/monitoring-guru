@@ -15,6 +15,12 @@ type IzinResponse struct {
 	Approval     bool   `json:"approval"`
 }
 
+type IzinMiniResponse struct {
+	ID           string `json:"id"`
+	Read		bool	`json:"read"`
+	Approval     bool   `json:"approval"`
+}
+
 type IzinResponseWrapper struct {
 	Code    int          `json:"code"`
 	Message string       `json:"message"`

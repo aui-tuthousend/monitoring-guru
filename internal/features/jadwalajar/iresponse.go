@@ -4,6 +4,7 @@ import (
 	"monitoring-guru/internal/features/absenkeluar"
 	"monitoring-guru/internal/features/absenmasuk"
 	"monitoring-guru/internal/features/guru"
+	"monitoring-guru/internal/features/izin"
 	"monitoring-guru/internal/features/kelas"
 	"monitoring-guru/internal/features/mapel"
 	"monitoring-guru/internal/features/ruangan"
@@ -27,7 +28,7 @@ type JadwalajarAbsenResponse struct {
 	Mapel      *mapel.MapelMiniResponse   `json:"mapel"`
 	Kelas      *kelas.KelasMiniResponse   `json:"kelas"`
 	Ruangan    *ruangan.RuanganResponse   `json:"ruangan"`
-	Izin	bool `json:"izin"`
+	Izin	 *izin.IzinMiniResponse `json:"izin"`
 	Hari       string   `json:"hari"`
 	JamMulai   string   `json:"jam_mulai"`
 	JamSelesai string   `json:"jam_selesai"`

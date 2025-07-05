@@ -239,6 +239,13 @@ func (s *WebsocketService) CreateIzin(data json.RawMessage) bool {
 
 	log.Printf("Parsed payload: %+v\n", payload)
 
+	isIzin, _ := s.IzinService.IsIzinToday(uuid.MustParse(payload.JadwalajarID))
+	if isIzin {
+		log.Printf("Izin already exists")
+		BroadcastToGroup("guru", "Izin sudah ada")
+		return false
+	}
+
 	loc, _ := time.LoadLocation("Asia/Jakarta")
 	izinEntity := entities.Izin{
 		ID:           uuid.New(),
@@ -311,6 +318,7 @@ func (s *WebsocketService) HandleIzin(data json.RawMessage) bool {
 
 	jadwalajar, _ := s.JadwalajarService.GetJadwalajarByID(izin.JadwalAjarID.String())
 	guruID := "user-" + jadwalajar.Guru.Nip
+	kelasID := "user-" + jadwalajar.Kelas.ID
 
 	izinpayload,_:= s.IzinService.GetIzinByID(payload.Id)
 
@@ -323,5 +331,6 @@ func (s *WebsocketService) HandleIzin(data json.RawMessage) bool {
 		Payload: izinpayload,
 	})
 	SendToUserInGroup("guru", guruID, string(response))
+	SendToUserInGroup("siswa", kelasID, string(response))
 	return true
 }
