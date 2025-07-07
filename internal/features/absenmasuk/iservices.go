@@ -5,7 +5,7 @@ import (
 	e "monitoring-guru/entities"
 	"time"
 
-	"github.com/google/uuid"
+	// "github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -25,8 +25,8 @@ func (s *AbsenMasukService) CreateAbsenMasuk(absenMasuk *e.AbsenMasuk) (*CreateA
 		return nil, err
 	}
 
-	absenMasuk.ID = uuid.New()
-	absenMasuk.Tanggal = today
+	// absenMasuk.ID = uuid.New()
+	// absenMasuk.Tanggal = today
 
 	if err := s.DB.Create(absenMasuk).Error; err != nil {
 		return nil, err

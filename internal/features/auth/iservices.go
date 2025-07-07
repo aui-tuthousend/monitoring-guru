@@ -23,7 +23,7 @@ func (a *AuthService) GenerateJWT(userID uuid.UUID, role string) (string, error)
 	claims := jwt.MapClaims{
 		"sub":  userID.String(),
 		"role": role,
-		"exp":  time.Now().Add(time.Hour * 72).Unix(),
+		"exp":  time.Now().Add(time.Hour * 150).Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

@@ -2,6 +2,7 @@ package izin
 
 import (
 	"encoding/json"
+	"errors"
 	e "monitoring-guru/entities"
 
 	"github.com/google/uuid"
@@ -197,13 +198,20 @@ func (s *IzinService) GetIzinByID(id string) (*IzinResponse, error) {
 	return &izin, nil
 }
 
-func (s *IzinService) IsIzinToday(jadwal_id uuid.UUID) (bool, error) {
+func (s *IzinService) IsIzinToday(jadwalID uuid.UUID) (bool, error) {
 	var izin e.Izin
-	if err := s.DB.Where("jadwal_ajar_id = ?::uuid AND tanggal_izin = CURRENT_DATE", jadwal_id).First(&izin).Error; err != nil {
+	err := s.DB.
+		Where("jadwal_ajar_id = ?::uuid AND tanggal_izin = CURRENT_DATE", jadwalID).
+		First(&izin).Error
+
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return false, nil
+	} else if err != nil {
 		return false, err
 	}
 	return true, nil
 }
+
 	
 
 

@@ -239,7 +239,13 @@ func (s *WebsocketService) CreateIzin(data json.RawMessage) bool {
 
 	log.Printf("Parsed payload: %+v\n", payload)
 
-	isIzin, _ := s.IzinService.IsIzinToday(uuid.MustParse(payload.JadwalajarID))
+	isIzin, errr := s.IzinService.IsIzinToday(uuid.MustParse(payload.JadwalajarID))
+	if errr != nil {
+		log.Printf("Failed to create Izin: %v", errr)
+		BroadcastToGroup("admin", "Failed")
+		return false
+	}
+	
 	if isIzin {
 		log.Printf("Izin already exists")
 		BroadcastToGroup("guru", "Izin sudah ada")
@@ -274,6 +280,8 @@ func (s *WebsocketService) CreateIzin(data json.RawMessage) bool {
 		BroadcastToGroup("admin", "Failed")
 		return false
 	}
+	jadwalajar, _ := s.JadwalajarService.GetJadwalajarByID(payload.JadwalajarID)
+	guruID := "user-" + jadwalajar.Guru.Nip
 
 	response, _ := json.Marshal(struct {
 		Type    string      `json:"type"`
@@ -283,6 +291,7 @@ func (s *WebsocketService) CreateIzin(data json.RawMessage) bool {
 		Payload: izin,
 	})
 
+	SendToUserInGroup("guru", guruID, string(response))
 	BroadcastToGroup("admin", string(response))
 	return true
 }
