@@ -26,16 +26,16 @@ func Connect() *gorm.DB {
     if os.Getenv("ENV") != "production" {
 		docs.SwaggerInfo.Host = "127.0.0.1:8080"
 	    db.AutoMigrate(
-            // &e.Guru{}, 
-            // &e.Jurusan{}, 
-            // &e.KetuaKelas{}, 
-            // &e.Ruangan{}, 
-            // &e.Mapel{}, 
-            // &e.Kelas{}, 
-            // &e.JadwalAjar{},
-            // &e.StatusKelas{},
-            // &e.AbsenMasuk{},
-            // &e.AbsenKeluar{},
+            &e.Guru{}, 
+            &e.Jurusan{}, 
+            &e.KetuaKelas{}, 
+            &e.Ruangan{}, 
+            &e.Mapel{}, 
+            &e.Kelas{}, 
+            &e.JadwalAjar{},
+            &e.StatusKelas{},
+            &e.AbsenMasuk{},
+            &e.AbsenKeluar{},
             &e.Izin{},
         ) //only call when in local
     } else {
