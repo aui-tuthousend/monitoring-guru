@@ -21,7 +21,7 @@ func SetupWebSocket(app *fiber.App) {
 		IzinService: izin.IzinServ,
 	}
 	
-	app.Use("/ws", func(c *fiber.Ctx) error {
+	app.Use("/wss", func(c *fiber.Ctx) error {
 		if websocket.IsWebSocketUpgrade(c) {
 			c.Locals("allowed", true)
 			return c.Next()
@@ -29,7 +29,7 @@ func SetupWebSocket(app *fiber.App) {
 		return fiber.ErrUpgradeRequired
 	})
 
-	app.Get("/ws/:group/:id", websocket.New(func(c *websocket.Conn) {
+	app.Get("/wss/:group/:id", websocket.New(func(c *websocket.Conn) {
 		group := c.Params("group")
 		id := c.Params("id") 
 		
