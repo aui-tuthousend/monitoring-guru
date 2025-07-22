@@ -25,3 +25,14 @@ func (h *IzinHandler) GetAllIzinHandler() fiber.Handler {
 		return c.JSON(e.SuccessResponse(&izins))
 	}
 }
+
+func (h *IzinHandler) GetAllIzinWeeklyHandler() fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		izins, err := h.Service.GetAllIzinWeekly()
+		if err != nil {
+			return c.Status(500).JSON(e.ErrorResponse[any](500, "Internal server error", nil))
+		}
+
+		return c.JSON(e.SuccessResponse(&izins))
+	}
+}

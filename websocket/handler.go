@@ -21,17 +21,19 @@ func SetupWebSocket(app *fiber.App) {
 		IzinService: izin.IzinServ,
 	}
 	
-	// app.Use("/ws", func(c *fiber.Ctx) error {
-	// 	if websocket.IsWebSocketUpgrade(c) {
-	// 		c.Locals("allowed", true)
-	// 		return c.Next()
-	// 	}
-	// 	return fiber.ErrUpgradeRequired
-	// })
+	app.Use("/ws", func(c *fiber.Ctx) error {
+		if websocket.IsWebSocketUpgrade(c) {
+			c.Locals("allowed", true)
+			return c.Next()
+		}
+		return fiber.ErrUpgradeRequired
+	})
 
 	app.Get("/ws/:group/:id", websocket.New(func(c *websocket.Conn) {
 		group := c.Params("group")
-		id := c.Params("id") 
+		id := c.Params("id")
+
+		
 		
 		AddClientToGroup(group, id, c)
 		log.Printf("Client %s joined group %s", id, group)
